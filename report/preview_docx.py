@@ -53,8 +53,30 @@ def wrap(text, fnt):
 
 # iterate body elements in order (paragraphs)
 from docx.oxml.ns import qn
+from docx.table import Table
 body = doc.element.body
 for child in body.iterchildren():
+    if child.tag == qn('w:tbl'):
+        t = Table(child, doc)
+        nrows = len(t.rows); ncols = len(t.columns)
+        cw = maxw // max(ncols, 1)
+        rh = int(11 * DPI / 72 * 1.8)
+        if y + rh * nrows > A4[1] - MARGIN:
+            y = flush()
+        fnt = font(9.5, False)
+        for ri, row in enumerate(t.rows):
+            cx = MARGIN
+            for ci in range(ncols):
+                d.rectangle([cx, y, cx + cw, y + rh], outline=(0, 0, 0))
+                try:
+                    txt = row.cells[ci].text
+                except Exception:
+                    txt = ""
+                d.text((cx + 4, y + 4), txt[:18], fill=BLACK, font=fnt)
+                cx += cw
+            y += rh
+        y += int(6 * DPI / 72)
+        continue
     if child.tag == qn('w:p'):
         from docx.text.paragraph import Paragraph
         p = Paragraph(child, doc)

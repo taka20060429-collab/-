@@ -1,0 +1,729 @@
+<title>コンピュータ概論 2025年度 過去問 解答解説</title>
+<style>
+  :root{
+    --bg:#faf9f5; --surface:#ffffff; --surface-2:#f0eee6;
+    --ink:#141413; --ink-2:#44443f; --muted:#78776f;
+    --rule:#e3e1d8; --rule-2:#d3d0c4;
+    --q:#4a6d92;  --q-sf:#eaf0f6;      /* 問題 */
+    --a:#c15f3c;  --a-sf:#f7ebe4;      /* 解答 */
+    --e:#4f7d72;  --e-sf:#e9f0ed;      /* 解説 */
+    --warn:#9a6a24; --warn-sf:#f7efdf;
+    --shadow:0 1px 2px rgba(20,20,19,.05),0 6px 20px -12px rgba(20,20,19,.16);
+    --serif:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",ui-serif,Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP","Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{--bg:#1f1e1d;--surface:#292826;--surface-2:#302f2c;--ink:#f5f4ef;--ink-2:#d5d3cb;--muted:#9b998f;
+      --rule:#3d3c38;--rule-2:#4c4a45;--q:#8fb0d0;--q-sf:#25303a;--a:#e08b6b;--a-sf:#3a2b25;
+      --e:#84b0a4;--e-sf:#24322e;--warn:#d3a45f;--warn-sf:#362e20;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -14px rgba(0,0,0,.6);}
+  }
+  :root[data-theme="dark"]{--bg:#1f1e1d;--surface:#292826;--surface-2:#302f2c;--ink:#f5f4ef;--ink-2:#d5d3cb;--muted:#9b998f;
+    --rule:#3d3c38;--rule-2:#4c4a45;--q:#8fb0d0;--q-sf:#25303a;--a:#e08b6b;--a-sf:#3a2b25;
+    --e:#84b0a4;--e-sf:#24322e;--warn:#d3a45f;--warn-sf:#362e20;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -14px rgba(0,0,0,.6);}
+  :root[data-theme="light"]{--bg:#faf9f5;--surface:#ffffff;--surface-2:#f0eee6;--ink:#141413;--ink-2:#44443f;--muted:#78776f;
+    --rule:#e3e1d8;--rule-2:#d3d0c4;--q:#4a6d92;--q-sf:#eaf0f6;--a:#c15f3c;--a-sf:#f7ebe4;
+    --e:#4f7d72;--e-sf:#e9f0ed;--warn:#9a6a24;--warn-sf:#f7efdf;
+    --shadow:0 1px 2px rgba(20,20,19,.05),0 6px 20px -12px rgba(20,20,19,.16);}
+
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+       font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased;font-feature-settings:"palt" 1;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px 90px;}
+
+  .mast{padding:56px 0 26px;border-bottom:1px solid var(--rule);margin-bottom:34px;}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--a);font-weight:600;margin:0 0 14px;}
+  .mast h1{font-family:var(--serif);font-weight:600;font-size:clamp(28px,5vw,44px);line-height:1.22;margin:0 0 14px;text-wrap:balance;}
+  .mast p{font-size:15.5px;color:var(--ink-2);max-width:60ch;margin:0 0 20px;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;}
+  .meta div{background:var(--surface);border:1px solid var(--rule);border-radius:999px;
+            padding:6px 15px;font-size:13px;color:var(--ink-2);box-shadow:var(--shadow);}
+  .meta div b{color:var(--ink);font-weight:600;}
+
+  .legend{background:var(--surface-2);border-radius:14px;padding:18px 24px;margin-bottom:42px;font-size:14.5px;}
+  .legend h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 10px;font-weight:600;}
+  .legend p{margin:5px 0;}
+  .sw{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:7px;vertical-align:baseline;}
+
+  article.qa{margin-bottom:60px;scroll-margin-top:16px;}
+  .qhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:14px;
+         padding-bottom:10px;border-bottom:2px solid var(--ink);}
+  .qno{font-family:var(--serif);font-size:26px;font-weight:600;line-height:1.2;}
+  .qtitle{font-size:15px;color:var(--ink-2);flex:1 1 auto;min-width:180px;}
+  .tag{font-size:11.5px;font-weight:600;letter-spacing:.04em;padding:3px 10px;border-radius:999px;flex:none;line-height:1.7;}
+  .t-pts{background:var(--q-sf);color:var(--q);}
+  .t-in{background:var(--e-sf);color:var(--e);}
+  .t-out{background:var(--surface-2);color:var(--muted);}
+  .t-hot{background:var(--a-sf);color:var(--a);}
+
+  .band{border-radius:12px;padding:18px 22px;margin:16px 0;}
+  .band > :first-child{margin-top:0;} .band > :last-child{margin-bottom:0;}
+  .band-h{font-size:12px;font-weight:700;letter-spacing:.12em;margin:0 0 10px;}
+  .b-q{background:var(--q-sf);}   .b-q .band-h{color:var(--q);}
+  .b-a{background:var(--a-sf);}   .b-a .band-h{color:var(--a);}
+  .b-e{background:transparent;padding:0;} .b-e .band-h{color:var(--e);}
+  .b-w{background:var(--warn-sf);} .b-w .band-h{color:var(--warn);}
+
+  .choices{font-size:13.5px;color:var(--ink-2);background:var(--surface);
+           border:1px solid var(--rule);border-radius:10px;padding:14px 18px;margin:12px 0;}
+  .choices b{color:var(--ink);font-weight:600;display:block;margin-bottom:4px;font-size:12.5px;letter-spacing:.04em;}
+  .choices span{white-space:nowrap;}
+
+  p{margin:0 0 13px;max-width:72ch;}
+  ul,ol{margin:0 0 13px;padding-left:1.35em;max-width:72ch;}
+  li{margin:5px 0;}
+  h3{font-family:var(--serif);font-size:18px;font-weight:600;margin:26px 0 8px;line-height:1.4;}
+  h4{font-size:14.5px;font-weight:600;margin:18px 0 6px;}
+  code{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding:2px 6px;border-radius:5px;}
+  strong{font-weight:600;}
+  em{font-style:normal;color:var(--muted);}
+
+  pre.work{font-family:var(--mono);font-size:13px;line-height:1.7;background:var(--surface-2);
+           border-radius:10px;padding:15px 17px;overflow-x:auto;margin:14px 0;
+           font-variant-numeric:tabular-nums;color:var(--ink);}
+  .key{font-family:var(--mono);font-weight:600;font-variant-numeric:tabular-nums;
+       background:var(--surface);border:1px solid var(--rule-2);border-radius:6px;padding:2px 8px;}
+
+  .scroll{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:10px;background:var(--surface);}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:460px;}
+  th,td{padding:9px 13px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule);}
+  thead th{background:var(--surface-2);font-size:11.5px;letter-spacing:.05em;font-weight:600;color:var(--ink-2);white-space:nowrap;}
+  tbody tr:last-child td{border-bottom:none;}
+  td.num,th.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .cap{font-size:12.5px;color:var(--muted);margin:-6px 0 16px;max-width:72ch;}
+
+  .figure-note{background:var(--surface-2);border-left:3px solid var(--rule-2);
+               padding:11px 16px;margin:14px 0;font-size:13.5px;color:var(--ink-2);border-radius:0 8px 8px 0;}
+
+  footer{border-top:1px solid var(--rule);padding-top:26px;margin-top:20px;font-size:13px;color:var(--muted);}
+  a{color:var(--a);} a:focus-visible{outline:2px solid var(--a);outline-offset:3px;border-radius:3px;}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+  @media (max-width:640px){.wrap{padding:0 16px 60px;}.mast{padding:36px 0 20px;}.band{padding:15px 16px;}}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">工学部 電気工学科 ／ 吉田孝博</p>
+  <h1>コンピュータ概論<br>2025年度 過去問 解答解説</h1>
+  <p>2025年7月29日実施の前期到達度評価試験、全6問100点。<strong>問題文と選択肢を全部載せてあるので、問題用紙を並べなくてもこれ1冊で完結する。</strong></p>
+  <div class="meta">
+    <div>2025年7月29日(火) 実施</div>
+    <div><b>60分</b>／マークシート</div>
+    <div>持込 <b>筆記用具のみ</b></div>
+    <div>全6問 <b>100点</b></div>
+  </div>
+</header>
+
+<div class="legend">
+  <h2>読み方</h2>
+  <p><span class="sw" style="background:var(--q)"></span><strong>問題</strong> … 原文どおり。選択肢も省略していない</p>
+  <p><span class="sw" style="background:var(--a)"></span><strong>解答</strong> … マークすべきもの</p>
+  <p><span class="sw" style="background:var(--e)"></span><strong>解説</strong> … なぜそうなるか。今年の範囲での扱いも各問の冒頭に記載</p>
+</div>
+
+<!-- ================= 問1 ================= -->
+<article class="qa" id="q1">
+  <div class="qhead">
+    <span class="qno">問 1</span>
+    <span class="qtitle">IEEE 単精度浮動小数点表現</span>
+    <span class="tag t-pts">15点</span>
+    <span class="tag t-out">今年は範囲外</span>
+  </div>
+
+  <div class="band b-q">
+    <p class="band-h">問題</p>
+    <p><strong>−86.375（10進数）の IEEE 単精度浮動小数点表現を求める過程</strong>に関する次の設問に答えよ。（15点）</p>
+    <ol style="margin-bottom:0">
+      <li>86₍₁₀₎ を2進数に変換し、7桁の各桁について、上位（MSB）から順に2進数の値（⓪か①）をマークせよ。</li>
+      <li>0.375₍₁₀₎ を2進数の固定小数点数に変換し、小数点以下を MSB から5桁分、順にマークせよ。</li>
+      <li>IEEE 単精度浮動小数点表現の<strong>仮数部</strong>の値を2進数で求め、MSB から10桁分を順にマークせよ。</li>
+      <li>IEEE 単精度浮動小数点表現の<strong>指数部</strong>の値を2進数で求め、MSB から8桁分を順にマークせよ。</li>
+      <li>IEEE 単精度浮動小数点表現を<strong>16進数</strong>で求め、全ての桁を MSB から順にマークせよ。</li>
+    </ol>
+  </div>
+
+  <div class="band b-a">
+    <p class="band-h">解答</p>
+    <p style="margin-bottom:6px">(1) <span class="key">1 0 1 0 1 1 0</span></p>
+    <p style="margin-bottom:6px">(2) <span class="key">0 1 1 0 0</span></p>
+    <p style="margin-bottom:6px">(3) <span class="key">0 1 0 1 1 0 0 1 1 0</span></p>
+    <p style="margin-bottom:6px">(4) <span class="key">1 0 0 0 0 1 0 1</span></p>
+    <p style="margin-bottom:0">(5) <span class="key">C 2 A C C 0 0 0</span></p>
+  </div>
+
+  <div class="band b-e">
+    <p class="band-h">解説</p>
+
+    <h4>前提 ─ IEEE754 単精度の形</h4>
+    <p>32ビットを3つに割って使う。指数部には<strong>127を足してから</strong>格納する（エクセスコード）。負の指数も正の数で表すための工夫。</p>
+    <pre class="work">┌─1bit─┬──8bit──┬────────23bit────────┐
+│ 符号  │ 指数部 E │      仮数部 M       │
+└───────┴──────────┴─────────────────────┘
+  0=正         実際の指数+127      「1.」を除いた小数部
+  1=負</pre>
+
+    <h4>(1) 整数部 86 を2進数に</h4>
+    <p>2で割り続けて、余りを<strong>下から</strong>読む。</p>
+    <pre class="work">86 ÷ 2 = 43 … 0   ← LSB        検算：
+43 ÷ 2 = 21 … 1               64 + 16 + 4 + 2 = 86 ✓
+21 ÷ 2 = 10 … 1
+10 ÷ 2 =  5 … 0
+ 5 ÷ 2 =  2 … 1
+ 2 ÷ 2 =  1 … 0
+ 1 ÷ 2 =  0 … 1   ← MSB
+
+下から読んで  1010110</pre>
+
+    <h4>(2) 小数部 0.375 を2進数に</h4>
+    <p>整数部とは逆で、<strong>2倍して1を超えたら1</strong>を立て、超えた分を引いて続ける。</p>
+    <pre class="work">0.375 × 2 = 0.75 → 0    （残 0.75）
+0.75  × 2 = 1.5  → 1    （残 0.5）
+0.5   × 2 = 1.0  → 1    （残 0 → 終了）
+
+0.375 = 0.011  → 5桁分なので 01100</pre>
+    <p class="cap">設問が「5桁分」と指定しているので、足りない分は0で埋める。</p>
+
+    <h4>(3) 仮数部</h4>
+    <p>(1)(2)を合わせると <code>86.375 = 1010110.011</code>。これを <strong>1.××× × 2ⁿ</strong> の形にする（正規化）。小数点を左に6つ動かすので n = 6。</p>
+    <pre class="work">1010110.011
+= 1.010110011 × 2⁶
+   ↑
+   この「1.」は格納しない（必ず1になるので省く＝ケチ表現）
+
+仮数部 = 010110011 を23bitに右0埋め
+       = 01011001100000000000000
+
+MSBから10桁 → 0101100110</pre>
+
+    <h4>(4) 指数部</h4>
+    <p>正規化で使った n = 6 に、ゲタの127を足す。</p>
+    <pre class="work">E = 6 + 127 = 133
+133 = 128 + 4 + 1 = 10000101  （8bit）</pre>
+
+    <h4>(5) 16進数</h4>
+    <p>符号・指数・仮数を<strong>この順に32bit並べてから</strong>、先頭から4bitずつ区切る。</p>
+    <pre class="work">符号1 + 指数8 + 仮数23
+
+  1 10000101 01011001100000000000000
+
+つなげて頭から4bitずつ
+  1100 0001 0101 1001 1000 0000 0000 0000
+   C    2    A    C    C    0    0    0
+
+答え 0xC2ACC000</pre>
+
+    <div class="band b-w">
+      <p class="band-h">ここでほぼ全員が間違える</p>
+      <p style="margin-bottom:0">符号（1bit）と指数（8bit）を<strong>別々に16進に直してはいけない</strong>。合わせて9bitあるので、4bitの区切り目が指数部の途中にくる。<strong>32bit全部を並べきってから、頭より4つずつ</strong>切ること。</p>
+    </div>
+
+    <div class="band b-w">
+      <p class="band-h">今年の扱い</p>
+      <p style="margin-bottom:0">第2章 2.2 は<strong>今年の出題範囲から外れている</strong>ので、この形式がそのまま出る可能性は低い。ただし範囲の筆頭に「講義内で行った全演習」とあり、<strong>演習3-1がこの形式（−15.65 のIEEE単精度）</strong>だったので、手順の確認だけはしておくこと。ちなみに <strong>−15.65 = 0xC17A6666</strong>。</p>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 問2 ================= -->
+<article class="qa" id="q2">
+  <div class="qhead">
+    <span class="qno">問 2</span>
+    <span class="qtitle">CPU内部と主記憶装置の状態</span>
+    <span class="tag t-pts">17点</span>
+    <span class="tag t-hot">今年も直撃</span>
+  </div>
+
+  <div class="band b-q">
+    <p class="band-h">問題</p>
+    <p>プログラム実行時の CPU 内部と主記憶装置の状態について、以下の説明文中の空欄①〜⑳にあてはまる解答を以下の選択肢から選び、マークせよ。（選択肢には、使用しないものや、複数回使用するものも含まれる。）（17点）</p>
+    <p>図に示す仮想 CPU（COMETⅡ）における主記憶装置内のプログラムの読み出しや実行が、いま <strong>0025 番地まで終了し、0026 番地を開始しようとしている</strong>。この時点で、IR に格納されている値は2ワードで、上位1ワードが<strong>①</strong>、下位1ワードが<strong>②</strong>、PC に格納されている値は<strong>③</strong>、MDR に格納されている値は<strong>④</strong>、MAR に格納されている値は<strong>⑤</strong>、GR1 に格納されている値は<strong>⑥</strong>である。</p>
+    <p>図中の空欄 A の名称は<strong>⑦</strong>であり、その役割は<strong>⑧</strong>である。同様に、B は名称<strong>⑨</strong>・役割<strong>⑩</strong>、C は名称<strong>⑪</strong>・役割<strong>⑫</strong>、D は名称<strong>⑬</strong>・役割<strong>⑭</strong>、E は名称<strong>⑮</strong>・役割<strong>⑯</strong>、F は名称<strong>⑰</strong>・役割<strong>⑱</strong>、G は名称<strong>⑲</strong>・役割<strong>⑳</strong>である。</p>
+    <div class="choices">
+      <b>【①〜⑥の選択肢】</b>
+      <span>(a)0020</span>, <span>(b)0021</span>, <span>(c)0022</span>, <span>(d)0023</span>, <span>(e)0024</span>, <span>(f)0025</span>, <span>(g)0026</span>, <span>(h)0027</span>, <span>(i)0028</span>, <span>(j)0029</span>, <span>(k)0032</span>, <span>(l)0064</span>, <span>(m)0096</span>, <span>(n)1010</span>, <span>(o)1110</span>, <span>(p)2010</span>
+    </div>
+    <div class="choices">
+      <b>【⑦〜⑳の選択肢】</b>
+      名称：<span>(ｱ)IR</span>, <span>(ｲ)MDR</span>, <span>(ｳ)MAR</span>, <span>(ｴ)PC</span>, <span>(ｵ)ALU</span>, <span>(ｶ)SP</span>, <span>(ｷ)Decoder</span><br>
+      役割：<span>(ｸ)番地の一時保持</span>, <span>(ｹ)命令の解読</span>, <span>(ｺ)現在実行中の命令保持</span>, <span>(ｻ)データの一時保持</span>, <span>(ｼ)算術演算や論理演算</span>, <span>(ｽ)スタック内の番地保持</span>, <span>(ｾ)次の命令の格納番地指定</span>, <span>(ｿ)演算時の桁あふれ等の保持</span>, <span>(ﾀ)各種命令の実行で使用されるレジスタ</span>
+    </div>
+    <div class="figure-note">
+      <strong>問題冊子にはCPUの構成図</strong>（A〜Gの空欄つきブロック図）と、<strong>主記憶装置の内容の図</strong>（教科書 図4.5）が添付されている。図4.5の中身は下の解説に書き出した。
+    </div>
+  </div>
+
+  <div class="band b-a">
+    <p class="band-h">解答</p>
+    <div class="scroll" style="margin-top:4px">
+    <table>
+      <thead><tr><th class="num">空欄</th><th>問われている値</th><th class="num">答え</th><th class="num">記号</th></tr></thead>
+      <tbody>
+        <tr><td class="num">①</td><td>IRの上位1ワード</td><td class="num">1110</td><td class="num">(o)</td></tr>
+        <tr><td class="num">②</td><td>IRの下位1ワード</td><td class="num">0029</td><td class="num">(j)</td></tr>
+        <tr><td class="num">③</td><td>PC</td><td class="num">0026</td><td class="num">(g)</td></tr>
+        <tr><td class="num">④</td><td>MDR</td><td class="num">0096</td><td class="num">(m)</td></tr>
+        <tr><td class="num">⑤</td><td>MAR</td><td class="num">0029</td><td class="num">(j)</td></tr>
+        <tr><td class="num">⑥</td><td>GR1</td><td class="num">0096</td><td class="num">(m)</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin:12px 0 0">⑦〜⑳は<strong>名称と役割が1対1で対応</strong>する。図中のA〜Gがどの位置かは図次第だが、対応さえ覚えていれば図を見た瞬間に埋まる。</p>
+    <div class="scroll" style="margin-bottom:0">
+    <table>
+      <thead><tr><th>名称</th><th>対応する役割</th></tr></thead>
+      <tbody>
+        <tr><td>(ｱ) IR</td><td>(ｺ) 現在実行中の命令保持</td></tr>
+        <tr><td>(ｲ) MDR</td><td>(ｻ) データの一時保持</td></tr>
+        <tr><td>(ｳ) MAR</td><td>(ｸ) 番地の一時保持</td></tr>
+        <tr><td>(ｴ) PC</td><td>(ｾ) 次の命令の格納番地指定</td></tr>
+        <tr><td>(ｵ) ALU</td><td>(ｼ) 算術演算や論理演算</td></tr>
+        <tr><td>(ｶ) SP</td><td>(ｽ) スタック内の番地保持</td></tr>
+        <tr><td>(ｷ) Decoder</td><td>(ｹ) 命令の解読</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="band b-e">
+    <p class="band-h">解説</p>
+
+    <h4>まず図4.5（主記憶の中身）を確認する</h4>
+    <p>このプログラムは <code>C = A + B</code> を計算している。1語 = 16ビット = 16進4桁。<strong>番地や数値を指定する命令は2語</strong>を使い、RETだけ1語。</p>
+    <pre class="work">番地   内容              命令              意味
+0020  1010 ┐          LD   GR1, A       A番地の中身をGR1へ
+0021  0027 ┘
+0022  2010 ┐          ADDA GR1, B       B番地の中身をGR1に足す
+0023  0028 ┘
+0024  1110 ┐          ST   GR1, C       GR1の中身をC番地へ書く
+0025  0029 ┘
+0026  8100            RET               呼び出し元へ戻る（1語）
+0027  0032            A DC 50           ラベルA、50₍₁₀₎ = 0032₍₁₆₎
+0028  0064            B DC 100          ラベルB、100₍₁₀₎ = 0064₍₁₆₎
+0029  0096            C DS 1            ラベルC、結果 150 = 0096₍₁₆₎
+
+命令コード：10 = LD ／ 20 = ADDA ／ 11 = ST ／ 81 = RET</pre>
+
+    <h4>「0025番地まで終了」が意味すること</h4>
+    <p>0024〜0025 に置かれた命令、つまり <code>ST GR1, C</code> の実行が<strong>完了した直後</strong>。次は0026のRETを取りに行く手前で止まっている。だから各レジスタには <strong>ST命令が残していった値</strong>が入っている。</p>
+
+    <h4>①② IR ─ 直前に実行した命令が丸ごと残る</h4>
+    <p>IRは「今実行している命令そのもの」を持つ箱。ST命令は2語なので、<strong>上位1ワード = 1110</strong>（ST命令のコード部）、<strong>下位1ワード = 0029</strong>（書き込み先のC番地）。</p>
+
+    <h4>③ PC ─ これから実行する番地</h4>
+    <p>PCは「<strong>次に</strong>実行する命令の番地」を指すしおり。0026番地を開始しようとしているのだから、そのまま <strong>0026</strong>。<em>問題文の数字をそのまま書くだけで、ここは考える必要がない。</em></p>
+
+    <h4>⑤ MAR ─ 最後にアクセスした番地</h4>
+    <p>MARは「これから触る番地」を書く箱。ST命令は0029番地に書き込むので、<strong>0029</strong> が入っている。IRの下位1ワードと同じ値になる。</p>
+
+    <h4>④ MDR ─ この問題の最大の罠</h4>
+    <p>MDRは「主記憶とやりとりするデータ」を置く箱。ここで<strong>読み込み命令か書き込み命令かで中身が逆になる</strong>。</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th>命令</th><th>データの流れ</th><th>MDRに入るもの</th></tr></thead>
+      <tbody>
+        <tr><td><strong>LD・ADDA</strong>（読む）</td><td>主記憶 → MDR → レジスタ</td><td><strong>読み出した値</strong>（その番地の中身）</td></tr>
+        <tr><td><strong>ST</strong>（書く）</td><td>レジスタ → MDR → 主記憶</td><td><strong>書き込む値</strong>（＝GR1の中身）</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>今回は ST なので、<code>[GR1] 0096 → MDR →（データバス）→ 主記憶</code> と流れる。よって MDR = <strong>0096</strong>。<em>0029番地の中身を答えたくなるが、それは間違い。</em></p>
+
+    <h4>⑥ GR1 ─ 計算の結果</h4>
+    <pre class="work">LD   GR1, A  →  GR1 = 0032（50）
+ADDA GR1, B  →  GR1 = 0032 + 0064 = 0096（150）
+ST   GR1, C  →  GR1 は変わらない（書き出すだけ）
+
+よって GR1 = 0096</pre>
+
+    <h4>⑦〜⑳ 名称と役割の対応</h4>
+    <p>名称の選択肢が7つ、空欄もA〜Gの7つなので、<strong>7つの名称を1回ずつ使い切る</strong>。役割の選択肢は9つあるので<strong>2つ余る</strong>。</p>
+    <div class="band b-w" style="margin-bottom:0">
+      <p class="band-h">余る2つがダミー</p>
+      <p style="margin-bottom:0"><strong>(ｿ)演算時の桁あふれ等の保持</strong> は <strong>FR（フラグレジスタ）</strong>の役割、<strong>(ﾀ)各種命令の実行で使用されるレジスタ</strong> は <strong>GR（汎用レジスタ）</strong>の役割。どちらも名称の選択肢に無いので<strong>使わない</strong>。ここで迷って他の答えを崩さないこと。</p>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 問3 ================= -->
+<article class="qa" id="q3">
+  <div class="qhead">
+    <span class="qno">問 3</span>
+    <span class="qtitle">OSI 参照モデル</span>
+    <span class="tag t-pts">22点</span>
+    <span class="tag t-hot">今年も直撃</span>
+  </div>
+
+  <div class="band b-q">
+    <p class="band-h">問題</p>
+    <p>ネットワークの構造を7階層でモデル化した OSI 参照モデルについて、<strong>第1層〜第7層それぞれに最も関連する用語や説明</strong>を選択肢から選び、<strong>過不足なく複数マーク</strong>せよ。（各選択肢は一度のみ使用する。）（22点）</p>
+    <div class="choices" style="margin-bottom:0">
+      <b>【選択肢】</b>
+      <span>(ｱ)データリンク層</span>, <span>(ｲ)アプリケーション層</span>, <span>(ｳ)トランスポート層</span>, <span>(ｴ)セッション層</span>, <span>(ｵ)物理層</span>, <span>(ｶ)ネットワーク層</span>, <span>(ｷ)サブネットマスク</span>, <span>(ｸ)論理的な通信の確立</span>, <span>(ｹ)拡張スター型</span>, <span>(ｺ)データの表現形式</span>, <span>(ｻ)サブネット間通信</span>, <span>(ｼ)サブネット内通信</span>, <span>(ｽ)ハードウェアアドレス</span>, <span>(ｾ)Cat6</span>, <span>(ｿ)論理アドレス</span>, <span>(ﾀ)ポート番号</span>, <span>(ﾁ)プレゼンテーション層</span>, <span>(ﾂ)パケット</span>, <span>(ﾃ)フレーム</span>, <span>(ﾄ)IP</span>, <span>(ﾅ)SMTP</span>, <span>(ﾆ)FTP</span>, <span>(ﾇ)TCP</span>, <span>(ﾈ)CSMA/CA</span>, <span>(ﾉ)DNS</span>
+    </div>
+  </div>
+
+  <div class="band b-a">
+    <p class="band-h">解答</p>
+    <div class="scroll" style="margin:4px 0 0">
+    <table>
+      <thead><tr><th class="num">層</th><th>マークする選択肢</th><th class="num">個数</th></tr></thead>
+      <tbody>
+        <tr><td class="num"><strong>1層</strong></td><td>(ｵ)物理層、(ｹ)拡張スター型、(ｾ)Cat6</td><td class="num">3</td></tr>
+        <tr><td class="num"><strong>2層</strong></td><td>(ｱ)データリンク層、(ｼ)サブネット内通信、(ｽ)ハードウェアアドレス、(ﾃ)フレーム、(ﾈ)CSMA/CA</td><td class="num">5</td></tr>
+        <tr><td class="num"><strong>3層</strong></td><td>(ｶ)ネットワーク層、(ｷ)サブネットマスク、(ｻ)サブネット間通信、(ｿ)論理アドレス、(ﾂ)パケット、(ﾄ)IP</td><td class="num">6</td></tr>
+        <tr><td class="num"><strong>4層</strong></td><td>(ｳ)トランスポート層、(ﾀ)ポート番号、(ﾇ)TCP</td><td class="num">3</td></tr>
+        <tr><td class="num"><strong>5層</strong></td><td>(ｴ)セッション層、(ｸ)論理的な通信の確立</td><td class="num">2</td></tr>
+        <tr><td class="num"><strong>6層</strong></td><td>(ﾁ)プレゼンテーション層、(ｺ)データの表現形式</td><td class="num">2</td></tr>
+        <tr><td class="num"><strong>7層</strong></td><td>(ｲ)アプリケーション層、(ﾅ)SMTP、(ﾆ)FTP、(ﾉ)DNS</td><td class="num">4</td></tr>
+        <tr><td class="num"></td><td style="text-align:right"><strong>合計</strong></td><td class="num"><strong>25</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="band b-e">
+    <p class="band-h">解説</p>
+
+    <h4>この問題の解き方 ─ 「隣か、遠くか」で切る</h4>
+    <p>2層と3層の区別さえつけば、25個中11個が一気に片付く。<strong>2層は「すぐ隣の機器まで」、3層は「世界中の宛先まで」</strong>が担当。</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th></th><th>2層（データリンク層）</th><th>3層（ネットワーク層）</th></tr></thead>
+      <tbody>
+        <tr><td>届ける範囲</td><td><strong>同じLANの中＝サブネット内通信</strong></td><td><strong>LANをまたぐ＝サブネット間通信</strong></td></tr>
+        <tr><td>使う名前</td><td><strong>ハードウェアアドレス</strong>（MACアドレス）</td><td><strong>論理アドレス</strong>（IPアドレス）</td></tr>
+        <tr><td>運ぶ単位</td><td><strong>フレーム</strong></td><td><strong>パケット</strong></td></tr>
+        <tr><td>プロトコル</td><td><strong>CSMA/CA</strong>（送信タイミングの取り決め）</td><td><strong>IP</strong></td></tr>
+        <tr><td>機器</td><td>ハブ</td><td>ルータ</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h4>迷いやすい4つの根拠</h4>
+    <ul>
+      <li><strong>(ｾ)Cat6 → 1層</strong>。LANケーブルのカテゴリ、つまり<u>物理的な線そのもの</u>の話。</li>
+      <li><strong>(ｹ)拡張スター型 → 1層</strong>。トポロジ＝<u>機器を物理的にどう並べてつなぐか</u>の形。</li>
+      <li><strong>(ｷ)サブネットマスク → 3層</strong>。IPアドレスのどこまでがネットワーク番号かを示すもので、<u>IPの話</u>。</li>
+      <li><strong>(ﾈ)CSMA/CA → 2層</strong>。無線LANで<u>いつ送信してよいか</u>を決める取り決め＝MACプロトコル。</li>
+    </ul>
+
+    <h4>5層・6層は説明文で覚える</h4>
+    <p>この2つは具体的なプロトコル名が選択肢に無く、<strong>説明文とセットで1つずつ</strong>しかない。<strong>5層＝「論理的な通信の確立」</strong>（通信相手とのつながりを保つ）、<strong>6層＝「データの表現形式」</strong>（文字コードや圧縮形式をそろえる）。この2フレーズを丸ごと覚えるのが早い。</p>
+
+    <h4>7層はサービス名が並ぶ</h4>
+    <p><strong>SMTP</strong>（メール送信）、<strong>FTP</strong>（ファイル転送）、<strong>DNS</strong>（名前解決）はどれも<u>人が使うサービス</u>の名前。<strong>TCPだけは4層</strong>なので、ここに混ぜないこと。</p>
+
+    <div class="band b-w" style="margin-bottom:0">
+      <p class="band-h">「過不足なく」形式の必勝法 ─ 必ず個数で検算する</p>
+      <p style="margin-bottom:0">各選択肢は一度だけ使うので、<strong>各層に配った個数の合計が、選択肢の総数と一致する</strong>。この問題なら 3+5+6+3+2+2+4 = <strong>25</strong>。マークし終えたら必ず数えること。ズレていれば、どこかに<u>重複か漏れがある</u>と即座に分かる。</p>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 問4 ================= -->
+<article class="qa" id="q4">
+  <div class="qhead">
+    <span class="qno">問 4</span>
+    <span class="qtitle">キャッシュメモリの平均アクセス時間</span>
+    <span class="tag t-pts">3点</span>
+    <span class="tag t-hot">今年も直撃</span>
+  </div>
+
+  <div class="band b-q">
+    <p class="band-h">問題</p>
+    <p style="margin-bottom:0">キャッシュメモリのヒット率が <strong>80%</strong> であり、キャッシュの平均アクセス時間 <strong>Tc = 5 ns</strong>、主記憶の平均アクセス時間 <strong>Tm = 40 ns</strong> のときの平均アクセス時間を求め、単位を ns とした際の「十の位」と「一の位」をマークせよ。（3点）</p>
+  </div>
+
+  <div class="band b-a">
+    <p class="band-h">解答</p>
+    <p style="margin-bottom:0">十の位 <span class="key">1</span>　／　一の位 <span class="key">2</span>　（＝ <strong>12 ns</strong>）</p>
+  </div>
+
+  <div class="band b-e">
+    <p class="band-h">解説</p>
+    <h4>式の意味</h4>
+    <p>CPUがデータを取りに行くと、起きることは2つに1つ。</p>
+    <ul>
+      <li><strong>ヒット</strong>（確率 h = 0.8）… キャッシュにあった。速い方の <strong>Tc = 5ns</strong> で済む</li>
+      <li><strong>ミスヒット</strong>（確率 1−h = 0.2）… 無いので主記憶まで。<strong>Tm = 40ns</strong> かかる</li>
+    </ul>
+    <p>平均なので、それぞれの時間に確率を掛けて足す。<strong>つまりこの式は加重平均そのもの</strong>で、丸暗記しなくても意味を追えば書ける。</p>
+    <pre class="work">T = h·Tc + (1 − h)·Tm
+  = 0.8 × 5 + 0.2 × 40
+  = 4 + 8
+  = 12 ns</pre>
+
+    <div class="band b-w">
+      <p class="band-h">3点を落とさないための3つの確認</p>
+      <ol style="margin-bottom:0">
+        <li><strong>ヒット率は小数に直す。</strong>80 ではなく 0.8。ここを間違えると桁が完全にずれる</li>
+        <li><strong>ミス側は (1−h) = 0.2。</strong>0.8 を両方に掛けない</li>
+        <li><strong>答えは必ず Tc と Tm の間に入る。</strong>5 〜 40 の外に出たら計算ミス確定</li>
+      </ol>
+    </div>
+
+    <h4>今年は逆算にも備えておく</h4>
+    <p>第5章は「章末問題(9)〜(11)」も範囲に指定されている。<strong>「ヒット率を求めよ」</strong>と逆に聞かれる可能性があるので、式変形も追えるようにしておく。</p>
+    <pre class="work">      T = h·Tc + (1 − h)·Tm
+      T = h·Tc + Tm − h·Tm        ← 展開
+      T = Tm − h·(Tm − Tc)        ← h でくくる
+h·(Tm − Tc) = Tm − T              ← 移項
+      h = (Tm − T) / (Tm − Tc)
+
+この問題の数字で確認： h = (40 − 12)/(40 − 5) = 28/35 = 0.8 ✓</pre>
+  </div>
+</article>
+
+<!-- ================= 問5 ================= -->
+<article class="qa" id="q5">
+  <div class="qhead">
+    <span class="qno">問 5</span>
+    <span class="qtitle">記憶システムの階層構造と半導体メモリ</span>
+    <span class="tag t-pts">25点</span>
+    <span class="tag t-in">①〜④は範囲内</span>
+  </div>
+
+  <div class="band b-q">
+    <p class="band-h">問題</p>
+    <p>記憶システムの構成・階層構造とそれらの役割について、<strong>図中の空欄①〜④</strong>それぞれの階層に該当する用語や説明を選択肢から選び、過不足なく複数マークせよ。また、半導体メモリの<strong>⑤DRAM、⑥SRAM、⑦フラッシュメモリ</strong>について、該当する用語や説明を選択肢から選び、過不足なく複数マークせよ。（各選択肢は一度のみ使用する。）（25点）</p>
+    <div class="choices">
+      <b>【①〜④の選択肢】</b>
+      <span>(ｱ)大容量補助記憶</span>, <span>(ｲ)主記憶</span>, <span>(ｳ)補助記憶・拡張記憶</span>, <span>(ｴ)CPU内レジスタ・キャッシュメモリ</span>, <span>(ｵ)CPUが直接アクセスできるが揮発性</span>, <span>(ｶ)バックアップやデータの運搬に利用</span>, <span>(ｷ)CPU内部にあり一時記憶</span>, <span>(ｸ)データやプログラムを格納する高速な記憶装置で不揮発性</span>, <span>(ｹ)HDD・SSD</span>, <span>(ｺ)DRAM</span>, <span>(ｻ)光ディスク</span>
+    </div>
+    <div class="choices">
+      <b>【⑤〜⑦の選択肢】</b>
+      <span>(a)DDR</span>, <span>(b)DIMM</span>, <span>(c)NAND</span>, <span>(d)NOR</span>, <span>(e)SSD</span>, <span>(f)フリップフロップ</span>, <span>(g)消去・書き込みを繰り返すと絶縁性低下</span>, <span>(h)電源を供給していればデータを保持</span>, <span>(i)通電しないと数年でデータが消滅</span>, <span>(j)コンデンサの電荷の有無でデータ保持</span>, <span>(k)定期的にリフレッシュを行わないとデータが消滅</span>, <span>(l)破壊読み出し</span>, <span>(m)最も高速</span>, <span>(n)大容量化が困難</span>, <span>(o)CPU内部のキャッシュメモリ</span>, <span>(p)メインメモリ</span>, <span>(q)補助記憶
+</span>
+    </div>
+    <div class="figure-note">
+      <strong>問題冊子には記憶階層のピラミッド図</strong>（上から①②③④の4段）が添付されている。<strong>①がCPUに一番近い最上段</strong>で、下にいくほど遅く大容量になる。
+    </div>
+  </div>
+
+  <div class="band b-a">
+    <p class="band-h">解答</p>
+    <div class="scroll" style="margin:4px 0 12px">
+    <table>
+      <thead><tr><th class="num">階層</th><th>マークする選択肢</th><th class="num">個数</th></tr></thead>
+      <tbody>
+        <tr><td class="num"><strong>①</strong></td><td>(ｴ)CPU内レジスタ・キャッシュメモリ、(ｷ)CPU内部にあり一時記憶</td><td class="num">2</td></tr>
+        <tr><td class="num"><strong>②</strong></td><td>(ｲ)主記憶、(ｵ)CPUが直接アクセスできるが揮発性、(ｺ)DRAM</td><td class="num">3</td></tr>
+        <tr><td class="num"><strong>③</strong></td><td>(ｳ)補助記憶・拡張記憶、(ｸ)データやプログラムを格納する高速な記憶装置で不揮発性、(ｹ)HDD・SSD</td><td class="num">3</td></tr>
+        <tr><td class="num"><strong>④</strong></td><td>(ｱ)大容量補助記憶、(ｶ)バックアップやデータの運搬に利用、(ｻ)光ディスク</td><td class="num">3</td></tr>
+        <tr><td class="num"></td><td style="text-align:right"><strong>合計</strong></td><td class="num"><strong>11</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="scroll" style="margin-bottom:0">
+    <table>
+      <thead><tr><th>種類</th><th>マークする選択肢</th><th class="num">個数</th></tr></thead>
+      <tbody>
+        <tr><td class="num"><strong>⑤DRAM</strong></td><td>(a)DDR、(b)DIMM、(j)コンデンサの電荷の有無でデータ保持、(k)定期的にリフレッシュを行わないとデータが消滅、(l)破壊読み出し、(p)メインメモリ</td><td class="num">6</td></tr>
+        <tr><td class="num"><strong>⑥SRAM</strong></td><td>(f)フリップフロップ、(h)電源を供給していればデータを保持、(m)最も高速、(n)大容量化が困難、(o)CPU内部のキャッシュメモリ</td><td class="num">5</td></tr>
+        <tr><td class="num"><strong>⑦フラッシュ</strong></td><td>(c)NAND、(d)NOR、(e)SSD、(g)消去・書き込みを繰り返すと絶縁性低下、(i)通電しないと数年でデータが消滅、(q)補助記憶</td><td class="num">6</td></tr>
+        <tr><td class="num"></td><td style="text-align:right"><strong>合計</strong></td><td class="num"><strong>17</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="band b-e">
+    <p class="band-h">解説</p>
+
+    <h4>①〜④ ─ 「CPUに近い順」に並べるだけ</h4>
+    <p>階層は<strong>速い・小さい・高い</strong>から<strong>遅い・大きい・安い</strong>へ並ぶ。各段に「名前」「実体」「説明文」が1つずつ配られる作りになっている。</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th class="num">段</th><th>名前</th><th>実体</th><th>説明文</th></tr></thead>
+      <tbody>
+        <tr><td class="num">①</td><td>CPU内レジスタ・キャッシュ</td><td>―</td><td>CPU内部にあり一時記憶</td></tr>
+        <tr><td class="num">②</td><td>主記憶</td><td><strong>DRAM</strong></td><td>CPUが直接アクセスできるが<strong>揮発性</strong></td></tr>
+        <tr><td class="num">③</td><td>補助記憶・拡張記憶</td><td><strong>HDD・SSD</strong></td><td>プログラムを格納し<strong>不揮発性</strong></td></tr>
+        <tr><td class="num">④</td><td>大容量補助記憶</td><td><strong>光ディスク</strong></td><td><strong>バックアップやデータの運搬</strong>に利用</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="cap">①だけ実体がなく2個、②〜④は3個ずつ。合計11個で選択肢を使い切る。</p>
+
+    <div class="band b-w">
+      <p class="band-h">②と③を分ける決め手は「揮発性」</p>
+      <p style="margin-bottom:0">主記憶（DRAM）は<strong>電源を切ると消える＝揮発性</strong>。だからOSもアプリも普段は不揮発性のHDD/SSDに置いてあり、電源投入時に主記憶へ読み込まれる。<strong>「CPUが直接アクセスできる」のは主記憶だけ</strong>という点もセットで押さえる。</p>
+    </div>
+
+    <h4>⑤〜⑦ ─ 3つの半導体メモリを性質で仕分ける</h4>
+    <div class="scroll">
+    <table>
+      <thead><tr><th></th><th>DRAM</th><th>SRAM</th><th>フラッシュメモリ</th></tr></thead>
+      <tbody>
+        <tr><td>記憶のしかた</td><td><strong>コンデンサの電荷</strong></td><td><strong>フリップフロップ</strong></td><td>浮遊ゲートの電荷</td></tr>
+        <tr><td>電源を切ると</td><td>消える</td><td>消える</td><td><strong>消えない</strong>（不揮発性）</td></tr>
+        <tr><td>弱点</td><td><strong>リフレッシュ</strong>が必要／<strong>破壊読み出し</strong></td><td><strong>大容量化が困難</strong></td><td><strong>絶縁性が劣化</strong>／通電しないと数年で消滅</td></tr>
+        <tr><td>使われ場所</td><td><strong>メインメモリ</strong></td><td><strong>CPU内部のキャッシュ</strong>（最も高速）</td><td><strong>補助記憶</strong>（SSD）</td></tr>
+        <tr><td>関連語</td><td>DDR、DIMM</td><td>―</td><td>NAND、NOR</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><strong>DRAMの「破壊読み出し」</strong>とは、コンデンサの電荷を読むと電荷が抜けてデータが消えるので、<u>読んだ後に書き直す必要がある</u>という性質。リフレッシュが要るのも同じ理由（放っておくと電荷が抜ける）。</p>
+
+    <div class="band b-w" style="margin-bottom:0">
+      <p class="band-h">今年の扱い</p>
+      <p style="margin-bottom:0"><strong>①〜④は5.1で範囲内、⑤〜⑦は5.3なので範囲外。</strong>この後半の形式がそのまま出る可能性は低い。ただし<strong>「主記憶＝DRAM・揮発性」「キャッシュ＝SRAM・高速」の2点は5.1の階層説明にも出てくる</strong>ので、そこだけは残しておくこと。</p>
+    </div>
+  </div>
+</article>
+
+<!-- ================= 問6 ================= -->
+<article class="qa" id="q6">
+  <div class="qhead">
+    <span class="qno">問 6</span>
+    <span class="qtitle">仮想記憶・割込み・インタフェース</span>
+    <span class="tag t-pts">18点</span>
+    <span class="tag t-hot">今年も直撃</span>
+  </div>
+
+  <div class="band b-q">
+    <p class="band-h">問題</p>
+    <p>以下の説明文中の空欄①〜⑳にあてはまる用語を以下の選択肢からそれぞれ1つ選び、マークせよ。（選択肢には、使用しないものや、複数回使用するものも含まれる。）（18点）</p>
+
+    <p style="border-left:3px solid var(--rule-2);padding-left:14px">・<strong>①</strong>が足りず、大きいプログラムが動作しない等の問題を解決するため、<strong>②</strong>を①の代わりに使用する方式を<strong>③</strong>方式といい、具体的な方式としては、<strong>④</strong>方式や<strong>⑤</strong>方式などがある。<strong>⑥</strong>にハードウェア的に付与されているアドレスを<strong>⑦</strong>という。一方、<strong>⑧</strong>側で使用するアドレスを<strong>⑨</strong>という。</p>
+
+    <p style="border-left:3px solid var(--rule-2);padding-left:14px">・入出力制御において、アクションがあってから制御を行う処理には、割込みを利用する。コンピュータが機器からの割込み信号によって生ずる<strong>⑩</strong>割込み方式には、緊急性が高い割込みに使用される<strong>⑪</strong>割込み方式や、共通割込み要求線とデータバスを用いる<strong>⑫</strong>割込み方式、割込み受理通報線で周辺装置にあらかじめ優先順位を付けられる<strong>⑬</strong>割込み方式などがある。</p>
+
+    <p style="border-left:3px solid var(--rule-2);padding-left:14px">・<strong>⑭</strong>に搭載されるインタフェースには、ハードディスクなどを接続する<strong>⑮</strong>、グラフィックボードなどを接続する<strong>⑯</strong>、モニタなどを接続する<strong>⑰</strong>、主記憶装置を接続する<strong>⑱</strong>などがある。従来のインタフェースの信号伝送には<strong>⑲</strong>方式が多く用いられていたが、現在は、配線数の削減やクロック周波数の向上のために<strong>⑳</strong>方式が採用されている。特にこれらのインタフェースの信号伝送には、<strong>㉑</strong>方式が用いられている。</p>
+
+    <div class="choices" style="margin-bottom:0">
+      <b>【選択肢】</b>
+      <span>(ｱ)ハードウェア</span>, <span>(ｲ)ページング</span>, <span>(ｳ)ベクトル化</span>, <span>(ｴ)キャッシュメモリ</span>, <span>(ｵ)マザーボード</span>, <span>(ｶ)CPU</span>, <span>(ｷ)SATA</span>, <span>(ｸ)HDMI</span>, <span>(ｹ)PCI Express</span>, <span>(ｺ)LVDS</span>, <span>(ｻ)DDR</span>, <span>(ｼ)MACアドレス</span>, <span>(ｽ)論理アドレス</span>, <span>(ｾ)物理アドレス</span>, <span>(ｿ)セグメント</span>, <span>(ﾀ)専用線</span>, <span>(ﾁ)シリアル</span>, <span>(ﾂ)パラレル</span>, <span>(ﾃ)主記憶装置</span>, <span>(ﾄ)補助記憶装置</span>, <span>(ﾅ)拡張記憶</span>, <span>(ﾆ)仮想記憶</span>, <span>(ﾇ)連鎖式</span>
+    </div>
+    <p class="cap" style="margin-top:10px">※ 設問文は「①〜⑳」となっているが、本文中には㉑まで空欄がある（原文どおり）。</p>
+  </div>
+
+  <div class="band b-a">
+    <p class="band-h">解答</p>
+    <div class="scroll" style="margin:4px 0 0">
+    <table>
+      <thead><tr><th class="num">空欄</th><th>答え</th><th class="num">記号</th><th class="num">空欄</th><th>答え</th><th class="num">記号</th></tr></thead>
+      <tbody>
+        <tr><td class="num">①</td><td>主記憶装置</td><td class="num">(ﾃ)</td><td class="num">⑫</td><td>ベクトル化</td><td class="num">(ｳ)</td></tr>
+        <tr><td class="num">②</td><td>補助記憶装置</td><td class="num">(ﾄ)</td><td class="num">⑬</td><td>連鎖式</td><td class="num">(ﾇ)</td></tr>
+        <tr><td class="num">③</td><td>仮想記憶</td><td class="num">(ﾆ)</td><td class="num">⑭</td><td>マザーボード</td><td class="num">(ｵ)</td></tr>
+        <tr><td class="num">④</td><td>ページング</td><td class="num">(ｲ)</td><td class="num">⑮</td><td>SATA</td><td class="num">(ｷ)</td></tr>
+        <tr><td class="num">⑤</td><td>セグメント</td><td class="num">(ｿ)</td><td class="num">⑯</td><td>PCI Express</td><td class="num">(ｹ)</td></tr>
+        <tr><td class="num">⑥</td><td>主記憶装置</td><td class="num">(ﾃ)</td><td class="num">⑰</td><td>HDMI</td><td class="num">(ｸ)</td></tr>
+        <tr><td class="num">⑦</td><td>物理アドレス</td><td class="num">(ｾ)</td><td class="num">⑱</td><td>DDR</td><td class="num">(ｻ)</td></tr>
+        <tr><td class="num">⑧</td><td>CPU</td><td class="num">(ｶ)</td><td class="num">⑲</td><td>パラレル</td><td class="num">(ﾂ)</td></tr>
+        <tr><td class="num">⑨</td><td>論理アドレス</td><td class="num">(ｽ)</td><td class="num">⑳</td><td>シリアル</td><td class="num">(ﾁ)</td></tr>
+        <tr><td class="num">⑩</td><td>ハードウェア</td><td class="num">(ｱ)</td><td class="num">㉑</td><td>LVDS</td><td class="num">(ｺ)</td></tr>
+        <tr><td class="num">⑪</td><td>専用線</td><td class="num">(ﾀ)</td><td class="num"></td><td></td><td class="num"></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin:12px 0 0">④⑤は順不同。<strong>使わない選択肢は (ｴ)キャッシュメモリ・(ｼ)MACアドレス・(ﾅ)拡張記憶 の3つ。</strong></p>
+  </div>
+
+  <div class="band b-e">
+    <p class="band-h">解説</p>
+
+    <h4>第1段落 ─ 仮想記憶（5.2.2）</h4>
+    <p>「<strong>主記憶が足りない</strong>から<strong>補助記憶で代用する</strong>」というのが仮想記憶。①と②が対になっている。</p>
+    <ul>
+      <li><strong>①主記憶装置／②補助記憶装置／③仮想記憶</strong> … 定義そのまま</li>
+      <li><strong>④ページング／⑤セグメント</strong> … 具体的な方式は「ページング・セグメント・セグメントページング」の3つ。選択肢にあるのはこの2つだけなので順不同で入る</li>
+      <li><strong>⑥主記憶装置／⑦物理アドレス</strong> … 「ハードウェア的に付与されている」＝実在する主記憶に物理的に付いている番号</li>
+      <li><strong>⑧CPU／⑨論理アドレス</strong> … CPU（プログラム）側が使う、実在しない広いアドレス</li>
+    </ul>
+    <div class="band b-w">
+      <p class="band-h">①と⑥が同じ答えになる</p>
+      <p style="margin-bottom:0">どちらも「主記憶装置」。設問文の「<strong>複数回使用するものも含まれる</strong>」はこれのこと。同じ選択肢を2回使うのを避けようとして⑥で別の答えを選ばないこと。</p>
+    </div>
+
+    <h4>第2段落 ─ 割込み（7.2）</h4>
+    <p><strong>問題文の中に識別語がそのまま埋め込まれている</strong>ので、対応させるだけで解ける。</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th class="num">空欄</th><th>問題文中の手がかり</th><th>答え</th></tr></thead>
+      <tbody>
+        <tr><td class="num">⑩</td><td>「<strong>機器からの</strong>割込み信号によって生ずる」</td><td><strong>ハードウェア</strong>割込み<br><em>（対になるのはソフトウェア割込み＝実行中のOSやアプリで発生）</em></td></tr>
+        <tr><td class="num">⑪</td><td>「<strong>緊急性が高い</strong>割込みに使用される」</td><td><strong>専用線</strong><br><em>専用の線を引くので即座に要因が特定できる</em></td></tr>
+        <tr><td class="num">⑫</td><td>「<strong>共通割込み要求線とデータバス</strong>を用いる」</td><td><strong>ベクトル化</strong><br><em>ポーリングで誰が要求したか探し、ベクトルデータを送らせる</em></td></tr>
+        <tr><td class="num">⑬</td><td>「<strong>割込み受理通報線</strong>で…<strong>優先順位</strong>を付けられる」</td><td><strong>連鎖式</strong><br><em>受理信号を優先順位順にバケツリレーする</em></td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h4>第3段落 ─ インタフェース（7.5）</h4>
+    <p>「何を挿すか」と「規格名」の対応。<strong>⑭のマザーボードは、これら全部が載っている基板</strong>のこと。</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th>接続するもの</th><th>規格</th><th>補足</th></tr></thead>
+      <tbody>
+        <tr><td>ハードディスクなどストレージ</td><td><strong>SATA</strong></td><td>Serial ATA。以前はATA（パラレル）</td></tr>
+        <tr><td>グラフィックボード</td><td><strong>PCI Express</strong></td><td>SSDの接続にも使う</td></tr>
+        <tr><td>モニタ</td><td><strong>HDMI</strong></td><td>映像インタフェース。音声も送れる</td></tr>
+        <tr><td>主記憶装置</td><td><strong>DDR</strong></td><td>メモリバス。DIMMという基板に載る</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h4>⑲⑳㉑ ─ なぜパラレルからシリアルへ移ったのか</h4>
+    <p>問題文が「<strong>配線数の削減やクロック周波数の向上のために</strong>」と理由を書いてくれている。<strong>パラレル（複数の線で同時に送る）→ シリアル（1本で順番に送る）</strong>という流れ。</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th></th><th>パラレル伝送</th><th>シリアル伝送</th></tr></thead>
+      <tbody>
+        <tr><td>送り方</td><td>複数の線で<strong>同時に</strong></td><td>1本の線で<strong>順番に</strong></td></tr>
+        <tr><td>速くしようとすると</td><td>線を増やす → <strong>ピン数・配線数が増える</strong><br>クロックを上げる → <strong>線ごとに到着タイミングがズレる</strong>／<strong>クロストーク</strong>（線どうしの干渉）</td><td>1本を高速化すればよい</td></tr>
+        <tr><td>例</td><td>ISA、PCI、ATA</td><td><strong>PCIe、SATA、USB</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><strong>㉑ LVDS</strong>（Low Voltage Differential Signaling、低電圧差動伝送）は、その<u>シリアル伝送の中身</u>。1本の線とグラウンドの電圧で0/1を決めるのではなく、<strong>2本の線の電位差</strong>で表す。こうすると両方の線に同じように乗ったノイズが引き算で打ち消されるので、<strong>ノイズに強く、低電圧でも動く</strong>。</p>
+
+    <div class="band b-w" style="margin-bottom:0">
+      <p class="band-h">使わない選択肢が残るのは正常</p>
+      <p style="margin-bottom:0">(ｴ)キャッシュメモリ・(ｼ)MACアドレス・(ﾅ)拡張記憶 の3つは<strong>どこにも入らない</strong>。設問文にも「使用しないものも含まれる」と書いてある。<u>この3つがきれいに余れば、全体が正しく埋まっている証拠</u>になるので、検算として使える。</p>
+    </div>
+  </div>
+</article>
+
+<!-- ================= まとめ ================= -->
+<article class="qa" id="summary">
+  <div class="qhead">
+    <span class="qno">総括</span>
+    <span class="qtitle">今年の試験に向けて</span>
+  </div>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>問</th><th>分野</th><th class="num">配点</th><th>今年の見通し</th></tr></thead>
+    <tbody>
+      <tr><td>問1</td><td>第2章 2.2 浮動小数点</td><td class="num">15</td><td><strong>範囲外。</strong>演習3-1の確認のみでよい</td></tr>
+      <tr><td>問2</td><td>第4章 CPU</td><td class="num">17</td><td><strong>直撃。</strong>章末問題(1)〜(3)が範囲</td></tr>
+      <tr><td>問3</td><td>第10章 ネットワーク</td><td class="num">22</td><td><strong>直撃。</strong>10.2〜10.7が範囲</td></tr>
+      <tr><td>問4</td><td>第5章 5.2 キャッシュ</td><td class="num">3</td><td><strong>直撃。</strong>逆算にも備える</td></tr>
+      <tr><td>問5</td><td>第5章 5.1／5.3</td><td class="num">25</td><td>①〜④は範囲内、⑤〜⑦は範囲外</td></tr>
+      <tr><td>問6</td><td>第5章 5.2／第7章</td><td class="num">18</td><td><strong>直撃。</strong>全部範囲内</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="band b-a">
+    <p class="band-h">この過去問から読み取れること</p>
+    <ol style="margin-bottom:0">
+      <li><strong>知識問題は「用語 ⇄ 説明文」の対応で作られている。</strong>問2の⑦〜⑳、問3、問5がすべてこの形。だから<u>用語を単体で覚えるのではなく、講義資料に書かれた説明文とセットで</u>覚えるのが効く。</li>
+      <li><strong>「過不足なく複数マーク」は個数で検算できる。</strong>問3なら25、問5①〜④なら11。配り終えたら必ず数える。</li>
+      <li><strong>「使用しない選択肢」が残るのは正常。</strong>問6では3つ余る。全部使い切ろうとして正解を崩さない。</li>
+      <li><strong>計算問題は配点が軽い。</strong>問4はわずか3点。<u>計算に時間をかけすぎず、配点の重い知識問題を確実に埋める</u>のが60分の使い方として正しい。</li>
+    </ol>
+  </div>
+</article>
+
+<footer>
+  <p>2025年7月29日実施「コンピュータ概論 到達度評価試験」（工学部電気工学科・1E対象・担当 吉田孝博）の問題文と選択肢を再録し、解答・解説を付したもの。解説は第1〜4・6〜14回の講義資料にもとづく。図表の一次出典は教科書『改訂 コンピュータ概論』（コロナ社）。</p>
+  <p style="margin-bottom:0">問2・問5の図は問題冊子に添付されていたもので、ここでは内容を文章と表で再現した。</p>
+</footer>
+
+</div>

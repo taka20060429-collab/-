@@ -360,6 +360,32 @@ footer { padding-top:16px; font-size:8.6pt; }
     変わるのは「<u>どのカタマリにいるか</u>」だけ ── つまり<strong>上位のページ番号がブロック番号に置き換わるだけで、下位10ビットはそのまま素通り</strong>する。</p>
   </div>
 
+  <h4>ページテーブルと Q(p)</h4>
+  <p>変換に使う対応表がこれ（講義の表5.1）。<strong>1行が3つの列</strong>でできている。</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">p（ページ）</th><th class="num">B（ブロック）</th><th class="num">Q(p)</th><th>意味</th></tr></thead>
+    <tbody>
+      <tr><td class="num">000000</td><td class="num">―</td><td class="num">0</td><td>主記憶に<strong>ない</strong>ので、入っているブロックも無い</td></tr>
+      <tr><td class="num">000001</td><td class="num">―</td><td class="num">0</td><td>同上</td></tr>
+      <tr><td class="num"><strong>000010</strong></td><td class="num"><strong>01</strong></td><td class="num"><strong>1</strong></td><td><strong>主記憶のブロック01に入っている</strong></td></tr>
+      <tr><td class="num">001001</td><td class="num">11</td><td class="num">1</td><td>主記憶のブロック11に入っている</td></tr>
+      <tr><td class="num">…</td><td class="num">…</td><td class="num">…</td><td>ページ番号6bitなので 000000〜111111 の64行</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="call cA">
+    <p class="call-h">Q(p) とは ── 「そのページ、いま主記憶にある？」の1ビット</p>
+    <p>論理アドレス空間は64kBあるのに主記憶は4kB（4ブロック）しかないので、<strong>64ページのうち主記憶に居られるのは同時に4つだけ</strong>。残りは補助記憶で待っている。<br>
+    そこで各ページに1ビットの旗を立てておく。それが Q(p)。<em>p はページ番号なので「ページ p の Q」という意味。</em></p>
+    <ul style="margin-bottom:0">
+      <li><strong>Q(p) = 1</strong> … そのページは<strong>主記憶にある＝アクセス可能</strong>。B列にブロック番号が入っている</li>
+      <li><strong>Q(p) = 0</strong> … まだ<strong>補助記憶にある＝アクセス不能</strong>。どのブロックにも居ないので<strong>B列は空</strong></li>
+    </ul>
+  </div>
+  <p><em>講義の「9ビットのページテーブル」という表現は、1行の幅のこと ── p が6bit ＋ B が2bit ＋ Q が1bit で <strong>6+2+1 = 9ビット</strong>。</em></p>
+
   <h4>手順</h4>
   <ol class="steps">
     <li><b>論理アドレスを 6bit / 10bit で区切る</b>上位6bitがページ番号、下位10bitがカタマリ内の位置。</li>
@@ -373,7 +399,7 @@ footer { padding-top:16px; font-size:8.6pt; }
               └─6bit─┘ └──10bit──┘
                  ↓ ページ番号 = 000010（10進で 2）
 
-ページテーブル … ページ2 → ブロック 01、Q(p)=1（主記憶にある）
+ページテーブルの 000010 の行を見る … B=01、Q(p)=1（主記憶にある）
 
               000010 : 0100100011
                  ↓ 置き換え      ↓ そのまま
@@ -395,7 +421,7 @@ footer { padding-top:16px; font-size:8.6pt; }
   </div>
 
   <h4>Q(p)=0 だったら（ページフォールト）</h4>
-  <p>そのページはまだ主記憶になく補助記憶にいる。空きを作って持ってくる。</p>
+  <p>旗が0＝そのページはまだ補助記憶にいる。主記憶に空きを作って持ってきて、<strong>旗を1に立て直す</strong>。</p>
   <ol class="steps">
     <li><b>主記憶上の一つのブロックを補助記憶に移動する</b>（追い出して空きを作る）</li>
     <li><b>空いたブロックの番号を、参照中のページテーブルに記入する</b></li>

@@ -120,6 +120,13 @@
   .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:18px;margin:20px 0;}
   .grid2 .card{margin:0;}
 
+
+  ol.steps{list-style:none;padding:0;counter-reset:s;max-width:none;}
+  ol.steps>li{counter-increment:s;position:relative;padding-left:40px;margin:0 0 14px;}
+  ol.steps>li::before{content:counter(s);position:absolute;left:0;top:2px;width:25px;height:25px;
+    border-radius:50%;background:var(--a-sf);color:var(--a);font-family:var(--mono);
+    font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center;}
+  ol.steps>li b{display:block;}
   ul.check{list-style:none;padding:0;max-width:none;}
   ul.check li{position:relative;padding-left:28px;margin:8px 0;font-size:14.5px;}
   ul.check li::before{content:"";position:absolute;left:0;top:7px;width:14px;height:14px;
@@ -129,17 +136,13 @@
   a:focus-visible{outline:2px solid var(--a);outline-offset:3px;border-radius:3px;}
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
   @media (max-width:640px){.card,.lane{padding:18px 16px;}.wrap{padding:0 16px 70px;}.mast{padding:38px 0 24px;}}
-</style>
-<style>
-/* ---------- PDF / print overrides ---------- */
+</style><style>
 :root, :root[data-theme="light"], :root[data-theme="dark"] {
   --bg:#ffffff; --surface:#ffffff; --surface-2:#f4f2ea;
   --ink:#141413; --ink-2:#44443f; --muted:#6f6e66;
   --rule:#ddd9cd; --rule-2:#cbc7b8;
-  --a:#b4552f; --a-sf:#f8ebe3;
-  --b:#8d5f1c; --b-sf:#f7efdf;
-  --c:#4e756b; --c-sf:#e8f0ec;
-  --slate:#41648a; --slate-sf:#e6ecf3;
+  --a:#b4552f; --a-sf:#f8ebe3; --b:#8d5f1c; --b-sf:#f7efdf;
+  --c:#4e756b; --c-sf:#e8f0ec; --slate:#41648a; --slate-sf:#e6ecf3;
   --shadow:none;
   --serif:"IPAPMincho","IPAMincho",serif;
   --sans:"IPAPGothic","IPAGothic",sans-serif;
@@ -149,21 +152,15 @@
 html,body { background:#fff !important; }
 body { font-size:10.2pt; line-height:1.68; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 .wrap { max-width:none; padding:0; }
-
-/* tables must never be clipped in print */
 .scroll { overflow:visible !important; box-shadow:none; }
 table { min-width:0 !important; width:100%; font-size:8.9pt; table-layout:auto; }
 th,td { padding:5px 7px; word-break:normal; overflow-wrap:anywhere; }
 thead { display:table-header-group; }
 tr,img { break-inside:avoid; page-break-inside:avoid; }
-
-/* keep blocks together */
 .card,.call,.lane,.scroll,pre.work,.ans { break-inside:avoid; page-break-inside:avoid; box-shadow:none; }
 h2.sec-title,h3,h4 { break-after:avoid; page-break-after:avoid; }
+ol.steps > li { break-inside:avoid; page-break-inside:avoid; }
 section { break-inside:auto; margin-bottom:26px; }
-section + section { break-before:auto; }
-
-/* tighten vertical rhythm for paper */
 .mast { padding:0 0 16px; margin-bottom:22px; }
 .mast h1 { font-size:27pt; margin-bottom:9px; }
 .mast .lede { font-size:10.4pt; margin-bottom:14px; }
@@ -171,31 +168,27 @@ section + section { break-before:auto; }
 .toc { margin:20px 0 26px; padding:14px 18px; }
 .toc li { font-size:9.2pt; margin:2px 0; }
 .route { gap:10px; margin:16px 0 8px; }
-.lane { padding:13px 15px; }
-.lane ul { font-size:9pt; }
+.lane { padding:13px 15px; } .lane ul { font-size:9pt; }
 h3 { font-size:13.6pt; margin:22px 0 5px; }
 h4 { font-size:10.6pt; margin:15px 0 5px; }
 p,ul,ol { margin-bottom:9px; max-width:none; }
 li { margin:3px 0; }
 .sec-sub { margin-bottom:16px; font-size:9.4pt; }
 .card,.call { padding:13px 16px; margin:13px 0; }
-pre.work { font-size:8.8pt; padding:11px 13px; margin:11px 0; line-height:1.6; }
+pre.work { font-size:8.6pt; padding:11px 13px; margin:11px 0; line-height:1.58; }
 .cap { font-size:8.6pt; }
 ul.check li { font-size:9.4pt; margin:4px 0; }
 .grid2 { gap:12px; }
 footer { padding-top:16px; font-size:8.6pt; }
-
-/* section starts: give the big four a fresh page so topics stay whole */
-#s7 { break-before:page; page-break-before:always; }
-</style>
-</head><body>
+#calc,#s7 { break-before:page; page-break-before:always; }
+</style></head><body>
 
 <div class="wrap">
 
 <header class="mast">
   <p class="eyebrow">工学部 電気工学科 ／ 吉田孝博</p>
   <h1>コンピュータ概論<br>満点ガイドブック</h1>
-  <p class="lede">全部覚える必要はない。マークシートは選択肢から選ぶ試験なので、本当に「思い出す」必要があるのはごく一部。ここでは全項目を <b>A 解ける／B 覚える／C 読むだけ</b> の3段階に仕分けてある。</p>
+  <p class="lede">全部覚える必要はない。マークシートは選択肢から選ぶ試験なので、本当に「思い出す」必要があるのはごく一部。ここでは全項目を <b>A 解ける／B 覚える／C 読むだけ</b> の3段階に仕分けた。A の4つは §02 で仕組みから説明してある。</p>
   <div class="meta">
     <div><b>8月4日(火)</b> 前期到達度評価試験</div>
     <div>共創棟 <b>C413</b>・対面</div>
@@ -219,7 +212,7 @@ footer { padding-top:16px; font-size:8.6pt; }
         <li>CPUトレース表の埋め方</li>
         <li>ビット数（個数 = 2ⁿ）</li>
       </ul>
-      <p style="font-size:13.5px;color:var(--muted);margin:12px 0 0">覚えるのではなく<em>1回ずつ手で解く</em>。ここができないと計算問題が0点になる。</p>
+      <p style="font-size:13.5px;color:var(--muted);margin:12px 0 0"><a href="#calc">§02 計算編</a>で仕組みから説明した。<em>暗記ではなく1回ずつ手で解く。</em>練習問題つき。</p>
     </div>
     <div class="lane B">
       <h4><span class="tier tB">B</span> 覚えること</h4>
@@ -256,9 +249,9 @@ footer { padding-top:16px; font-size:8.6pt; }
   <table>
     <thead><tr><th>順</th><th>やること</th><th class="num">見込み得点</th><th class="num">所要</th></tr></thead>
     <tbody>
-      <tr><td class="num">1</td><td>§7の暗記カード（B）を通す</td><td class="num">〜55点</td><td class="num">60分</td></tr>
-      <tr><td class="num">2</td><td>§1〜§4のAの計算を1回ずつ手で解く</td><td class="num">＋20点</td><td class="num">30分</td></tr>
-      <tr><td class="num">3</td><td>§8の過去問の答えを見て形式に慣れる</td><td class="num">＋10点</td><td class="num">20分</td></tr>
+      <tr><td class="num">1</td><td>暗記カード（B）を通す</td><td class="num">〜55点</td><td class="num">60分</td></tr>
+      <tr><td class="num">2</td><td><a href="#calc">§02 計算編</a>を読んで練習問題を解く</td><td class="num">＋20点</td><td class="num">30分</td></tr>
+      <tr><td class="num">3</td><td>過去問の答えを見て形式に慣れる</td><td class="num">＋10点</td><td class="num">20分</td></tr>
       <tr><td class="num">4</td><td>C を流し読み</td><td class="num">＋15点</td><td class="num">40分</td></tr>
     </tbody>
   </table>
@@ -270,6 +263,7 @@ footer { padding-top:16px; font-size:8.6pt; }
   <h2>目次 ─ 配点の重い順</h2>
   <ol>
     <li><a href="#s00">範囲：やる／やらない</a></li>
+    <li><a href="#calc">計算編 ─ ここは「わかる」まで</a></li>
     <li><a href="#s1">記憶システム 5.1・5.2 〔約36点〕</a></li>
     <li><a href="#s2">ネットワーク 10.2〜10.7 〔約22点〕</a></li>
     <li><a href="#s3">CPU 第4章 〔約17点〕</a></li>
@@ -314,45 +308,227 @@ footer { padding-top:16px; font-size:8.6pt; }
   <p class="cap">講義内演習は全14回を確認した結果この5題のみ（第5回のみ資料未確認）。第11回で範囲内なのは前半の7.5.5〜7.5.6だけで、後半のOSと第14回は丸ごと範囲外。</p>
 </section>
 
+<!-- ============ 計算編 ============ -->
+<section id="calc">
+  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">計算編 ─ ここは「わかる」まで</h2><span class="tier tA">A</span></div>
+  <p class="sec-sub">暗記でごまかせない4つ。逆に言えば、仕組みが1回わかれば数字が変わっても必ず解ける。土台の 2-1 から順に読むこと ── 2-2 のページングは 2-1 がわかっていないと絶対に理解できない。</p>
+
+  <h3>2-1　ビット数とアドレスの分割 <span class="tier tA">全部の土台</span></h3>
+
+  <h4>「n ビットで何個表せるか」</h4>
+  <p>1ビットは 0 か 1 の2通り。2ビットなら 00・01・10・11 の4通り。ビットが1本増えるたびに通り数が2倍になるので、<strong>n ビットで 2ⁿ 通り</strong>。逆に「N 個を区別したい」なら <strong>N = 2ⁿ を満たす n ビット</strong>が要る。</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">ビット数 n</th><th class="num">1</th><th class="num">2</th><th class="num">3</th><th class="num">4</th><th class="num">6</th><th class="num">8</th><th class="num">10</th><th class="num">12</th><th class="num">16</th></tr></thead>
+    <tbody><tr><td class="num">通り数 2ⁿ</td><td class="num">2</td><td class="num">4</td><td class="num">8</td><td class="num">16</td><td class="num">64</td><td class="num">256</td><td class="num"><strong>1024</strong></td><td class="num">4096</td><td class="num">65536</td></tr></tbody>
+  </table>
+  </div>
+  <p class="cap">試験で出るのは実質この9個。特に <strong>2¹⁰ = 1024（＝1k）</strong>、<strong>2¹² = 4096（＝4k）</strong>、<strong>2¹⁶ = 65536（＝64k）</strong> の3つ。</p>
+
+  <h4>アドレスは「どのカタマリの・何バイト目か」の2段構え</h4>
+  <p>メモリを 1024B ずつのカタマリに切って管理するとき、ある1バイトを指すには2つの情報が要る。</p>
+  <pre class="work">┌─────── アドレス全体 ───────┐
+│  上位ビット  │   下位ビット   │
+│ どのカタマリか│ その中の何バイト目か │
+└──────────────┴────────────────┘
+     ↑ カタマリの個数で決まる    ↑ カタマリのサイズで決まる</pre>
+  <p>カタマリが4個なら上位は 4 = 2² より <strong>2ビット</strong>。カタマリのサイズが 1024B なら下位は 1024 = 2¹⁰ より <strong>10ビット</strong>。合わせて12ビットになり、これは全体 4×1024 = 4096 = 2¹² と一致する。<em>上位＋下位＝全体、が必ず成り立つのでこれが検算になる。</em></p>
+
+  <div class="call cA">
+    <p class="call-h">講義の数字はここから出ている</p>
+    <pre class="work" style="margin:8px 0 0;background:transparent;padding:0">主記憶（物理）4kB = 4096B、1ブロック 1024B
+  ブロック数 = 4096 ÷ 1024 = 4 個  → 4 = 2²  → 上位 2bit
+  ブロック内 = 1024B            → 1024 = 2¹⁰ → 下位 10bit
+  物理アドレス = 2 + 10 = 12bit         （検算 4096 = 2¹² ✓）
+
+補助記憶（論理）64kB = 65536B、1ページ 1024B
+  ページ数 = 65536 ÷ 1024 = 64 個 → 64 = 2⁶  → 上位 6bit
+  ページ内 = 1024B             → 1024 = 2¹⁰ → 下位 10bit
+  論理アドレス = 6 + 10 = 16bit        （検算 65536 = 2¹⁶ ✓）</pre>
+  </div>
+  <p><em>この2つを暗記する必要はない。「容量 ÷ カタマリサイズ ＝ 個数」→「個数を 2ⁿ にして上位ビット数」という手順を覚えれば、数字が変わっても出せる。</em></p>
+
+  <h3>2-2　ページング方式のアドレス変換 <span class="tier tA">最重要</span></h3>
+
+  <h4>何をしている仕組みなのか</h4>
+  <p>プログラムは「64kB の広い連続したメモリがある」つもりで動く（＝<strong>論理アドレス</strong>）。でも実際の主記憶は 4kB しかない。そこで<strong>両方を同じ 1024B のカタマリに切り分け</strong>、いま必要なカタマリだけを主記憶に置く。どのページがどのブロックに入っているかの対応表が<strong>ページテーブル</strong>で、CPUが出した論理アドレスを実際の<strong>物理アドレス</strong>に翻訳するのがこの計算。</p>
+  <p>用語が2組あるだけで、中身は同じ 1024B のカタマリ。<strong>論理側のカタマリを「ページ」、物理側のカタマリを「ブロック」</strong>と呼び分けているだけ。</p>
+
+  <div class="call cA">
+    <p class="call-h">なぜ下位10ビットは変わらないのか ── ここが本質</p>
+    <p><strong>ページのサイズとブロックのサイズが同じ 1024B だから。</strong>ページを主記憶のブロックに移すとき、カタマリごと丸々コピーするだけで、<strong>中身の並び順は一切いじらない</strong>。だから「カタマリの中の何バイト目か」は移動前後で同じ。<br>
+    変わるのは「<u>どのカタマリにいるか</u>」だけ ── つまり<strong>上位のページ番号がブロック番号に置き換わるだけで、下位10ビットはそのまま素通り</strong>する。</p>
+  </div>
+
+  <h4>手順</h4>
+  <ol class="steps">
+    <li><b>論理アドレスを 6bit / 10bit で区切る</b>上位6bitがページ番号、下位10bitがカタマリ内の位置。</li>
+    <li><b>ページテーブルでページ番号を引く</b>対応するブロック番号（2bit）と、Q(p) を読む。</li>
+    <li><b>Q(p)=1 なら、上位6bitをそのブロック番号2bitに置き換える</b>下位10bitは<u>触らない</u>。</li>
+    <li><b>できた12bitが物理アドレス</b>MARに入って主記憶にアクセスする。</li>
+  </ol>
+
+  <h4>計算例（講義で扱われたもの）</h4>
+  <pre class="work">仮想アドレス  000010 : 0100100011
+              └─6bit─┘ └──10bit──┘
+                 ↓ ページ番号 = 000010（10進で 2）
+
+ページテーブル … ページ2 → ブロック 01、Q(p)=1（主記憶にある）
+
+              000010 : 0100100011
+                 ↓ 置き換え      ↓ そのまま
+物理アドレス      01 : 0100100011      ← 2 + 10 = 12bit</pre>
+
+  <div class="card">
+    <p class="card-title">10進で検算してみる <span class="tier tA">理解の確認</span></p>
+    <pre class="work" style="margin:0 0 10px">下位10bit  0100100011 = 256 + 32 + 2 + 1 = 291（カタマリ内の291バイト目）
+
+論理側：ページ2の291バイト目
+       = 2 × 1024 + 291 = 2339 番地
+
+物理側：ブロック1の291バイト目
+       = 1 × 1024 + 291 = 1315 番地
+
+ビットで直接読んでも  01 0100100011
+       = 1024 + 256 + 32 + 2 + 1 = 1315 ✓ 一致</pre>
+    <p style="margin:0"><em>「291バイト目」という部分が両側で変わっていないのが、下位10bitが素通りするということ。</em></p>
+  </div>
+
+  <h4>Q(p)=0 だったら（ページフォールト）</h4>
+  <p>そのページはまだ主記憶になく補助記憶にいる。空きを作って持ってくる。</p>
+  <ol class="steps">
+    <li><b>主記憶上の一つのブロックを補助記憶に移動する</b>（追い出して空きを作る）</li>
+    <li><b>空いたブロックの番号を、参照中のページテーブルに記入する</b></li>
+    <li><b>そのページの Q(p) を 1 に変更する</b></li>
+    <li><b>Q(p)=1 のときと同じ手順でアクセスする</b></li>
+  </ol>
+
+  <div class="card">
+    <p class="card-title">練習 ─ 答えは下</p>
+    <ol style="margin-bottom:0">
+      <li>仮想アドレス <code>001101 : 1010101010</code>。ページ13はブロック <code>11</code>、Q(p)=1。物理アドレスは？</li>
+      <li>主記憶が 8kB、1ブロック 1024B のとき、ブロック数・ブロック番号のビット数・物理アドレス長は？</li>
+      <li>補助記憶が 128kB、1ページ 1024B のとき、ページ番号のビット数と論理アドレス長は？</li>
+    </ol>
+  </div>
+  <div class="ans">
+    <b>1.</b> <span class="k">11 1010101010</span>（上位を11に置換、下位はそのまま）<br>
+    <em>検算：1010101010 = 682、ブロック3の682バイト目 = 3×1024+682 = 3754 = 111010101010₂ ✓</em><br>
+    <b>2.</b> 8192 ÷ 1024 = <span class="k">8ブロック</span> → 8 = 2³ なので <span class="k">3bit</span>、物理アドレス = 3+10 = <span class="k">13bit</span>（検算 8192 = 2¹³ ✓）<br>
+    <b>3.</b> 131072 ÷ 1024 = <span class="k">128ページ</span> → 128 = 2⁷ なので <span class="k">7bit</span>、論理アドレス = 7+10 = <span class="k">17bit</span>（検算 131072 = 2¹⁷ ✓）
+  </div>
+
+  <h3>2-3　キャッシュの平均アクセス時間 <span class="tier tA">頻出</span></h3>
+
+  <h4>式の意味</h4>
+  <p>CPUがデータを取りに行くと、2つのどちらかが起きる。</p>
+  <ul>
+    <li><strong>ヒット</strong>（確率 h）… キャッシュにある。速い方の時間 <strong>Tc</strong> で済む</li>
+    <li><strong>ミスヒット</strong>（確率 1−h）… 無いので主記憶へ。遅い方の時間 <strong>Tm</strong> かかる</li>
+  </ul>
+  <p>平均だから、それぞれの時間に「その確率」を掛けて足す。<em>つまりこの式は加重平均そのもので、覚えるというより意味を追えば書ける。</em></p>
+  <pre class="work">T = h·Tc + (1 − h)·Tm</pre>
+
+  <h4>順に解く</h4>
+  <pre class="work">h = 0.8（80%）, Tc = 5ns, Tm = 40ns
+
+T = 0.8 × 5 + (1 − 0.8) × 40
+  = 0.8 × 5 + 0.2 × 40
+  = 4 + 8
+  = 12 ns</pre>
+  <p><strong>ヒット率は必ず小数に直す</strong>（80 ではなく 0.8）。<strong>答えは必ず Tc と Tm の間</strong>に入るので、5〜40 の外に出たら計算ミス。</p>
+
+  <h4>逆に解く（ヒット率を求める）</h4>
+  <p>式を h について解くだけ。1行ずつ追えば公式を覚える必要はない。</p>
+  <pre class="work">      T = h·Tc + (1 − h)·Tm
+      T = h·Tc + Tm − h·Tm          ← カッコを展開
+      T = Tm − h·(Tm − Tc)          ← h でくくる
+h·(Tm − Tc) = Tm − T                ← 移項
+      h = (Tm − T) / (Tm − Tc)</pre>
+  <pre class="work">T = 12ns, Tc = 5ns, Tm = 40ns
+
+h = (40 − 12) / (40 − 5)
+  = 28 / 35
+  = 0.8  →  80%</pre>
+
+  <div class="card">
+    <p class="card-title">練習 ─ 答えは下</p>
+    <ol style="margin-bottom:0">
+      <li>h = 85%、Tc = 3ns、Tm = 45ns のときの平均アクセス時間は？</li>
+      <li>Tc = 5ns、Tm = 45ns で平均が 13ns だった。ヒット率は？</li>
+      <li>Tc = 2ns、Tm = 60ns で、ヒット率が 90% から 95% に上がると平均は何ns短縮されるか？</li>
+    </ol>
+  </div>
+  <div class="ans">
+    <b>1.</b> 0.85×3 + 0.15×45 = 2.55 + 6.75 = <span class="k">9.3 ns</span><br>
+    <b>2.</b> (45−13)/(45−5) = 32/40 = <span class="k">0.8 ＝ 80%</span><br>
+    <b>3.</b> 90%: 0.9×2+0.1×60 = 1.8+6.0 = 7.8ns ／ 95%: 0.95×2+0.05×60 = 1.9+3.0 = 4.9ns → <span class="k">2.9 ns の短縮</span><br>
+    <em>3はヒット率をたった5ポイント上げるだけで約37%速くなる例。キャッシュ容量を増やす意味がこれ。</em>
+  </div>
+
+  <h3>2-4　CPUのレジスタ状態を答える <span class="tier tA">去年17点</span></h3>
+
+  <h4>なぜMARとMDRにその値が入るのか</h4>
+  <p>1つの命令を実行する間に、MAR（番地を置く箱）とMDR（データを置く箱）は<strong>2回</strong>使われる。</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>段階</th><th>MARに入るもの</th><th>MDRに入るもの</th></tr></thead>
+    <tbody>
+      <tr><td>① 命令読出し（フェッチ）</td><td>PCの値＝<em>命令が置いてある番地</em></td><td>読み出した<em>命令そのもの</em>（→IRへ）</td></tr>
+      <tr><td>② 命令実行（オペランドaccess）</td><td><strong>命令が指定した番地</strong></td><td><strong>その番地とやりとりしたデータ</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>「〜番地まで終了した時点」と聞かれたら、それは<strong>②が終わった直後</strong>。だからMAR・MDRには<u>①ではなく②の値</u>が残っている。ここを取り違えると全滅する。</p>
+
+  <div class="call cA">
+    <p class="call-h">LD／ADDA と ST で MDR の中身が逆になる</p>
+    <p><strong>LD・ADDA は「読む」</strong>ので、主記憶 → MDR → レジスタ。MDRには<u>読み出した値</u>（＝その番地の中身）が入る。<br>
+    <strong>ST は「書く」</strong>ので、GR1 → MDR → 主記憶。MDRには<u>これから書き込む値</u>、つまり <strong>GR1 の中身</strong>が入る。番地の中身ではない。</p>
+  </div>
+
+  <h4>図4.5 のプログラム</h4>
+  <pre class="work">0020 1010 ┐ LD   GR1,A     0027 0032  A DC 50   (50 = 0032₍₁₆₎)
+0021 0027 ┘                 0028 0064  B DC 100  (100 = 0064₍₁₆₎)
+0022 2010 ┐ ADDA GR1,B     0029 0096  C DS 1    (150 = 0096₍₁₆₎)
+0023 0028 ┘
+0024 1110 ┐ ST   GR1,C     命令コード
+0025 0029 ┘                  10=LD  20=ADDA  11=ST  81=RET
+0026 8100   RET (1語)</pre>
+  <p class="cap">1語 = 16ビット（16進4桁）。番地や数値を指定する命令は2語（だから番地が2つ分ずつ進む）、RETだけ1語。</p>
+
+  <h4>解く手順</h4>
+  <ol class="steps">
+    <li><b>「◯◯番地を開始しようとしている」の番地を PC に書く</b>そのまま写すだけ。</li>
+    <li><b>その1つ手前の命令を特定する</b>2語命令なので、2つ前の番地から始まっている命令。</li>
+    <li><b>その命令の2語をまとめて IR に書く</b>（例：ST なら <code>1110 0029</code>）</li>
+    <li><b>IRの下位1ワードが MAR</b>（例：<code>0029</code>）</li>
+    <li><b>MDR は、LD/ADDA なら読んだ値、ST なら GR1 の値</b></li>
+    <li><b>GR1 はその時点の計算結果</b>50 → 150 と変わるだけ。</li>
+  </ol>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>時点</th><th>直前に完了</th><th class="num">PC</th><th class="num">IR</th><th class="num">MAR</th><th class="num">MDR</th><th class="num">GR1</th></tr></thead>
+    <tbody>
+      <tr><td>0021まで終了<br>0022を開始</td><td>LD GR1,A</td><td class="num">0022</td><td class="num">1010 0027</td><td class="num">0027</td><td class="num">0032</td><td class="num">0032</td></tr>
+      <tr><td>0023まで終了<br>0024を開始</td><td>ADDA GR1,B</td><td class="num">0024</td><td class="num">2010 0028</td><td class="num">0028</td><td class="num">0064</td><td class="num">0096</td></tr>
+      <tr><td><strong>0025まで終了<br>0026を開始</strong></td><td>ST GR1,C</td><td class="num"><strong>0026</strong></td><td class="num"><strong>1110 0029</strong></td><td class="num"><strong>0029</strong></td><td class="num"><strong>0096</strong></td><td class="num"><strong>0096</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="cap">3行目が去年の問2で問われた時点。1行目と2行目は MDR が「読んだ値」（0032・0064）なのに、3行目だけ MDR が GR1 と同じ 0096 になっているのを見比べること。</p>
+  <p><em>GR1 の動き：LD で A の 50（0032）が入る → ADDA で B の 100（0064）を足して 150（0096）→ ST でそれを C に書く。だから0023番地以降はずっと 0096。</em></p>
+</section>
 <!-- ============ 記憶 ============ -->
 <section id="s1">
-  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">記憶システム 5.1・5.2</h2><span class="tier tPts">約36点</span></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">記憶システム 5.1・5.2</h2><span class="tier tPts">約36点</span></div>
   <p class="sec-sub">去年の問4＋問5＋問6前半。今年も最大の得点源。</p>
 
-  <h3>キャッシュの計算 <span class="tier tA">A 解ける</span></h3>
-  <pre class="work">【順】T = h·Tc + (1 − h)·Tm
-
-【逆】h = (Tm − T) / (Tm − Tc)
-
-h…ヒット率　Tc…キャッシュのアクセス時間　Tm…主記憶のアクセス時間</pre>
-  <div class="grid2">
-    <div class="card">
-      <p class="card-title">順（去年の問4）</p>
-      <pre class="work" style="margin:0">h=0.8, Tc=5, Tm=40
-T = 0.8×5 + 0.2×40
-  = 4 + 8 = 12 ns</pre>
-    </div>
-    <div class="card">
-      <p class="card-title">逆 <span class="tier tB">要注意</span></p>
-      <pre class="work" style="margin:0">T=12, Tc=5, Tm=40
-h = (40−12)/(40−5)
-  = 28/35 = 0.8 → 80%</pre>
-    </div>
-  </div>
-  <p>ヒット率は<strong>百分率のまま掛けない</strong>（80ではなく0.8）。答えは必ず<strong>TcとTmの間</strong>に入るので、外れたら計算ミス。</p>
-
-  <h3>ページングのアドレス変換 <span class="tier tA">A 解ける</span></h3>
-  <pre class="work">論理アドレス 16bit ＝ ページ番号 6bit ＋ ブロック内番号 10bit
-物理アドレス 12bit ＝ ブロック番号 2bit ＋ ブロック内番号 10bit
-
-例）000101 : 1100110011 で、ページ番号000101 → ブロック10、Q(p)=1
-  → 物理アドレス  10 1100110011</pre>
   <div class="call cA">
-    <p class="call-h">覚えるのはこの1行だけ</p>
-    <p><strong>変換されるのは上位のページ番号だけ。下位10bitは絶対に変わらない。</strong>数字が変わっても必ず解ける。</p>
+    <p class="call-h">計算は §02 計算編に移した</p>
+    <p>この章の <strong>キャッシュの平均アクセス時間</strong>（順・逆）と <strong>ページングのアドレス変換</strong> は、仕組みの説明と練習問題つきで <a href="#calc">§02 計算編</a> にまとめてある。ここでは知識部分だけ扱う。</p>
   </div>
-  <p><strong>ビット数の出し方</strong>：個数 = 2ⁿ を満たす n が必要ビット数。4ブロック→2bit、64ページ→6bit、1024B→10bit。<em>（主記憶4kB＝1024B×4ブロック、補助記憶64kB＝1024B×64ページ、という講義の設定から出る）</em></p>
-  <p><strong>Q(p)=0（ページフォールト）のとき</strong>：追い出す → 記入 → フラグ → アクセス。<em>正確には ① 主記憶の1ブロックを補助記憶に移動 ② 空いたブロック番号をページテーブルに記入 ③ Q(p)=1 に変更 ④ 同様にアクセス。</em></p>
 
   <h3>仮想記憶の用語 <span class="tier tB">B 覚える</span></h3>
   <ul>
@@ -394,7 +570,7 @@ h = (40−12)/(40−5)
 
 <!-- ============ ネットワーク ============ -->
 <section id="s2">
-  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">ネットワーク 10.2〜10.7</h2><span class="tier tPts">約22点</span></div>
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">ネットワーク 10.2〜10.7</h2><span class="tier tPts">約22点</span></div>
   <p class="sec-sub">去年の問3。この分野は表1枚が答えそのものになる。</p>
 
   <h3>OSI参照モデル <span class="tier tB">B 覚える・最重要</span></h3>
@@ -449,35 +625,12 @@ h = (40−12)/(40−5)
 
 <!-- ============ CPU ============ -->
 <section id="s3">
-  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">CPU 第4章</h2><span class="tier tPts">約17点</span></div>
+  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">CPU 第4章</h2><span class="tier tPts">約17点</span></div>
   <p class="sec-sub">去年の問2＝演習4-1＝章末問題(1)。表1つで確定で取れる。</p>
 
-  <h3>トレース表の埋め方 <span class="tier tA">A 解ける</span></h3>
-  <pre class="work">0020 1010 ┐ LD   GR1,A     0027 0032  A DC 50   (=50)
-0021 0027 ┘                 0028 0064  B DC 100  (=100)
-0022 2010 ┐ ADDA GR1,B     0029 0096  C DS 1    (=150)
-0023 0028 ┘
-0024 1110 ┐ ST   GR1,C     10=LD  20=ADDA
-0025 0029 ┘                11=ST  81=RET
-0026 8100   RET (1語)</pre>
-  <div class="scroll">
-  <table>
-    <thead><tr><th>時点</th><th>直前に完了</th><th class="num">PC</th><th class="num">IR</th><th class="num">MAR</th><th class="num">MDR</th><th class="num">GR1</th></tr></thead>
-    <tbody>
-      <tr><td>0021まで終了<br>0022を開始</td><td>LD GR1,A</td><td class="num">0022</td><td class="num">1010 0027</td><td class="num">0027</td><td class="num">0032</td><td class="num">0032</td></tr>
-      <tr><td>0023まで終了<br>0024を開始</td><td>ADDA GR1,B</td><td class="num">0024</td><td class="num">2010 0028</td><td class="num">0028</td><td class="num">0064</td><td class="num">0096</td></tr>
-      <tr><td><strong>0025まで終了<br>0026を開始</strong></td><td>ST GR1,C</td><td class="num"><strong>0026</strong></td><td class="num"><strong>1110 0029</strong></td><td class="num"><strong>0029</strong></td><td class="num"><strong>0096</strong></td><td class="num"><strong>0096</strong></td></tr>
-    </tbody>
-  </table>
-  </div>
-  <p class="cap">3行目が去年の問2で問われた時点。1語=16ビット、番地や数値を指定する命令は2語、RETは1語。</p>
   <div class="call cA">
-    <p class="call-h">番地が変わっても使える型</p>
-    <p><strong>PC</strong>＝これから開始する番地をそのまま書く。<strong>IR</strong>＝直前に実行した命令の2語まるごと。<strong>MAR</strong>＝IRの下位1ワード（番地）。<strong>MDR</strong>＝その番地とやりとりしたデータ。<strong>GR1</strong>＝その時点の演算結果。</p>
-  </div>
-  <div class="call cB">
-    <p class="call-h">最頻出のひっかけ ─ ST命令のMDR</p>
-    <p>LD/ADDAでは「主記憶から<em>読んだ</em>値」がMDRに入るが、<strong>STは書き込みなのでMDRにはGR1の値（0096）が入る</strong>。0029番地の中身と混同しない。<strong>MAR＝番地、MDR＝データ</strong>も逆にしない。</p>
+    <p class="call-h">トレース表の解き方は §02 計算編に移した</p>
+    <p>図4.5 のプログラムと、任意の時点での PC・IR・MAR・MDR・GR1 の求め方は <a href="#calc">§02 計算編 2-4</a> に、なぜその値になるかの説明つきでまとめてある。</p>
   </div>
 
   <h3>レジスタの名称と役割 <span class="tier tB">B 覚える</span></h3>
@@ -512,7 +665,7 @@ h = (40−12)/(40−5)
 
 <!-- ============ 入出力 ============ -->
 <section id="s4">
-  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">入出力制御 7.2・7.3・7.5</h2><span class="tier tPts">約10点</span></div>
+  <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">入出力制御 7.2・7.3・7.5</h2><span class="tier tPts">約10点</span></div>
   <p class="sec-sub">去年の問6後半。「3方式を並べて分類させる」形が固定化しているので、識別語だけ覚えれば足りる。</p>
 
   <h3>3方式・3モードの識別語 <span class="tier tB">B 覚える</span></h3>
@@ -560,7 +713,7 @@ h = (40−12)/(40−5)
 
 <!-- ============ 文字コード・第1章 ============ -->
 <section id="s5">
-  <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">文字コード 2.3 ＋ 第1章</h2><span class="tier tB">B 覚える</span></div>
+  <div class="sec-head"><span class="sec-num">07</span><h2 class="sec-title">文字コード 2.3 ＋ 第1章</h2><span class="tier tB">B 覚える</span></div>
   <p class="sec-sub">どちらも去年ゼロ点。過去問で対策できないので、数字だけは入れておく。</p>
 
   <h3>文字コード</h3>
@@ -590,7 +743,7 @@ h = (40−12)/(40−5)
 
 <!-- ============ 保険 ============ -->
 <section id="s6">
-  <div class="sec-head"><span class="sec-num">07</span><h2 class="sec-title">保険：IEEE754・カルノー図</h2><span class="tier tOut">章は範囲外</span></div>
+  <div class="sec-head"><span class="sec-num">08</span><h2 class="sec-title">保険：IEEE754・カルノー図</h2><span class="tier tOut">章は範囲外</span></div>
   <p class="sec-sub">どちらも章としては範囲外だが「講義内で行った全演習」に含まれる。各1回なぞって終わり ── ここに時間を使うのが一番もったいない。</p>
 
   <div class="card">
@@ -613,12 +766,12 @@ h = (40−12)/(40−5)
     <p class="card-title">演習6-1｜カルノー図（2bitコンパレータ A&gt;B なら C=1）</p>
     <div class="scroll" style="margin-top:6px">
     <table style="min-width:340px">
-      <thead><tr><th>A₁A₀＼B₁B₀</th><th class="num">00</th><th class="num">01</th><th class="num">11</th><th class="num">10</th></tr></thead>
+      <thead><tr><th>A₁A₀＼B₁B₀</th><th class="num">01</th><th class="num">02</th><th class="num">12</th><th class="num">11</th></tr></thead>
       <tbody>
-        <tr><td class="num">00</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
-        <tr><td class="num">01</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
-        <tr><td class="num">11</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">1</td></tr>
-        <tr><td class="num">10</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td class="num">01</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td class="num">02</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td class="num">12</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">1</td></tr>
+        <tr><td class="num">11</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">0</td></tr>
       </tbody>
     </table>
     </div>
@@ -629,7 +782,7 @@ h = (40−12)/(40−5)
 
 <!-- ============ 暗記カード ============ -->
 <section id="s7">
-  <div class="sec-head"><span class="sec-num">08</span><h2 class="sec-title">暗記カード</h2><span class="tier tB">B だけ集めたもの</span></div>
+  <div class="sec-head"><span class="sec-num">09</span><h2 class="sec-title">暗記カード</h2><span class="tier tB">B だけ集めたもの</span></div>
   <p class="sec-sub">丸暗記が要るのはここだけ。前日と当日朝はこのページだけを繰り返せばいい。</p>
 
   <h3>言えるか確認する</h3>
@@ -671,29 +824,29 @@ h = (40−12)/(40−5)
 
 <!-- ============ 過去問 ============ -->
 <section id="s8">
-  <div class="sec-head"><span class="sec-num">09</span><h2 class="sec-title">過去問の答え＋当日の運用</h2></div>
+  <div class="sec-head"><span class="sec-num">10</span><h2 class="sec-title">過去問の答え＋当日の運用</h2></div>
   <p class="sec-sub">2025年7月29日実施・全6問100点。解説は各章にあるので、ここは答えと形式のみ。</p>
 
   <div class="scroll">
   <table>
     <thead><tr><th>問</th><th class="num">配点</th><th>答え</th><th>今年</th></tr></thead>
     <tbody>
-      <tr><td>問1 IEEE754<br>−86.375</td><td class="num">15</td>
+      <tr><td>問1 IEEE754<br>−86.375</td><td class="num">16</td>
         <td class="num">(1)1010110 (2)01100<br>(3)0101100110 (4)10000101<br>(5)<strong>C2ACC000</strong></td>
         <td><span class="tier tOut">範囲外</span> §7で手順のみ</td></tr>
-      <tr><td>問2 CPU<br>0026番地開始時</td><td class="num">17</td>
+      <tr><td>問2 CPU<br>0026番地開始時</td><td class="num">18</td>
         <td class="num">①1110(o) ②0029(j) ③0026(g)<br>④0096(m) ⑤0029(j) ⑥0096(m)</td>
         <td>§4のトレース表</td></tr>
-      <tr><td>問3 OSI 7層</td><td class="num">22</td>
+      <tr><td>問3 OSI 7層</td><td class="num">23</td>
         <td>1層:ｵｹｾ／2層:ｱｼｽﾃﾈ／3層:ｶｷｻｿﾂﾄ<br>4層:ｳﾀﾇ／5層:ｴｸ／6層:ﾁｺ／7層:ｲﾅﾆﾉ</td>
         <td>§3のOSI表</td></tr>
       <tr><td>問4 キャッシュ</td><td class="num">3</td>
         <td class="num">0.8×5+0.2×40 = <strong>12 ns</strong></td>
         <td>§2。逆算も準備</td></tr>
-      <tr><td>問5 記憶階層<br>＋半導体メモリ</td><td class="num">25</td>
+      <tr><td>問5 記憶階層<br>＋半導体メモリ</td><td class="num">26</td>
         <td>①ｴｷ／②ｲｵｺ／③ｳｸｹ／④ｱｶｻ<br><em>⑤DRAM abjklp ⑥SRAM fhmno ⑦ﾌﾗｯｼｭ cdegiq</em></td>
         <td>①〜④のみ範囲内<br><span class="tier tOut">⑤〜⑦は5.3で範囲外</span></td></tr>
-      <tr><td>問6 仮想記憶<br>割込み・IF</td><td class="num">18</td>
+      <tr><td>問6 仮想記憶<br>割込み・IF</td><td class="num">19</td>
         <td class="num">①ﾃ ②ﾄ ③ﾆ ④ｲ ⑤ｿ ⑥ﾃ ⑦ｾ ⑧ｶ ⑨ｽ<br>⑩ｱ ⑪ﾀ ⑫ｳ ⑬ﾇ<br>⑭ｵ ⑮ｷ ⑯ｹ ⑰ｸ ⑱ｻ ⑲ﾂ ⑳ﾁ ㉑ｺ</td>
         <td>§2・§5</td></tr>
     </tbody>

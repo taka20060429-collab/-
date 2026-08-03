@@ -143,7 +143,7 @@
 <header class="mast">
   <p class="eyebrow">工学部 電気工学科 ／ 吉田孝博</p>
   <h1>コンピュータ概論<br>満点ガイドブック</h1>
-  <p class="lede">全部覚える必要はない。マークシートは選択肢から選ぶ試験なので、本当に「思い出す」必要があるのはごく一部。ここでは全項目を <b>A 解ける／B 覚える／C 読むだけ</b> の3段階に仕分けた。A の4つは §02 で仕組みから説明してある。</p>
+  <p class="lede">全部覚える必要はない。マークシートは選択肢から選ぶ試験なので、本当に「思い出す」必要があるのはごく一部。ここでは全項目を <b>A 解ける／B 覚える／C 読むだけ</b> の3段階に仕分けた。用語に自信がなければ <b>§02 土台編</b> から読むこと ── そこで全部定義してある。</p>
   <div class="meta">
     <div><b>8月4日(火)</b> 前期到達度評価試験</div>
     <div>共創棟 <b>C413</b>・対面</div>
@@ -167,7 +167,7 @@
         <li>CPUトレース表の埋め方</li>
         <li>ビット数（個数 = 2ⁿ）</li>
       </ul>
-      <p style="font-size:13.5px;color:var(--muted);margin:12px 0 0"><a href="#calc">§02 計算編</a>で仕組みから説明した。<em>暗記ではなく1回ずつ手で解く。</em>練習問題つき。</p>
+      <p style="font-size:13.5px;color:var(--muted);margin:12px 0 0"><a href="#calc">§03 計算編</a>で仕組みから説明した。<em>暗記ではなく1回ずつ手で解く。</em>練習問題つき。</p>
     </div>
     <div class="lane B">
       <h4><span class="tier tB">B</span> 覚えること</h4>
@@ -205,7 +205,7 @@
     <thead><tr><th>順</th><th>やること</th><th class="num">見込み得点</th><th class="num">所要</th></tr></thead>
     <tbody>
       <tr><td class="num">1</td><td>暗記カード（B）を通す</td><td class="num">〜55点</td><td class="num">60分</td></tr>
-      <tr><td class="num">2</td><td><a href="#calc">§02 計算編</a>を読んで練習問題を解く</td><td class="num">＋20点</td><td class="num">30分</td></tr>
+      <tr><td class="num">2</td><td><a href="#base">§02 土台編</a> →  <a href="#calc">§03 計算編</a> を読んで練習問題を解く</td><td class="num">＋20点</td><td class="num">30分</td></tr>
       <tr><td class="num">3</td><td>過去問の答えを見て形式に慣れる</td><td class="num">＋10点</td><td class="num">20分</td></tr>
       <tr><td class="num">4</td><td>C を流し読み</td><td class="num">＋15点</td><td class="num">40分</td></tr>
     </tbody>
@@ -218,6 +218,7 @@
   <h2>目次 ─ 配点の重い順</h2>
   <ol>
     <li><a href="#s00">範囲：やる／やらない</a></li>
+    <li><a href="#base">土台編 ─ そもそも何の話なのか</a></li>
     <li><a href="#calc">計算編 ─ ここは「わかる」まで</a></li>
     <li><a href="#s1">記憶システム 5.1・5.2 〔約36点〕</a></li>
     <li><a href="#s2">ネットワーク 10.2〜10.7 〔約22点〕</a></li>
@@ -227,6 +228,7 @@
     <li><a href="#s6">保険：IEEE754・カルノー図</a></li>
     <li><a href="#s7">暗記カード（B だけ集めたもの）</a></li>
     <li><a href="#s8">過去問の答え＋当日の運用</a></li>
+    <li><a href="#gloss">用語集</a></li>
   </ol>
 </nav>
 
@@ -263,9 +265,156 @@
   <p class="cap">講義内演習は全14回を確認した結果この5題のみ（第5回のみ資料未確認）。第11回で範囲内なのは前半の7.5.5〜7.5.6だけで、後半のOSと第14回は丸ごと範囲外。</p>
 </section>
 
+<!-- ============ 土台編 ============ -->
+<section id="base">
+  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">土台編 ─ そもそも何の話なのか</h2></div>
+  <p class="sec-sub">この科目は結局「速いCPUと、遅いメモリや機器を、どう噛み合わせるか」の工夫を並べた話。その骨格と、以降ずっと出てくる用語をここで全部定義する。ここを飛ばすと、後の章が意味のわからない略語の羅列に見える。</p>
+
+  <h3>2-1　コンピュータは3つの部品でできている</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>部品</th><th>役割</th><th>電源を切ると</th></tr></thead>
+    <tbody>
+      <tr><td><strong>CPU</strong>（中央処理装置）</td><td>命令を読んで実行する。<strong>計算をする唯一の場所</strong></td><td>―</td></tr>
+      <tr><td><strong>主記憶</strong>（メインメモリ）</td><td>実行中のプログラムとデータを置いておく。<strong>CPUが直接read/writeできる唯一の記憶</strong></td><td><strong>消える</strong>（揮発性）</td></tr>
+      <tr><td><strong>補助記憶</strong>（HDD・SSD）</td><td>電源を切っても残しておきたいものを保管</td><td>残る（不揮発性）</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>主記憶は電源を切ると消えるので、プログラムもデータも普段は補助記憶に置いてある。電源を入れると <strong>補助記憶 → 主記憶 → CPU</strong> の順に運ばれてくる。<em>「なぜわざわざ主記憶に読み込むのか」＝ CPUは補助記憶を直接読めないから。</em></p>
+
+  <h3>2-2　CPUと主記憶は別の部品で、線でつながっている</h3>
+  <p>ここが全部の出発点。CPUと主記憶は<strong>別々のチップ</strong>で、間は<strong>バス</strong>（bus）と呼ばれる信号線の束でつながっている。CPUは主記憶に手を突っ込めないので、線を通して<strong>「何番地をくれ」「はいどうぞ」</strong>とやりとりするしかない。</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>バスの種類</th><th>流れるもの</th><th>言い換えると</th></tr></thead>
+    <tbody>
+      <tr><td><strong>アドレスバス</strong></td><td>番地</td><td>「<strong>どこ</strong>の話か」</td></tr>
+      <tr><td><strong>データバス</strong></td><td>データそのもの</td><td>「<strong>中身は何</strong>か」</td></tr>
+      <tr><td><strong>コントロールバス</strong></td><td>制御信号（読み／書き・タイミング）</td><td>「<strong>読むのか書くのか</strong>」</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><em>3本セットで初めて1回のアクセスが成立する。「0027番地を（アドレス）、読んで（コントロール）、中身が0032だった（データ）」という具合。</em></p>
+
+  <h3>2-3　レジスタ ＝ CPUの中に置いてある小さな箱</h3>
+  <p><strong>レジスタ</strong>とは、CPUの内部にある<strong>1個か数個の値しか入らない、超高速な記憶場所</strong>のこと。なぜこんなものが要るのか。</p>
+  <div class="call cA">
+    <p class="call-h">レジスタが必要な理由</p>
+    <p>主記憶は<strong>数十ns</strong>かかるが、CPU内部は<strong>数ns</strong>で動く。<strong>10倍以上遅い</strong>。計算のたびに主記憶へ取りに行っていたらCPUが待ちぼうけになる。だから<strong>作業中のものはCPU内部の箱に持ってきて手元で扱う</strong>。この箱がレジスタ。</p>
+  </div>
+  <p>そして、主記憶へアクセスするには<strong>必ず2つの箱を経由する</strong>。窓口での手続きと同じで、「住所を書く用紙」と「荷物を置く台」が要る。</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>略称</th><th>正式名（意味）</th><th>何をする箱か</th></tr></thead>
+    <tbody>
+      <tr><td class="num"><strong>MAR</strong></td><td>Memory Address Register<br><em>記憶番地指定用レジスタ</em></td><td><strong>これから触りたい番地</strong>を書いておく箱。ここに入れた値がアドレスバスに流れる。<em>＝住所を書く用紙</em></td></tr>
+      <tr><td class="num"><strong>MDR</strong></td><td>Memory Data Register<br><em>記憶データ用レジスタ</em></td><td><strong>主記憶とやりとりするデータ</strong>を置く箱。読むときは受け取る場所、書くときは差し出す場所。<em>＝荷物を置く台</em></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><strong>主記憶へのアクセスは、読み書きどちらでも必ずこのMAR・MDRのペアを通る。</strong><em>これが分かると「STのときMDRに何が入るか」が推理できるようになる（書くときは差し出す物＝書き込む値が乗る）。</em></p>
+
+  <h4>残りのレジスタと部品</h4>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>略称</th><th>正式名</th><th>何をするものか</th></tr></thead>
+    <tbody>
+      <tr><td class="num"><strong>PC</strong></td><td>Program Counter<br><em>プログラムカウンタ</em></td><td><strong>次に実行する命令が置いてある番地</strong>を覚えている箱。<em>読書のしおりと同じ。</em>1つ読むたびに自動で1進む</td></tr>
+      <tr><td class="num"><strong>IR</strong></td><td>Instruction Register<br><em>命令レジスタ</em></td><td><strong>今まさに実行している命令そのもの</strong>を持っている箱</td></tr>
+      <tr><td class="num"><strong>GR</strong></td><td>General Register<br><em>汎用レジスタ</em></td><td>計算の<strong>途中結果を置く作業台</strong>。GR0・GR1…と複数ある</td></tr>
+      <tr><td class="num"><strong>ALU</strong></td><td>Arithmetic Logic Unit<br><em>算術論理演算装置</em></td><td>実際に<strong>足し算やAND・ORをする計算器そのもの</strong></td></tr>
+      <tr><td class="num"><strong>FR</strong></td><td>Flag Register<br><em>フラグレジスタ</em></td><td>計算結果の<strong>性質を記録する旗</strong>。桁あふれした／負だった／0だった</td></tr>
+      <tr><td class="num"><strong>SP</strong></td><td>Stack Pointer<br><em>スタックポインタ</em></td><td>一時保管場所（スタック）の<strong>今どこまで積んだかを覚える箱</strong></td></tr>
+      <tr><td class="num"><strong>デコーダ</strong></td><td>命令デコーダ</td><td>IRのビット列を見て「これはLD命令だ」と<strong>判定する解読器</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>2-4　命令が1つ実行されるまでを追う</h3>
+  <p>ここまでの箱がどう動くかを、<code>LD GR1, A</code>（＝<strong>A番地の中身をGR1に持ってくる</strong>）で実際に見る。この命令は0020番地に置かれていて、Aは0027番地、その中身は0032とする。</p>
+  <div class="card">
+    <p class="card-title">① 命令を取ってくる（命令読出し・フェッチ）</p>
+    <ol class="steps" style="margin-bottom:0">
+      <li><b>PC が「次は 0020 番地」と言っている</b>その 0020 を <strong>MAR</strong> に書く。</li>
+      <li><b>MAR の値がアドレスバスに流れる</b>主記憶に「0020番地をくれ」と伝わる。</li>
+      <li><b>主記憶が中身 1010 を返す</b>データバスを通って <strong>MDR</strong> に届き、命令なので <strong>IR</strong> へ移す。<br><em>ここで PC は自動で 0021 に進む。</em></li>
+      <li><b>2語命令なので0021番地も同じ手順で読む</b>0027（Aの番地）が来て、IRの中身は <code>1010 0027</code> に揃う。PC は 0022 に。</li>
+    </ol>
+  </div>
+  <div class="card">
+    <p class="card-title">② 命令を解読する（命令解読・デコード）</p>
+    <p style="margin-bottom:0"><strong>デコーダ</strong>が IR の <code>1010 0027</code> を見て、「これは <strong>LD</strong> 命令、持ってくる先は <strong>GR1</strong>、持ってくる元は <strong>0027番地</strong>」と読み取る。</p>
+  </div>
+  <div class="card">
+    <p class="card-title">③ 実行する（命令実行・結果書込み）</p>
+    <ol class="steps" style="margin-bottom:0">
+      <li><b>今度は 0027 を MAR に書く</b>さっきは「命令の在りか」だったが、今度は「<strong>データの在りか</strong>」。</li>
+      <li><b>主記憶が 0032 を返す</b>データバス →<strong>MDR</strong>→ <strong>GR1</strong> へ。</li>
+    </ol>
+  </div>
+  <div class="call cA">
+    <p class="call-h">ここが試験の急所</p>
+    <p><strong>MARとMDRは1つの命令の中で2回使われる。</strong>①のときは「命令が置いてある番地／命令そのもの」、③のときは「データが置いてある番地／データそのもの」。<br>
+    試験で「◯◯番地まで終了した時点」と聞かれたら、それは<strong>③が終わった直後</strong>。だからMAR・MDRに残っているのは<u>③の値</u>であって、①の値ではない。</p>
+  </div>
+  <p><em>この4段階（読出し → 解読 → 実行 → 結果書込み）を <strong>命令サイクル</strong> という。プログラムとは、これを命令の数だけ延々と繰り返しているだけのもの。</em></p>
+
+  <h3>2-5　この科目の裏テーマ ─ 「速度差をどう埋めるか」</h3>
+  <p>ここまでで「主記憶は遅いからレジスタに持ってくる」という話が出た。実はこの科目の後半は<strong>ほぼ全部この話の変奏</strong>。まず、どれくらい差があるのかを見る。</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>場所</th><th class="num">アクセス時間</th><th>感覚的な比率</th></tr></thead>
+    <tbody>
+      <tr><td>CPU内のレジスタ・キャッシュ</td><td class="num">数 ns</td><td>1秒</td></tr>
+      <tr><td>主記憶（DRAM）</td><td class="num">数十 ns</td><td>10秒</td></tr>
+      <tr><td>補助記憶（SSD・HDD）</td><td class="num">数 ms</td><td><strong>約12日</strong></td></tr>
+      <tr><td>光ディスク</td><td class="num">〜100 ms</td><td>約3年</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="cap">レジスタを1秒とすると、HDDへの1回のアクセスは12日待つのに相当する。この桁違いの差をどう誤魔化すかが、以降の章の主題。</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>章</th><th>解こうとしている問題</th><th>解き方（＝その章で学ぶ工夫）</th></tr></thead>
+    <tbody>
+      <tr><td><strong>5.1</strong> 記憶階層</td><td>速いものは高くて小さい。安いものは遅い</td><td><strong>速い少量と遅い大量を組み合わせる</strong></td></tr>
+      <tr><td><strong>5.2</strong> キャッシュ</td><td>CPU（数ns）に対し主記憶（数十ns）が遅い</td><td>よく使う分だけ手前に置いて<strong>速い主記憶に見せかける</strong></td></tr>
+      <tr><td><strong>5.2</strong> 仮想記憶</td><td>主記憶が足りず大きいプログラムが動かない</td><td>遅くても大容量の<strong>補助記憶を主記憶の代わりに使う</strong></td></tr>
+      <tr><td><strong>7.2</strong> 割込み</td><td>キーボードなどは、いつ入力が来るか分からない</td><td>ずっと見張る代わりに<strong>来たときに呼んでもらう</strong></td></tr>
+      <tr><td><strong>7.3</strong> DMA</td><td>大量データの転送でCPUが拘束される</td><td>転送は<strong>専用の係（DMAコントローラ）に任せる</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="call cA">
+    <p class="call-h">これが分かると暗記量が減る</p>
+    <p>キャッシュも仮想記憶も割込みもDMAも、<strong>「速いCPUを遅いものに待たせないための工夫」</strong>という同じ動機から出ている。バラバラの用語として覚えるのではなく、<em>「何に困って、どう誤魔化したか」</em>で捉えると、選択肢の文を読んだだけで判断できるようになる。</p>
+  </div>
+
+  <h3>2-6　ネットワークがなぜ「7層」に分かれているのか</h3>
+  <p>第10章は毛色が違うので、こちらも目的から。<strong>世界中の機器をつなぐ</strong>には、メーカーも、通信媒体（銅線・光ファイバ・電波）も、使うアプリもバラバラなものを全部噛み合わせないといけない。</p>
+  <p>これを1つの巨大な取り決めで書くと、<strong>銅線を光ファイバに変えただけで全部作り直し</strong>になる。そこで<strong>仕事を役割ごとの層に切り分け、層と層の間の受け渡し方だけを決めておく</strong>。すると下の層を差し替えても上の層は無傷で済む。この整理が <strong>OSI参照モデル</strong>。</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">層</th><th>担当する仕事</th><th>ひとことで</th></tr></thead>
+    <tbody>
+      <tr><td class="num">5〜7</td><td>アプリが使える形にする（メール、Web、名前解決）</td><td><strong>使う</strong></td></tr>
+      <tr><td class="num">4</td><td>抜け・落ちが無いか確認して届け直す</td><td><strong>確実に</strong></td></tr>
+      <tr><td class="num">3</td><td><strong>世界中の宛先まで</strong>、ネットワークをまたいで届ける</td><td><strong>遠くへ</strong></td></tr>
+      <tr><td class="num">2</td><td><strong>すぐ隣の機器まで</strong>（同じLANの中で）届ける</td><td><strong>隣へ</strong></td></tr>
+      <tr><td class="num">1</td><td>電気・光・電波にして物理的に送る</td><td><strong>物理</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="call cA">
+    <p class="call-h">「MACは2層、IPは3層」が丸暗記でなくなる</p>
+    <p><strong>MACアドレス</strong>は<u>隣の機器</u>を指す名前なので<strong>2層</strong>。<strong>IPアドレス</strong>は<u>世界中のどこか</u>を指す名前なので<strong>3層</strong>。運ぶ荷物の呼び名も同じで、隣へ渡す単位が<strong>フレーム</strong>（2層）、遠くまで運ぶ単位が<strong>パケット</strong>（3層）。<br>
+    <em>「隣か、遠くか」で切り分ければ、2層と3層の用語はほぼ全部仕分けられる。</em></p>
+  </div>
+</section>
 <!-- ============ 計算編 ============ -->
 <section id="calc">
-  <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">計算編 ─ ここは「わかる」まで</h2><span class="tier tA">A</span></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">計算編 ─ ここは「わかる」まで</h2><span class="tier tA">A</span></div>
   <p class="sec-sub">暗記でごまかせない4つ。逆に言えば、仕組みが1回わかれば数字が変わっても必ず解ける。土台の 2-1 から順に読むこと ── 2-2 のページングは 2-1 がわかっていないと絶対に理解できない。</p>
 
   <h3>2-1　ビット数とアドレスの分割 <span class="tier tA">全部の土台</span></h3>
@@ -274,8 +423,8 @@
   <p>1ビットは 0 か 1 の2通り。2ビットなら 00・01・10・11 の4通り。ビットが1本増えるたびに通り数が2倍になるので、<strong>n ビットで 2ⁿ 通り</strong>。逆に「N 個を区別したい」なら <strong>N = 2ⁿ を満たす n ビット</strong>が要る。</p>
   <div class="scroll">
   <table>
-    <thead><tr><th class="num">ビット数 n</th><th class="num">1</th><th class="num">2</th><th class="num">3</th><th class="num">4</th><th class="num">6</th><th class="num">8</th><th class="num">10</th><th class="num">12</th><th class="num">16</th></tr></thead>
-    <tbody><tr><td class="num">通り数 2ⁿ</td><td class="num">2</td><td class="num">4</td><td class="num">8</td><td class="num">16</td><td class="num">64</td><td class="num">256</td><td class="num"><strong>1024</strong></td><td class="num">4096</td><td class="num">65536</td></tr></tbody>
+    <thead><tr><th class="num">ビット数 n</th><th class="num">1</th><th class="num">2</th><th class="num">3</th><th class="num">4</th><th class="num">6</th><th class="num">8</th><th class="num">11</th><th class="num">13</th><th class="num">17</th></tr></thead>
+    <tbody><tr><td class="num">通り数 2ⁿ</td><td class="num">2</td><td class="num">4</td><td class="num">8</td><td class="num">17</td><td class="num">65</td><td class="num">256</td><td class="num"><strong>1024</strong></td><td class="num">4096</td><td class="num">65536</td></tr></tbody>
   </table>
   </div>
   <p class="cap">試験で出るのは実質この9個。特に <strong>2¹⁰ = 1024（＝1k）</strong>、<strong>2¹² = 4096（＝4k）</strong>、<strong>2¹⁶ = 65536（＝64k）</strong> の3つ。</p>
@@ -324,7 +473,7 @@
       <tr><td class="num">000000</td><td class="num">―</td><td class="num">0</td><td>主記憶に<strong>ない</strong>ので、入っているブロックも無い</td></tr>
       <tr><td class="num">000001</td><td class="num">―</td><td class="num">0</td><td>同上</td></tr>
       <tr><td class="num"><strong>000010</strong></td><td class="num"><strong>01</strong></td><td class="num"><strong>1</strong></td><td><strong>主記憶のブロック01に入っている</strong></td></tr>
-      <tr><td class="num">001001</td><td class="num">11</td><td class="num">1</td><td>主記憶のブロック11に入っている</td></tr>
+      <tr><td class="num">001001</td><td class="num">12</td><td class="num">1</td><td>主記憶のブロック11に入っている</td></tr>
       <tr><td class="num">…</td><td class="num">…</td><td class="num">…</td><td>ページ番号6bitなので 000000〜111111 の64行</td></tr>
     </tbody>
   </table>
@@ -503,12 +652,12 @@ h = (40 − 12) / (40 − 5)
 </section>
 <!-- ============ 記憶 ============ -->
 <section id="s1">
-  <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">記憶システム 5.1・5.2</h2><span class="tier tPts">約36点</span></div>
+  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">記憶システム 5.1・5.2</h2><span class="tier tPts">約36点</span></div>
   <p class="sec-sub">去年の問4＋問5＋問6前半。今年も最大の得点源。</p>
 
   <div class="call cA">
-    <p class="call-h">計算は §02 計算編に移した</p>
-    <p>この章の <strong>キャッシュの平均アクセス時間</strong>（順・逆）と <strong>ページングのアドレス変換</strong> は、仕組みの説明と練習問題つきで <a href="#calc">§02 計算編</a> にまとめてある。ここでは知識部分だけ扱う。</p>
+    <p class="call-h">計算は §03 計算編に移した</p>
+    <p>この章の <strong>キャッシュの平均アクセス時間</strong>（順・逆）と <strong>ページングのアドレス変換</strong> は、仕組みの説明と練習問題つきで <a href="#calc">§03 計算編</a> にまとめてある。ここでは知識部分だけ扱う。</p>
   </div>
 
   <h3>仮想記憶の用語 <span class="tier tB">B 覚える</span></h3>
@@ -551,7 +700,7 @@ h = (40 − 12) / (40 − 5)
 
 <!-- ============ ネットワーク ============ -->
 <section id="s2">
-  <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">ネットワーク 10.2〜10.7</h2><span class="tier tPts">約22点</span></div>
+  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">ネットワーク 10.2〜10.7</h2><span class="tier tPts">約22点</span></div>
   <p class="sec-sub">去年の問3。この分野は表1枚が答えそのものになる。</p>
 
   <h3>OSI参照モデル <span class="tier tB">B 覚える・最重要</span></h3>
@@ -606,12 +755,12 @@ h = (40 − 12) / (40 − 5)
 
 <!-- ============ CPU ============ -->
 <section id="s3">
-  <div class="sec-head"><span class="sec-num">05</span><h2 class="sec-title">CPU 第4章</h2><span class="tier tPts">約17点</span></div>
+  <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">CPU 第4章</h2><span class="tier tPts">約17点</span></div>
   <p class="sec-sub">去年の問2＝演習4-1＝章末問題(1)。表1つで確定で取れる。</p>
 
   <div class="call cA">
-    <p class="call-h">トレース表の解き方は §02 計算編に移した</p>
-    <p>図4.5 のプログラムと、任意の時点での PC・IR・MAR・MDR・GR1 の求め方は <a href="#calc">§02 計算編 2-4</a> に、なぜその値になるかの説明つきでまとめてある。</p>
+    <p class="call-h">トレース表の解き方は §03 計算編に移した</p>
+    <p>図4.5 のプログラムと、任意の時点での PC・IR・MAR・MDR・GR1 の求め方は <a href="#calc">§03 計算編 2-4</a> に、なぜその値になるかの説明つきでまとめてある。</p>
   </div>
 
   <h3>レジスタの名称と役割 <span class="tier tB">B 覚える</span></h3>
@@ -646,7 +795,7 @@ h = (40 − 12) / (40 − 5)
 
 <!-- ============ 入出力 ============ -->
 <section id="s4">
-  <div class="sec-head"><span class="sec-num">06</span><h2 class="sec-title">入出力制御 7.2・7.3・7.5</h2><span class="tier tPts">約10点</span></div>
+  <div class="sec-head"><span class="sec-num">07</span><h2 class="sec-title">入出力制御 7.2・7.3・7.5</h2><span class="tier tPts">約10点</span></div>
   <p class="sec-sub">去年の問6後半。「3方式を並べて分類させる」形が固定化しているので、識別語だけ覚えれば足りる。</p>
 
   <h3>3方式・3モードの識別語 <span class="tier tB">B 覚える</span></h3>
@@ -694,7 +843,7 @@ h = (40 − 12) / (40 − 5)
 
 <!-- ============ 文字コード・第1章 ============ -->
 <section id="s5">
-  <div class="sec-head"><span class="sec-num">07</span><h2 class="sec-title">文字コード 2.3 ＋ 第1章</h2><span class="tier tB">B 覚える</span></div>
+  <div class="sec-head"><span class="sec-num">08</span><h2 class="sec-title">文字コード 2.3 ＋ 第1章</h2><span class="tier tB">B 覚える</span></div>
   <p class="sec-sub">どちらも去年ゼロ点。過去問で対策できないので、数字だけは入れておく。</p>
 
   <h3>文字コード</h3>
@@ -724,7 +873,7 @@ h = (40 − 12) / (40 − 5)
 
 <!-- ============ 保険 ============ -->
 <section id="s6">
-  <div class="sec-head"><span class="sec-num">08</span><h2 class="sec-title">保険：IEEE754・カルノー図</h2><span class="tier tOut">章は範囲外</span></div>
+  <div class="sec-head"><span class="sec-num">09</span><h2 class="sec-title">保険：IEEE754・カルノー図</h2><span class="tier tOut">章は範囲外</span></div>
   <p class="sec-sub">どちらも章としては範囲外だが「講義内で行った全演習」に含まれる。各1回なぞって終わり ── ここに時間を使うのが一番もったいない。</p>
 
   <div class="card">
@@ -747,12 +896,12 @@ h = (40 − 12) / (40 − 5)
     <p class="card-title">演習6-1｜カルノー図（2bitコンパレータ A&gt;B なら C=1）</p>
     <div class="scroll" style="margin-top:6px">
     <table style="min-width:340px">
-      <thead><tr><th>A₁A₀＼B₁B₀</th><th class="num">01</th><th class="num">02</th><th class="num">12</th><th class="num">11</th></tr></thead>
+      <thead><tr><th>A₁A₀＼B₁B₀</th><th class="num">02</th><th class="num">03</th><th class="num">13</th><th class="num">12</th></tr></thead>
       <tbody>
-        <tr><td class="num">01</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
-        <tr><td class="num">02</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
-        <tr><td class="num">12</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">1</td></tr>
-        <tr><td class="num">11</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td class="num">02</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td class="num">03</td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td></tr>
+        <tr><td class="num">13</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">1</td></tr>
+        <tr><td class="num">12</td><td class="num">1</td><td class="num">1</td><td class="num">0</td><td class="num">0</td></tr>
       </tbody>
     </table>
     </div>
@@ -763,7 +912,7 @@ h = (40 − 12) / (40 − 5)
 
 <!-- ============ 暗記カード ============ -->
 <section id="s7">
-  <div class="sec-head"><span class="sec-num">09</span><h2 class="sec-title">暗記カード</h2><span class="tier tB">B だけ集めたもの</span></div>
+  <div class="sec-head"><span class="sec-num">10</span><h2 class="sec-title">暗記カード</h2><span class="tier tB">B だけ集めたもの</span></div>
   <p class="sec-sub">丸暗記が要るのはここだけ。前日と当日朝はこのページだけを繰り返せばいい。</p>
 
   <h3>言えるか確認する</h3>
@@ -805,29 +954,29 @@ h = (40 − 12) / (40 − 5)
 
 <!-- ============ 過去問 ============ -->
 <section id="s8">
-  <div class="sec-head"><span class="sec-num">10</span><h2 class="sec-title">過去問の答え＋当日の運用</h2></div>
+  <div class="sec-head"><span class="sec-num">11</span><h2 class="sec-title">過去問の答え＋当日の運用</h2></div>
   <p class="sec-sub">2025年7月29日実施・全6問100点。解説は各章にあるので、ここは答えと形式のみ。</p>
 
   <div class="scroll">
   <table>
     <thead><tr><th>問</th><th class="num">配点</th><th>答え</th><th>今年</th></tr></thead>
     <tbody>
-      <tr><td>問1 IEEE754<br>−86.375</td><td class="num">16</td>
+      <tr><td>問1 IEEE754<br>−86.375</td><td class="num">17</td>
         <td class="num">(1)1010110 (2)01100<br>(3)0101100110 (4)10000101<br>(5)<strong>C2ACC000</strong></td>
         <td><span class="tier tOut">範囲外</span> §7で手順のみ</td></tr>
-      <tr><td>問2 CPU<br>0026番地開始時</td><td class="num">18</td>
+      <tr><td>問2 CPU<br>0026番地開始時</td><td class="num">19</td>
         <td class="num">①1110(o) ②0029(j) ③0026(g)<br>④0096(m) ⑤0029(j) ⑥0096(m)</td>
         <td>§4のトレース表</td></tr>
-      <tr><td>問3 OSI 7層</td><td class="num">23</td>
+      <tr><td>問3 OSI 7層</td><td class="num">24</td>
         <td>1層:ｵｹｾ／2層:ｱｼｽﾃﾈ／3層:ｶｷｻｿﾂﾄ<br>4層:ｳﾀﾇ／5層:ｴｸ／6層:ﾁｺ／7層:ｲﾅﾆﾉ</td>
         <td>§3のOSI表</td></tr>
       <tr><td>問4 キャッシュ</td><td class="num">3</td>
         <td class="num">0.8×5+0.2×40 = <strong>12 ns</strong></td>
         <td>§2。逆算も準備</td></tr>
-      <tr><td>問5 記憶階層<br>＋半導体メモリ</td><td class="num">26</td>
+      <tr><td>問5 記憶階層<br>＋半導体メモリ</td><td class="num">27</td>
         <td>①ｴｷ／②ｲｵｺ／③ｳｸｹ／④ｱｶｻ<br><em>⑤DRAM abjklp ⑥SRAM fhmno ⑦ﾌﾗｯｼｭ cdegiq</em></td>
         <td>①〜④のみ範囲内<br><span class="tier tOut">⑤〜⑦は5.3で範囲外</span></td></tr>
-      <tr><td>問6 仮想記憶<br>割込み・IF</td><td class="num">19</td>
+      <tr><td>問6 仮想記憶<br>割込み・IF</td><td class="num">20</td>
         <td class="num">①ﾃ ②ﾄ ③ﾆ ④ｲ ⑤ｿ ⑥ﾃ ⑦ｾ ⑧ｶ ⑨ｽ<br>⑩ｱ ⑪ﾀ ⑫ｳ ⑬ﾇ<br>⑭ｵ ⑮ｷ ⑯ｹ ⑰ｸ ⑱ｻ ⑲ﾂ ⑳ﾁ ㉑ｺ</td>
         <td>§2・§5</td></tr>
     </tbody>
@@ -845,6 +994,134 @@ h = (40 − 12) / (40 − 5)
   </div>
 
   <p class="cap" style="margin-top:24px">残る不確実性は LETUS の演習の実際の問題文だけ。スライドは枠だけで中身は LETUS 側にあるので、演習2-1／3-1／4-1／6-1／8-1 の自分の回答履歴を確認しておくこと。</p>
+</section>
+
+<!-- ============ 用語集 ============ -->
+<section id="gloss">
+  <div class="sec-head"><span class="sec-num">12</span><h2 class="sec-title">用語集</h2></div>
+  <p class="sec-sub">このガイドと講義資料に出てくる略語を、意味の説明つきで全部並べた。読んでいて「これ何だっけ」となったらここに戻る。</p>
+
+  <h3>CPUまわり（第4章）</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">語</th><th>正式名</th><th>意味</th></tr></thead>
+    <tbody>
+      <tr><td class="num">CPU</td><td>Central Processing Unit<br>中央処理装置</td><td>命令を読んで実行する部品。<strong>計算をする唯一の場所</strong></td></tr>
+      <tr><td class="num">レジスタ</td><td>register</td><td>CPU内部にある、1個か数個の値しか入らない<strong>超高速な記憶場所</strong></td></tr>
+      <tr><td class="num">PC</td><td>Program Counter</td><td><strong>次に実行する命令の番地</strong>を覚えている箱（しおり）</td></tr>
+      <tr><td class="num">IR</td><td>Instruction Register</td><td><strong>今実行中の命令そのもの</strong>を持っている箱</td></tr>
+      <tr><td class="num">MAR</td><td>Memory Address Register</td><td><strong>触りたい番地</strong>を書く箱。ここの値がアドレスバスへ流れる</td></tr>
+      <tr><td class="num">MDR</td><td>Memory Data Register</td><td><strong>主記憶とやりとりするデータ</strong>を置く箱</td></tr>
+      <tr><td class="num">GR</td><td>General Register<br>汎用レジスタ</td><td>計算の<strong>途中結果を置く作業台</strong></td></tr>
+      <tr><td class="num">ALU</td><td>Arithmetic Logic Unit</td><td>足し算やAND/ORを実際に行う<strong>計算器</strong></td></tr>
+      <tr><td class="num">FR</td><td>Flag Register</td><td>計算結果の性質（<strong>桁あふれ・負・ゼロ</strong>）を記録する旗</td></tr>
+      <tr><td class="num">SP</td><td>Stack Pointer</td><td>スタックを<strong>今どこまで積んだか</strong>を覚える箱</td></tr>
+      <tr><td class="num">スタック</td><td>stack</td><td>一時保管場所。<strong>後入れ先出し（LIFO）</strong>。サブルーチンの戻り番地を積む</td></tr>
+      <tr><td class="num">バス</td><td>bus</td><td>部品どうしをつなぐ<strong>信号線の束</strong>。アドレス／データ／コントロールの3種</td></tr>
+      <tr><td class="num">オペランド</td><td>operand</td><td>命令の<strong>操作対象</strong>。「LD GR1, A」の GR1 と A</td></tr>
+      <tr><td class="num">DC / DS</td><td>―</td><td>DC＝<strong>数値を置く</strong>宣言（A DC 50）／DS＝<strong>場所だけ空けておく</strong>宣言（C DS 1）</td></tr>
+      <tr><td class="num">語（ワード）</td><td>word</td><td>CPUが一度に扱うビットのまとまり。この講義では<strong>1語=16ビット=16進4桁</strong></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>記憶システム（第5章）</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">語</th><th>正式名</th><th>意味</th></tr></thead>
+    <tbody>
+      <tr><td class="num">主記憶</td><td>メインメモリ</td><td>実行中のプログラムとデータを置く場所。<strong>CPUが直接読み書きできる唯一の記憶</strong></td></tr>
+      <tr><td class="num">補助記憶</td><td>HDD・SSD</td><td>電源を切っても残る保管場所。CPUは<strong>直接は読めない</strong></td></tr>
+      <tr><td class="num">揮発性</td><td>volatile</td><td><strong>電源を切ると消える</strong>性質。主記憶（DRAM）がこれ</td></tr>
+      <tr><td class="num">DRAM</td><td>Dynamic RAM</td><td>主記憶に使う半導体メモリ。安く大容量だが<strong>定期的な書き直し（リフレッシュ）が要る</strong></td></tr>
+      <tr><td class="num">SRAM</td><td>Static RAM</td><td>キャッシュに使う。<strong>高速だが高価で大容量化しにくい</strong></td></tr>
+      <tr><td class="num">キャッシュ</td><td>cache memory</td><td>CPUと主記憶の<strong>速度差を埋める</strong>ため、よく使うものを手前に置く小さな高速メモリ</td></tr>
+      <tr><td class="num">ヒット率</td><td>hit rate（h）</td><td>探したものが<strong>キャッシュにあった確率</strong></td></tr>
+      <tr><td class="num">ミスヒット</td><td>miss</td><td>キャッシュに無く、<strong>主記憶まで取りに行くことになった</strong>状態</td></tr>
+      <tr><td class="num">局在性</td><td>locality</td><td>プログラムが<strong>ある時点ではごく一部しか使わない</strong>という性質。キャッシュが効く理由</td></tr>
+      <tr><td class="num">LRU</td><td>Least Recently Used</td><td>キャッシュが満杯のとき<strong>一番長く使われていないものを追い出す</strong>方式</td></tr>
+      <tr><td class="num">ライトスルー</td><td>write through</td><td>書き込みを<strong>キャッシュと主記憶の両方へ同時に</strong>行う（＝書き通す）</td></tr>
+      <tr><td class="num">ライトバック</td><td>write back</td><td><strong>キャッシュだけに書き</strong>、追い出すときに主記憶へ書き戻す</td></tr>
+      <tr><td class="num">仮想記憶</td><td>virtual memory</td><td>主記憶が足りないとき<strong>補助記憶を主記憶の代わりに使う</strong>仕組み</td></tr>
+      <tr><td class="num">論理アドレス</td><td>＝仮想アドレス</td><td><strong>CPU（プログラム）側</strong>が使う、実在しない広いアドレス</td></tr>
+      <tr><td class="num">物理アドレス</td><td>―</td><td><strong>実際の主記憶</strong>にハードウェア的に付いている本物のアドレス</td></tr>
+      <tr><td class="num">ページ</td><td>page</td><td><strong>論理側</strong>を1024Bずつに切ったカタマリ</td></tr>
+      <tr><td class="num">ブロック</td><td>block</td><td><strong>物理側（主記憶）</strong>を1024Bずつに切ったカタマリ。ページと同じサイズ</td></tr>
+      <tr><td class="num">ページテーブル</td><td>page table</td><td>「どのページがどのブロックに入っているか」の<strong>対応表</strong></td></tr>
+      <tr><td class="num">Q(p)</td><td>―</td><td>ページ p が<strong>いま主記憶にあるか</strong>を示す1ビットの旗。1＝ある、0＝まだ補助記憶</td></tr>
+      <tr><td class="num">ページ<br>フォールト</td><td>page fault</td><td>Q(p)=0 で<strong>目的のページが主記憶に無かった</strong>状態。追い出して持ってくる</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>入出力制御（第7章）</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">語</th><th>正式名</th><th>意味</th></tr></thead>
+    <tbody>
+      <tr><td class="num">割込み</td><td>interrupt</td><td>実行中の処理を<strong>中断して別の処理に切り替える</strong>仕組み。「来たら呼んでもらう」</td></tr>
+      <tr><td class="num">ポーリング</td><td>polling</td><td>機器に<strong>順番に「用ある？」と聞いて回る</strong>こと</td></tr>
+      <tr><td class="num">ベクトル<br>データ</td><td>vector data</td><td>割込んだ機器が送る「<strong>誰が・何の用で</strong>割込んだか」を示すデータ</td></tr>
+      <tr><td class="num">DMA</td><td>Direct Memory Access</td><td>CPUを介さず<strong>専用の係が機器と主記憶を直接つなぐ</strong>転送方式</td></tr>
+      <tr><td class="num">システムバス</td><td>―</td><td>CPUが使う<strong>超高速</strong>なバス</td></tr>
+      <tr><td class="num">拡張バス</td><td>―</td><td><strong>周辺機器を挿すため</strong>のバス（PCI Expressなど）</td></tr>
+      <tr><td class="num">チップセット</td><td>―</td><td>CPUの近くで入出力を仕切るLSI群。バス間の<strong>橋渡し（ブリッジ）</strong>もする</td></tr>
+      <tr><td class="num">パラレル伝送</td><td>parallel</td><td>複数の線で<strong>同時に</strong>送る。速くしようとすると線ごとにズレが出て破綻</td></tr>
+      <tr><td class="num">シリアル伝送</td><td>serial</td><td>1本の線で<strong>順番に</strong>送る。現在の主流</td></tr>
+      <tr><td class="num">差動伝送<br>LVDS</td><td>Low Voltage<br>Differential Signaling</td><td><strong>2本の線の電位差</strong>で0/1を表す方式。ノイズに強い</td></tr>
+      <tr><td class="num">レーン</td><td>lane</td><td>PCI Expressの通り道1本＝<strong>送信2本＋受信2本</strong>の差動線のセット</td></tr>
+      <tr><td class="num">半二重<br>全二重</td><td>half / full duplex</td><td>半二重＝<strong>交互にしか</strong>送受信できない／全二重＝<strong>同時に</strong>できる</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>ネットワーク（第10章）</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">語</th><th>正式名</th><th>意味</th></tr></thead>
+    <tbody>
+      <tr><td class="num">プロトコル</td><td>protocol</td><td>通信の<strong>取り決め</strong>。これを統一するから機種が違っても通じる</td></tr>
+      <tr><td class="num">OSI参照<br>モデル</td><td>Open Systems<br>Interconnection</td><td>通信の仕事を<strong>7つの層に整理</strong>したモデル。ISOが提唱</td></tr>
+      <tr><td class="num">パケット</td><td>packet</td><td>データを小分けにした単位。<strong>3層</strong>（遠くへ運ぶ単位）</td></tr>
+      <tr><td class="num">フレーム</td><td>frame</td><td><strong>2層</strong>の単位（隣の機器へ渡す単位）</td></tr>
+      <tr><td class="num">サブネット</td><td>subnet</td><td>同じデータリンク層でつながった<strong>1つのまとまり</strong>（＝1つのLAN）</td></tr>
+      <tr><td class="num">MACアドレス</td><td>Media Access Control</td><td><strong>隣の機器</strong>を指す名前。機器に固有・48ビット。＝ハードウェアアドレス</td></tr>
+      <tr><td class="num">IPアドレス</td><td>Internet Protocol</td><td><strong>世界中のどこか</strong>を指す名前。＝論理アドレス。IPv4は32bit</td></tr>
+      <tr><td class="num">サブネット<br>マスク</td><td>―</td><td>IPアドレスの<strong>どこまでがネットワークの番号か</strong>を示すもの。1が立っている桁数</td></tr>
+      <tr><td class="num">ルータ</td><td>router</td><td><strong>サブネットをまたいで</strong>パケットを中継する機器（3層）</td></tr>
+      <tr><td class="num">ハブ</td><td>hub</td><td><strong>サブネット内</strong>で機器をつなぐ集線装置（2層）</td></tr>
+      <tr><td class="num">デフォルト<br>ゲートウェイ</td><td>―</td><td>自分のLANから<strong>外に出るときの出口</strong>になるルータ</td></tr>
+      <tr><td class="num">ポート番号</td><td>port</td><td>同じ機器の中で<strong>どのアプリ宛か</strong>を区別する番号（4層）</td></tr>
+      <tr><td class="num">TCP</td><td>Transmission<br>Control Protocol</td><td>届いたか確認し、<strong>届かなければ送り直す</strong>。確実だが手間がかかる</td></tr>
+      <tr><td class="num">UDP</td><td>User Datagram<br>Protocol</td><td>確認せず送りっぱなし。<strong>速さ優先</strong>（動画・音声）</td></tr>
+      <tr><td class="num">ACK</td><td>acknowledgement</td><td>「<strong>受け取りました</strong>」という返事のパケット</td></tr>
+      <tr><td class="num">輻輳</td><td>ふくそう<br>congestion</td><td>通信が集中して<strong>混雑</strong>すること</td></tr>
+      <tr><td class="num">衝突</td><td>collision</td><td>複数の機器が同時に送信して<strong>信号が壊れる</strong>こと</td></tr>
+      <tr><td class="num">CSMA/CD</td><td>…Collision Detection</td><td><strong>有線</strong>用。送りながら監視し、衝突を<strong>検出</strong>したらやり直す</td></tr>
+      <tr><td class="num">CSMA/CA</td><td>…Collision Avoidance</td><td><strong>無線</strong>用。ランダムに待ってから送り、衝突を<strong>避ける</strong></td></tr>
+      <tr><td class="num">DNS</td><td>Domain Name System</td><td><strong>ドメイン名 ⇄ IPアドレス</strong>を変換する仕組み</td></tr>
+      <tr><td class="num">SMTP<br>POP / IMAP</td><td>―</td><td>SMTP＝メールの<strong>送信</strong>／POP・IMAP＝<strong>受信</strong></td></tr>
+      <tr><td class="num">UTP</td><td>Unshielded Twist Pair</td><td>LANケーブル。2本ずつ<strong>より合わせて</strong>ノイズを減らしてある</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>データ表現（第2章）・その他</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">語</th><th>意味</th></tr></thead>
+    <tbody>
+      <tr><td class="num">符号化 / 復号</td><td>符号化＝文字などを<strong>0と1のパターンに直す</strong>こと／復号＝<strong>0と1から文字に戻す</strong>こと</td></tr>
+      <tr><td class="num">文字コード</td><td>文字と0/1パターンの<strong>対応表</strong></td></tr>
+      <tr><td class="num">ビット / バイト</td><td>ビット＝0か1の1桁（b）／バイト＝<strong>8ビット</strong>のまとまり（B）</td></tr>
+      <tr><td class="num">bps</td><td>1秒あたり何ビット送れるか。<strong>Byte/s に直すには8で割る</strong></td></tr>
+      <tr><td class="num">ns / ms</td><td>ns＝10⁻⁹秒（ナノ秒）／ms＝10⁻³秒（ミリ秒）。<strong>msはnsの100万倍長い</strong></td></tr>
+      <tr><td class="num">2の補数</td><td>負の数の表し方。<strong>全ビット反転して1を足す</strong>と符号が逆になる<span class="tier tOut">範囲外</span></td></tr>
+      <tr><td class="num">IEEE754</td><td>小数を<strong>符号・指数・仮数</strong>の3つに分けて表す規格<span class="tier tOut">範囲外</span></td></tr>
+      <tr><td class="num">カルノー図</td><td>論理式を<strong>図でまとめて簡単にする</strong>道具<span class="tier tOut">範囲外</span></td></tr>
+    </tbody>
+  </table>
+  </div>
 </section>
 
 <footer>

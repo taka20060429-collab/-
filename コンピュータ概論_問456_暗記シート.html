@@ -1,0 +1,324 @@
+<title>問4・問5・問6 暗記シート</title>
+<style>
+  :root{
+    --bg:#faf9f5; --surface:#ffffff; --surface-2:#f1efe7;
+    --ink:#141413; --ink-2:#43423d; --muted:#77766e;
+    --rule:#e2e0d7; --rule-2:#cfccbf;
+    --a:#c15f3c; --a-sf:#f7ebe4;
+    --h:#4e756b; --h-sf:#e8f0ec;
+    --w:#8d5f1c; --w-sf:#f7efdf;
+    --shadow:0 1px 2px rgba(20,20,19,.05),0 6px 20px -12px rgba(20,20,19,.16);
+    --serif:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",ui-serif,Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP","Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{--bg:#1f1e1d;--surface:#292826;--surface-2:#302f2c;--ink:#f5f4ef;--ink-2:#d5d3cb;
+    --muted:#9b998f;--rule:#3d3c38;--rule-2:#4c4a45;--a:#e08b6b;--a-sf:#3a2b25;--h:#84b0a4;--h-sf:#24322e;
+    --w:#d3a45f;--w-sf:#362e20;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -14px rgba(0,0,0,.6);}}
+  :root[data-theme="dark"]{--bg:#1f1e1d;--surface:#292826;--surface-2:#302f2c;--ink:#f5f4ef;--ink-2:#d5d3cb;
+    --muted:#9b998f;--rule:#3d3c38;--rule-2:#4c4a45;--a:#e08b6b;--a-sf:#3a2b25;--h:#84b0a4;--h-sf:#24322e;
+    --w:#d3a45f;--w-sf:#362e20;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -14px rgba(0,0,0,.6);}
+  :root[data-theme="light"]{--bg:#faf9f5;--surface:#fff;--surface-2:#f1efe7;--ink:#141413;--ink-2:#43423d;
+    --muted:#77766e;--rule:#e2e0d7;--rule-2:#cfccbf;--a:#c15f3c;--a-sf:#f7ebe4;--h:#4e756b;--h-sf:#e8f0ec;
+    --w:#8d5f1c;--w-sf:#f7efdf;--shadow:0 1px 2px rgba(20,20,19,.05),0 6px 20px -12px rgba(20,20,19,.16);}
+
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+       font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased;font-feature-settings:"palt" 1;}
+  .wrap{max-width:880px;margin:0 auto;padding:0 24px 80px;}
+
+  .mast{padding:46px 0 20px;border-bottom:2px solid var(--ink);margin-bottom:26px;}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--a);font-weight:700;margin:0 0 10px;}
+  .mast h1{font-family:var(--serif);font-weight:600;font-size:clamp(26px,4.6vw,40px);line-height:1.2;margin:0 0 10px;}
+  .mast p{font-size:15px;color:var(--ink-2);max-width:58ch;margin:0;}
+
+  h2.sec{font-family:var(--serif);font-size:clamp(21px,3vw,27px);font-weight:600;margin:0 0 4px;line-height:1.3;
+         padding-bottom:8px;border-bottom:2px solid var(--ink);display:flex;align-items:baseline;gap:11px;flex-wrap:wrap;}
+  .pts{font-family:var(--sans);font-size:12px;font-weight:700;background:var(--a-sf);color:var(--a);
+       padding:3px 10px;border-radius:999px;letter-spacing:.03em;}
+  .lead{color:var(--muted);font-size:14px;margin:9px 0 20px;max-width:64ch;}
+  section{margin-bottom:48px;}
+
+  h3{font-family:var(--serif);font-size:18.5px;font-weight:600;margin:26px 0 6px;line-height:1.35;}
+  .sub{font-size:13px;color:var(--muted);margin:0 0 10px;}
+  p{margin:0 0 11px;max-width:70ch;}
+  ul,ol{margin:0 0 11px;padding-left:1.3em;max-width:70ch;}
+  li{margin:4px 0;}
+  code{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding:2px 6px;border-radius:5px;}
+
+  .scroll{overflow-x:auto;margin:12px 0;border:1px solid var(--rule);border-radius:11px;background:var(--surface);}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:440px;}
+  th,td{padding:9px 13px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule);}
+  thead th{background:var(--surface-2);font-size:11.5px;letter-spacing:.04em;font-weight:600;color:var(--ink-2);white-space:nowrap;}
+  tbody tr:last-child td{border-bottom:none;}
+  td.num,th.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  td.k{font-weight:600;white-space:nowrap;}
+  .hook{color:var(--h);font-size:12.8px;}
+  .hook b{color:var(--h);}
+
+  .band{border-radius:11px;padding:15px 19px;margin:14px 0;}
+  .band>:first-child{margin-top:0;} .band>:last-child{margin-bottom:0;}
+  .bh{font-size:12px;font-weight:700;letter-spacing:.09em;margin:0 0 7px;}
+  .b-h{background:var(--h-sf);} .b-h .bh{color:var(--h);}
+  .b-w{background:var(--w-sf);} .b-w .bh{color:var(--w);}
+  .b-a{background:var(--a-sf);} .b-a .bh{color:var(--a);}
+
+  .chain{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0;font-size:14px;}
+  .chain .n{background:var(--surface);border:1.5px solid var(--rule-2);border-radius:9px;padding:7px 13px;font-weight:600;}
+  .chain .ar{color:var(--muted);font-weight:600;}
+
+  ul.check{list-style:none;padding:0;max-width:none;}
+  ul.check li{position:relative;padding-left:26px;margin:6px 0;font-size:14px;}
+  ul.check li::before{content:"";position:absolute;left:0;top:6px;width:13px;height:13px;border:1.5px solid var(--rule-2);border-radius:4px;}
+
+  .q{background:var(--surface);border:1px solid var(--rule);border-radius:11px;padding:16px 20px;margin:12px 0;box-shadow:var(--shadow);}
+  .q p{margin:0 0 7px;} .q p:last-child{margin-bottom:0;}
+  .q .qn{font-weight:600;color:var(--a);font-size:13px;}
+
+  footer{border-top:1px solid var(--rule);padding-top:22px;margin-top:12px;font-size:13px;color:var(--muted);}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+  @media (max-width:640px){.wrap{padding:0 16px 60px;}.mast{padding:30px 0 16px;}.band,.q{padding:13px 15px;}}
+</style>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">問4・問5・問6 だけ ／ 合計36点</p>
+  <h1>覚えられなかった<br>3問の暗記シート</h1>
+  <p>丸暗記しようとすると入らない。<strong>「なぜその名前なのか」を1つ付けると急に落ちなくなる</strong>ので、全部にフックを付けた。緑色の文字が覚え方。</p>
+</header>
+
+<!-- ============ 問4 ============ -->
+<section>
+  <h2 class="sec">問4　入出力制御<span class="pts">18点</span></h2>
+  <p class="lead">20個の空欄があるが、<strong>4つのカタマリに分かれている</strong>。カタマリごとに覚えれば7個・3個・4個・6個。</p>
+
+  <h3>① 割込み ─ 3方式は「どうやって誰が呼んだか調べるか」の違い</h3>
+  <p class="sub">空欄①〜⑦（7個）</p>
+  <div class="band b-h">
+    <p class="bh">大前提のストーリー</p>
+    <p style="margin-bottom:0">キーボードは<strong>いつ押されるか分からない</strong>。CPUがずっと見張るのは無駄なので、<strong>押されたら呼んでもらう</strong>。これが<strong>割込み</strong>。「アクションがあってから動く」ので<strong>イベントドリブン</strong>型という。</p>
+  </div>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">空欄</th><th>答え</th><th>覚え方</th></tr></thead>
+    <tbody>
+      <tr><td class="num">①</td><td class="k">イベントドリブン</td><td class="hook">イベント（出来事）に<b>駆動される</b>。押されてから動く</td></tr>
+      <tr><td class="num">②</td><td class="k">割込み</td><td class="hook">そのための仕組みが割込み</td></tr>
+      <tr><td class="num">③</td><td class="k">ハードウェア</td><td class="hook"><b>機器（ハード）から</b>の信号なのでハードウェア割込み。<br>対になるソフトウェア割込みは<b>プログラムの中で</b>発生</td></tr>
+      <tr><td class="num">④</td><td class="k">専用線</td><td class="hook"><b>救急車の専用レーン。</b>緊急だから自分専用の道を用意する</td></tr>
+      <tr><td class="num">⑤</td><td class="k">ポーリング</td><td class="hook"><b>点呼。</b>「君？」「君？」と順に聞いて回る</td></tr>
+      <tr><td class="num">⑥</td><td class="k">ベクトル化</td><td class="hook">点呼で見つけた機器が<b>ベクトルデータ</b>を送る。名前そのまま</td></tr>
+      <tr><td class="num">⑦</td><td class="k">連鎖式</td><td class="hook"><b>バケツリレー。</b>鎖のように順に渡すから、自然に順番＝優先順位がつく</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="band b-a">
+    <p class="bh">3方式は「1語」で確実に見分けられる</p>
+    <div class="chain" style="margin-bottom:0">
+      <span class="n">緊急性が高い → <b>専用線</b></span>
+      <span class="n">ポーリング／ベクトルデータ → <b>ベクトル化</b></span>
+      <span class="n">受理通報線／優先順位 → <b>連鎖式</b></span>
+    </div>
+  </div>
+
+  <h3>② DMA ─ 3モードは「道路（バス）の使い方」の違い</h3>
+  <p class="sub">空欄⑧〜⑩（3個）</p>
+  <div class="band b-h">
+    <p class="bh">大前提のストーリー</p>
+    <p style="margin-bottom:0">大量のデータを運ぶのに<strong>いちいちCPUを経由すると、CPUが運送屋にされてしまう</strong>。だから<strong>専用の運送係（DMAコントローラ）に丸投げ</strong>する。これがDMA。</p>
+  </div>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">空欄</th><th>答え</th><th>バスの使い方</th><th>覚え方</th></tr></thead>
+    <tbody>
+      <tr><td class="num">⑧</td><td class="k">DMA</td><td>―</td><td class="hook">Direct Memory Access ＝ CPUを通さず<b>直接</b>メモリへ</td></tr>
+      <tr><td class="num">⑨</td><td class="k">サイクルスチール</td><td>1回ごとに<strong>返す</strong></td><td class="hook"><b>steal＝こっそり盗む。</b>少しずつ borrow するので邪魔しないが遅い</td></tr>
+      <tr><td class="num">⑩</td><td class="k">バースト</td><td><strong>占有</strong>し続ける</td><td class="hook"><b>burst＝一気に爆発。</b>貸し切りだから速いが、他は動けない</td></tr>
+      <tr><td class="num">―</td><td class="k">デマンド</td><td>要求時だけ</td><td class="hook"><b>demand＝要求。</b>模試では余った選択肢。呼ばれたときだけ使う</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><strong>速い＝占有＝バースト、遅い＝解除＝サイクルスチール</strong>。この対がひっくり返らなければ取れる。</p>
+
+  <h3>③ インタフェース ─ 何を挿すか</h3>
+  <p class="sub">空欄⑪〜⑭（4個）</p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">空欄</th><th>挿すもの</th><th>答え</th><th>覚え方</th></tr></thead>
+    <tbody>
+      <tr><td class="num">⑪</td><td>ストレージ（HDD・SSD）</td><td class="k">SATA</td><td class="hook"><b>S</b>torage の <b>S</b>ATA。Sつながり</td></tr>
+      <tr><td class="num">⑫</td><td>グラフィックボード</td><td class="k">PCI Express</td><td class="hook">拡張ボードを挿すスロットといえばこれ。SSDにも使う</td></tr>
+      <tr><td class="num">⑬</td><td>モニタ</td><td class="k">HDMI</td><td class="hook"><b>H</b>igh <b>D</b>efinition＝高精細。<b>画面</b>の規格</td></tr>
+      <tr><td class="num">⑭</td><td>主記憶装置</td><td class="k">DDR</td><td class="hook">メモリの箱に書いてある名前そのもの（DDR5など）</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="sub">※ これらが全部載っている基板が<strong>マザーボード</strong>。</p>
+
+  <h3>④ パラレル → シリアル ─ なぜ乗り換えたか</h3>
+  <p class="sub">空欄⑮〜⑳（6個）</p>
+  <div class="band b-h">
+    <p class="bh">大前提のストーリー</p>
+    <p style="margin-bottom:0"><strong>パラレル</strong>＝線を何本も並べて<u>同時に</u>送る。速くしたければ線を増やせばいい……と思ったら、<strong>増やすほど破綻した</strong>。だから<strong>シリアル</strong>＝1本で<u>順番に</u>送る方式に乗り換えた。</p>
+  </div>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">空欄</th><th>答え</th><th>覚え方</th></tr></thead>
+    <tbody>
+      <tr><td class="num">⑮</td><td class="k">パラレル</td><td class="hook">parallel＝並行。線を<b>並べる</b></td></tr>
+      <tr><td class="num">⑯</td><td class="k">ずれ</td><td class="hook">線の長さが違う → <b>到着時刻がバラバラ</b>になる</td></tr>
+      <tr><td class="num">⑰</td><td class="k">クロストーク</td><td class="hook">cross + talk ＝ <b>隣の線とおしゃべり</b>してしまう＝干渉</td></tr>
+      <tr><td class="num">⑱</td><td class="k">シリアル</td><td class="hook">serial＝連続。1本で<b>順番に</b></td></tr>
+      <tr><td class="num">⑲</td><td class="k">電位差</td><td class="hook">2本の線の<b>差</b>で0と1を表す</td></tr>
+      <tr><td class="num">⑳</td><td class="k">LVDS</td><td class="hook">Low Voltage <b>D</b>ifferential Signaling。<b>D＝差動</b>。名前に「差」が入っている</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="band b-a">
+    <p class="bh">パラレルをやめた理由は3つ。これがそのまま答えになる</p>
+    <div class="chain" style="margin-bottom:0">
+      <span class="n">線が<b>増える</b></span><span class="ar">＋</span>
+      <span class="n">到着が<b>ずれる</b></span><span class="ar">＋</span>
+      <span class="n"><b>クロストーク</b>（混線）</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 問5 ============ -->
+<section>
+  <h2 class="sec">問5　文字コード<span class="pts">10点</span></h2>
+  <p class="lead">覚えるのは<strong>ビット数と、漢字が何バイトか</strong>だけ。それ以外は言葉の意味で分かる。</p>
+
+  <h3>基本の3語 ─ 意味そのまま</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">空欄</th><th>答え</th><th>覚え方</th></tr></thead>
+    <tbody>
+      <tr><td class="num">①</td><td class="k">符号化</td><td class="hook">文字 <b>→</b> 0と1に直す（エンコード）</td></tr>
+      <tr><td class="num">②</td><td class="k">復号</td><td class="hook">0と1 <b>→</b> 文字に戻す（デコード）。「復」＝元に戻す</td></tr>
+      <tr><td class="num">③</td><td class="k">文字コード</td><td class="hook">その<b>対応表</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>コードの一覧 ─ 数字だけ覚える</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">空欄</th><th>答え</th><th class="num">ビット</th><th>決め手のフレーズ／覚え方</th></tr></thead>
+    <tbody>
+      <tr><td class="num">④</td><td class="k">ASCII</td><td class="num">7bit</td><td class="hook">英数字と記号だけ。<b>一番古くて一番小さい</b></td></tr>
+      <tr><td class="num">⑤</td><td class="k">8ビットJIS</td><td class="num">8bit</td><td class="hook">ASCII に<b>かな</b>を足した。1bit増えた分がかな</td></tr>
+      <tr><td class="num">⑥</td><td class="k">16</td><td class="num">16bit</td><td class="hook"><b>漢字</b>は種類が多いので8bitでは足りない</td></tr>
+      <tr><td class="num">⑦⑧</td><td class="k">1／シフトJIS</td><td class="num">16bit</td><td class="hook"><b>1バイト目</b>を見れば全角か半角かわかる。日本語Windows</td></tr>
+      <tr><td class="num">⑨</td><td class="k">UNICODE</td><td class="num">―</td><td class="hook"><b>uni＝1つ。</b>世界の文字を1つの表にまとめたもの</td></tr>
+      <tr><td class="num">⑩⑪</td><td class="k">3／UTF-8</td><td class="num">1〜4バイト</td><td class="hook">ASCIIの<b>上位互換</b>。漢字は<b>3</b>バイト</td></tr>
+      <tr><td class="num">⑫⑬</td><td class="k">2／UTF-16</td><td class="num">16bit単位</td><td class="hook">漢字は<b>2</b>バイトで済む</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="band b-w">
+    <p class="bh">UTF-8 と UTF-16 が一番狙われる</p>
+    <p><strong>UTF-<u>8</u> は漢字 <u>3</u> バイト／UTF-<u>16</u> は漢字 <u>2</u> バイト。</strong>数字が逆転して見えるので混乱しやすい。理屈で押さえる：</p>
+    <p style="margin-bottom:0">UTF-8 は<strong>8ビット＝1バイトずつの細かい単位</strong>で刻むので、漢字みたいな大きい文字を表すには<strong>枚数が要る（3枚）</strong>。UTF-16 は<strong>最初から16ビット＝2バイト単位</strong>なので、<strong>1単位（＝2バイト）で漢字が入る</strong>。<br>
+    <span class="hook"><b>細かく刻むほど枚数が要る</b>、と覚える。</span></p>
+  </div>
+
+  <div class="band b-a">
+    <p class="bh">ASCIIの計算 ─ 3つの基準値だけ</p>
+    <div class="chain">
+      <span class="n"><b>'0' = 30</b></span>
+      <span class="n"><b>'A' = 41</b></span>
+      <span class="n"><b>'a' = 61</b></span>
+    </div>
+    <p style="margin-bottom:0">あとは<strong>そこから数えるだけ</strong>。A=41 → B=42 → C=43 → <strong>D=44</strong>。小文字は大文字＋20。<br>
+    <span class="hook">模試の「TUS」なら、T は A から数えて20番目 → 41+19 = <b>54</b></span></p>
+  </div>
+</section>
+
+<!-- ============ 問6 ============ -->
+<section>
+  <h2 class="sec">問6　コンピュータの歴史<span class="pts">8点</span></h2>
+  <p class="lead">バラバラの年号として覚えると入らない。<strong>1つの物語として順に並べる</strong>と落ちない。</p>
+
+  <div class="band b-h">
+    <p class="bh">3年間の物語 ─ これで①〜⑦が全部埋まる</p>
+    <div class="chain">
+      <span class="n"><b>1945</b> ノイマンが提案</span><span class="ar">→</span>
+      <span class="n"><b>1946</b> ENIAC 完成</span><span class="ar">→</span>
+      <span class="n"><b>1949</b> EDSAC 完成</span>
+    </div>
+    <p style="margin-bottom:0"><strong>ENIACはノイマンの提案の翌年に完成しているが、もう作り始めていたので古い方式のまま。</strong>だから ENIAC は世界初のコンピュータだが<u>ノイマン型ではない</u>。提案を初めて実現したのは3年後の <strong>EDSAC</strong>。<br>
+    <span class="hook">「提案(45) → 間に合わなかったENIAC(46) → やっと実現したEDSAC(49)」という順番で覚える。</span></p>
+  </div>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th class="num">空欄</th><th>答え</th><th>覚え方</th></tr></thead>
+    <tbody>
+      <tr><td class="num">①</td><td class="k">ENIAC</td><td class="hook">1946年、<b>世界初の電子計算機</b></td></tr>
+      <tr><td class="num">②</td><td class="k">パッチボード上の配線</td><td class="hook">プログラムを<b>物理的に配線して</b>与えていた。だから古い</td></tr>
+      <tr><td class="num">③</td><td class="k">10</td><td class="hook">ENIACは<b>10進数</b>で動いていた（＝ノイマン型でない証拠）</td></tr>
+      <tr><td class="num">④</td><td class="k">フォン・ノイマン</td><td class="hook">1945年に提案した人</td></tr>
+      <tr><td class="num">⑤</td><td class="k">蓄積プログラム</td><td class="hook">プログラムを<b>記憶装置に蓄えて</b>順に読む。＝プログラム内蔵方式</td></tr>
+      <tr><td class="num">⑥</td><td class="k">2</td><td class="hook">ノイマン型は<b>2進数</b>。現在のコンピュータもこれ</td></tr>
+      <tr><td class="num">⑦</td><td class="k">EDSAC</td><td class="hook">1949年、<b>世界初のノイマン型</b>。英ケンブリッジ大</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="band b-w">
+    <p class="bh">この試験で唯一のひっかけ</p>
+    <p style="margin-bottom:0"><strong>ENIAC ＝「世界初のコンピュータ」</strong>／<strong>EDSAC ＝「世界初のノイマン型」</strong>。<br>
+    どちらも「世界初」なので、<u>何の世界初かをセットで</u>覚える。<span class="hook">ENIACの見分け方＝<b>配線</b>と<b>10進数</b>。この2語が出てきたらENIAC。</span></p>
+  </div>
+
+  <h3>素子の世代 ─ 大きい順に小さくなっていく</h3>
+  <div class="chain">
+    <span class="n">第1 <b>真空管</b></span><span class="ar">→</span>
+    <span class="n">第2 <b>トランジスタ</b></span><span class="ar">→</span>
+    <span class="n">第3 <b>LSI</b></span><span class="ar">→</span>
+    <span class="n">第4 <b>VLSI</b></span>
+  </div>
+  <p><span class="hook">電球サイズの<b>真空管</b> → 豆粒サイズの<b>トランジスタ</b> → まとめて詰め込む<b>LSI</b>（1000個以上） → さらに詰め込む<b>VLSI</b>（100万個以上）。<b>だんだん小さく、たくさん詰め込む</b>流れ。</span></p>
+  <p class="sub">トランジスタを発明したのは<strong>ショックレー</strong>ら（1948年・ベル研究所）。※ノイマンと混ぜないこと。</p>
+
+  <h3>ムーアの法則</h3>
+  <div class="band b-a">
+    <p class="bh">1行だけ</p>
+    <p style="margin-bottom:0"><strong>集積回路の素子数が18ヶ月で2倍になる。</strong>提唱者の<strong>ゴードン・ムーア</strong>は<strong>インテルの創業者</strong>。<br>
+    <span class="hook">上の「だんだん詰め込む」流れを数字にしたもの、と繋げて覚える。</span></p>
+  </div>
+</section>
+
+<!-- ============ 確認 ============ -->
+<section>
+  <h2 class="sec">1分で自己確認</h2>
+  <p class="lead">シートを閉じて、口に出して言えるか。言えなければその行に戻る。</p>
+  <ul class="check">
+    <li>割込み3方式を「緊急性／ポーリング／受理通報線」で言い分けられる</li>
+    <li>DMAの<strong>バースト＝占有して速い、サイクルスチール＝解除して遅い</strong>が逆になっていない</li>
+    <li>SATA＝ストレージ、PCIe＝グラボ、HDMI＝モニタ、DDR＝主記憶</li>
+    <li>パラレルをやめた理由3つ（<strong>線が増える・ずれる・クロストーク</strong>）</li>
+    <li>LVDS＝2本の信号線の<strong>電位差</strong></li>
+    <li><strong>UTF-8は漢字3バイト、UTF-16は漢字2バイト</strong>（逆にしない）</li>
+    <li>UTF-8は<strong>ASCIIの上位互換</strong>／シフトJISは<strong>1バイト目</strong>で全角半角を判別</li>
+    <li>ASCIIの <strong>'A' = 41</strong> から任意の英大文字を出せる</li>
+    <li><strong>ENIAC＝世界初だが配線と10進数でノイマン型でない</strong></li>
+    <li><strong>EDSAC＝世界初のノイマン型、2進数</strong></li>
+    <li>世代の素子＝<strong>真空管 → トランジスタ → LSI → VLSI</strong></li>
+    <li>ムーアの法則＝<strong>18ヶ月で2倍</strong>、インテル創業者</li>
+  </ul>
+
+  <div class="band b-a">
+    <p class="bh">全部言えたら</p>
+    <p style="margin-bottom:0">模試の問4・問5・問6を<strong>もう一度解き直す</strong>。答えを覚えてしまっていても、<u>フックを思い出しながら埋められるか</u>を確認する。それができれば36点は堅い。</p>
+  </div>
+</section>
+
+<footer>
+  <p style="margin-bottom:0">問4は7個＋3個＋4個＋6個、問5は3語＋数字、問6は物語1本＋世代4つ。<strong>まとまりで捉えれば、20個の空欄も4つ覚えるのと同じ。</strong></p>
+</footer>
+
+</div>

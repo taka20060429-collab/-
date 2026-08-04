@@ -1,0 +1,521 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>コンピュータ概論 直前模擬試験</title>
+<style>
+  :root{
+    --bg:#faf9f5; --surface:#ffffff; --surface-2:#f1efe7;
+    --ink:#141413; --ink-2:#43423d; --muted:#77766e;
+    --rule:#e2e0d7; --rule-2:#cfccbf;
+    --a:#c15f3c; --a-sf:#f7ebe4;
+    --q:#41648a; --q-sf:#e9eff5;
+    --e:#4e756b; --e-sf:#e8f0ec;
+    --w:#8d5f1c; --w-sf:#f7efdf;
+    --shadow:0 1px 2px rgba(20,20,19,.05),0 6px 20px -12px rgba(20,20,19,.16);
+    --serif:"Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",ui-serif,Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP","Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){:root{--bg:#1f1e1d;--surface:#292826;--surface-2:#302f2c;--ink:#f5f4ef;--ink-2:#d5d3cb;
+    --muted:#9b998f;--rule:#3d3c38;--rule-2:#4c4a45;--a:#e08b6b;--a-sf:#3a2b25;--q:#8fb0d0;--q-sf:#25303a;
+    --e:#84b0a4;--e-sf:#24322e;--w:#d3a45f;--w-sf:#362e20;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -14px rgba(0,0,0,.6);}}
+  :root[data-theme="dark"]{--bg:#1f1e1d;--surface:#292826;--surface-2:#302f2c;--ink:#f5f4ef;--ink-2:#d5d3cb;
+    --muted:#9b998f;--rule:#3d3c38;--rule-2:#4c4a45;--a:#e08b6b;--a-sf:#3a2b25;--q:#8fb0d0;--q-sf:#25303a;
+    --e:#84b0a4;--e-sf:#24322e;--w:#d3a45f;--w-sf:#362e20;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px -14px rgba(0,0,0,.6);}
+  :root[data-theme="light"]{--bg:#faf9f5;--surface:#ffffff;--surface-2:#f1efe7;--ink:#141413;--ink-2:#43423d;
+    --muted:#77766e;--rule:#e2e0d7;--rule-2:#cfccbf;--a:#c15f3c;--a-sf:#f7ebe4;--q:#41648a;--q-sf:#e9eff5;
+    --e:#4e756b;--e-sf:#e8f0ec;--w:#8d5f1c;--w-sf:#f7efdf;--shadow:0 1px 2px rgba(20,20,19,.05),0 6px 20px -12px rgba(20,20,19,.16);}
+
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+       font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased;font-feature-settings:"palt" 1;}
+  .wrap{max-width:900px;margin:0 auto;padding:0 24px 90px;}
+
+  .mast{padding:52px 0 24px;border-bottom:2px solid var(--ink);margin-bottom:32px;}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--a);font-weight:700;margin:0 0 12px;}
+  .mast h1{font-family:var(--serif);font-weight:600;font-size:clamp(28px,5vw,44px);line-height:1.2;margin:0 0 12px;}
+  .mast p{font-size:15.5px;color:var(--ink-2);max-width:60ch;margin:0 0 18px;}
+  .meta{display:flex;flex-wrap:wrap;gap:8px;}
+  .meta div{background:var(--surface);border:1px solid var(--rule);border-radius:999px;padding:6px 15px;font-size:13px;color:var(--ink-2);}
+  .meta div b{color:var(--ink);font-weight:600;}
+
+  h2.sec{font-family:var(--serif);font-size:clamp(22px,3.2vw,29px);font-weight:600;margin:0 0 6px;line-height:1.3;
+         padding-bottom:9px;border-bottom:2px solid var(--ink);}
+  .lead{color:var(--muted);font-size:14.5px;margin:10px 0 26px;max-width:64ch;}
+  section{margin-bottom:56px;}
+
+  h3{font-family:var(--serif);font-size:19px;font-weight:600;margin:30px 0 8px;line-height:1.4;}
+  h4{font-size:14.5px;font-weight:600;margin:18px 0 6px;}
+  p{margin:0 0 13px;max-width:72ch;}
+  ul,ol{margin:0 0 13px;padding-left:1.35em;max-width:72ch;}
+  li{margin:5px 0;}
+  code{font-family:var(--mono);font-size:.88em;background:var(--surface-2);padding:2px 6px;border-radius:5px;}
+  em{font-style:normal;color:var(--muted);}
+
+  .card{background:var(--surface);border:1px solid var(--rule);border-radius:13px;padding:20px 24px;margin:18px 0;box-shadow:var(--shadow);}
+  .card>:first-child{margin-top:0;} .card>:last-child{margin-bottom:0;}
+  .ct{font-size:15px;font-weight:600;margin:0 0 8px;display:flex;align-items:center;gap:9px;flex-wrap:wrap;}
+
+  .band{border-radius:11px;padding:16px 20px;margin:15px 0;}
+  .band>:first-child{margin-top:0;} .band>:last-child{margin-bottom:0;}
+  .bh{font-size:12px;font-weight:700;letter-spacing:.1em;margin:0 0 8px;}
+  .b-a{background:var(--a-sf);} .b-a .bh{color:var(--a);}
+  .b-q{background:var(--q-sf);} .b-q .bh{color:var(--q);}
+  .b-e{background:var(--e-sf);} .b-e .bh{color:var(--e);}
+  .b-w{background:var(--w-sf);} .b-w .bh{color:var(--w);}
+
+  .tag{font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:999px;flex:none;line-height:1.7;letter-spacing:.03em;}
+  .t-p{background:var(--q-sf);color:var(--q);}
+  .t-t{background:var(--a-sf);color:var(--a);}
+
+  /* exam paper */
+  .qhead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:36px 0 12px;padding-bottom:8px;border-bottom:1.5px solid var(--rule-2);}
+  .qno{font-family:var(--serif);font-size:23px;font-weight:600;}
+  .qsub{font-size:14.5px;color:var(--ink-2);flex:1 1 auto;min-width:150px;}
+
+  .choices{font-size:13.5px;color:var(--ink-2);background:var(--surface-2);border-radius:9px;padding:13px 17px;margin:12px 0;}
+  .choices b{color:var(--ink);font-weight:600;display:block;margin-bottom:4px;font-size:12.5px;letter-spacing:.03em;}
+  .choices span{white-space:nowrap;}
+
+  .blank{display:inline-block;min-width:2.1em;border-bottom:1.5px solid var(--a);text-align:center;
+         font-weight:600;color:var(--a);font-family:var(--mono);}
+
+  pre.work{font-family:var(--mono);font-size:13px;line-height:1.68;background:var(--surface-2);
+           border-radius:9px;padding:14px 16px;overflow-x:auto;margin:13px 0;font-variant-numeric:tabular-nums;}
+  .key{font-family:var(--mono);font-weight:600;font-variant-numeric:tabular-nums;
+       background:var(--surface);border:1px solid var(--rule-2);border-radius:6px;padding:2px 8px;}
+
+  .scroll{overflow-x:auto;margin:13px 0;border:1px solid var(--rule);border-radius:10px;background:var(--surface);}
+  table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:440px;}
+  th,td{padding:9px 13px;text-align:left;vertical-align:top;border-bottom:1px solid var(--rule);}
+  thead th{background:var(--surface-2);font-size:11.5px;letter-spacing:.04em;font-weight:600;color:var(--ink-2);white-space:nowrap;}
+  tbody tr:last-child td{border-bottom:none;}
+  td.num,th.num{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .cap{font-size:12.5px;color:var(--muted);margin:-6px 0 16px;max-width:72ch;}
+
+  .ansrow{font-family:var(--mono);font-size:13.5px;font-variant-numeric:tabular-nums;line-height:2.1;}
+  .ansrow b{font-family:var(--sans);color:var(--e);}
+
+  ul.check{list-style:none;padding:0;max-width:none;}
+  ul.check li{position:relative;padding-left:27px;margin:7px 0;font-size:14.5px;}
+  ul.check li::before{content:"";position:absolute;left:0;top:7px;width:13px;height:13px;border:1.5px solid var(--rule-2);border-radius:4px;}
+
+  footer{border-top:1px solid var(--rule);padding-top:24px;margin-top:16px;font-size:13px;color:var(--muted);}
+  a{color:var(--a);} a:focus-visible{outline:2px solid var(--a);outline-offset:3px;}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
+  @media (max-width:640px){.wrap{padding:0 16px 60px;}.mast{padding:34px 0 18px;}.card,.band{padding:15px 16px;}}
+</style>
+<style>
+:root,:root[data-theme="light"],:root[data-theme="dark"]{
+  --bg:#fff;--surface:#fff;--surface-2:#f4f2ea;--ink:#141413;--ink-2:#43423d;--muted:#6f6e66;
+  --rule:#ddd9cd;--rule-2:#c9c5b6;--a:#b4552f;--a-sf:#f8ebe3;--q:#41648a;--q-sf:#e9eff5;
+  --e:#4e756b;--e-sf:#e8f0ec;--w:#8d5f1c;--w-sf:#f7efdf;--shadow:none;
+  --serif:"IPAPMincho","IPAMincho",serif;--sans:"IPAPGothic","IPAGothic",sans-serif;--mono:"IPAGothic",monospace;}
+@page{size:A4;margin:13mm 12mm 15mm;}
+html,body{background:#fff!important;}
+body{font-size:10.2pt;line-height:1.66;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+.wrap{max-width:none;padding:0;}
+.scroll{overflow:visible!important;}
+table{min-width:0!important;width:100%;font-size:8.8pt;}
+th,td{padding:5px 7px;overflow-wrap:anywhere;}
+thead{display:table-header-group;}
+tr{break-inside:avoid;page-break-inside:avoid;}
+.choices,pre.work,.scroll,.card{break-inside:avoid;page-break-inside:avoid;}
+.bh,h3,h4,.qhead{break-after:avoid;page-break-after:avoid;}
+#exam,#answers,#final{break-before:page;page-break-before:always;}
+.mast{padding:0 0 12px;margin-bottom:16px;}
+.mast h1{font-size:23pt;margin-bottom:8px;}
+.mast p{font-size:10.2pt;}
+.meta div{padding:3px 10px;font-size:8.6pt;}
+h2.sec{font-size:18pt;}
+.lead{font-size:9.4pt;margin:8px 0 18px;}
+.qhead{margin:20px 0 9px;padding-bottom:6px;}
+.qno{font-size:16pt;} .qsub{font-size:10pt;}
+.card,.band{padding:12px 15px;margin:11px 0;}
+.bh{font-size:8.8pt;margin-bottom:6px;}
+.choices{font-size:8.6pt;padding:9px 12px;margin:9px 0;}
+h3{font-size:12.4pt;margin:16px 0 5px;} h4{font-size:10.2pt;margin:12px 0 4px;}
+p,ul,ol{margin-bottom:8px;max-width:none;} li{margin:3px 0;}
+pre.work{font-size:8.4pt;padding:10px 12px;margin:9px 0;line-height:1.55;}
+.ansrow{font-size:9.2pt;line-height:1.95;}
+.cap{font-size:8.4pt;}
+ul.check li{font-size:9.2pt;margin:4px 0;}
+.blank{min-width:1.9em;}
+footer{padding-top:14px;font-size:8.4pt;}
+</style></head><body>
+
+<div class="wrap">
+
+<header class="mast">
+  <p class="eyebrow">残り3時間・直前用</p>
+  <h1>コンピュータ概論<br>直前模擬試験</h1>
+  <p>今年の出題範囲だけで作った予想問題100点分。<strong>出題形式は2025年度の本試験と同じ4パターンに揃えてある。</strong>解いて → 採点して → 間違えたところだけ直す、を3時間で回す。</p>
+  <div class="meta">
+    <div>全6問 <b>100点</b></div>
+    <div>目標 <b>40分</b>で解く</div>
+    <div>解答は<b>後半</b>にまとめて</div>
+  </div>
+</header>
+
+<!-- ============ 出題形式 ============ -->
+<section id="format">
+  <h2 class="sec">まず ─ どういう形式で出るのか</h2>
+  <p class="lead">本試験はマークシート。記述は一切なく、<strong>形式は次の4パターンしかない</strong>。何を問われるかが分かれば、勉強の的が絞れる。</p>
+
+  <div class="card">
+    <p class="ct"><span class="tag t-t">型1</span>説明文の穴埋め（選択肢から1つずつ）<span class="tag t-p">最頻出</span></p>
+    <p>長い説明文の中に空欄が20個ほどあり、選択肢リストから1つずつ選ぶ。<strong>選択肢には使わないものが混ざり、同じものを2回使う場合もある。</strong></p>
+    <p style="margin-bottom:0"><em>例：「①が足りず大きいプログラムが動作しない問題を解決するため、②を①の代わりに使用する方式を③方式という」→ ①主記憶装置 ②補助記憶装置 ③仮想記憶</em></p>
+  </div>
+
+  <div class="card">
+    <p class="ct"><span class="tag t-t">型2</span>名称と役割の対応</p>
+    <p style="margin-bottom:0">図中のA〜Gについて「名称は何か」「役割は何か」を<strong>2つの選択肢リストからそれぞれ選ぶ</strong>。CPUの構成図で出る。役割のリストの方が多いので<strong>余りが出る</strong>。</p>
+  </div>
+
+  <div class="card">
+    <p class="ct"><span class="tag t-t">型3</span>過不足なく複数マーク（分類）<span class="tag t-p">配点が重い</span></p>
+    <p>「第1層〜第7層それぞれに関連するものを<strong>過不足なく複数</strong>マークせよ。各選択肢は一度のみ使用する」という形。1つの層に2〜6個が入る。</p>
+    <p style="margin-bottom:0"><strong>必ず個数で検算できる。</strong>配った個数の合計＝選択肢の総数。合わなければ重複か漏れがある。</p>
+  </div>
+
+  <div class="card">
+    <p class="ct"><span class="tag t-t">型4</span>計算して桁ごとにマーク</p>
+    <p style="margin-bottom:0">計算した答えを「十の位」「一の位」のように<strong>桁ごとにマーク</strong>する。あるいは2進数の答えを<strong>MSBから何桁分</strong>マークする。<u>途中式は評価されないので、最終値が全て。</u></p>
+  </div>
+
+  <div class="band b-a">
+    <p class="bh">3時間の使い方</p>
+    <div class="scroll" style="margin:8px 0 0">
+    <table>
+      <thead><tr><th class="num">時間</th><th>やること</th></tr></thead>
+      <tbody>
+        <tr><td class="num">0:00–0:10</td><td>この形式の説明を読む（今ここ）</td></tr>
+        <tr><td class="num">0:10–0:50</td><td><strong>模擬試験を解く。</strong>分からなくても飛ばして最後まで行く</td></tr>
+        <tr><td class="num">0:50–1:20</td><td>採点する。<strong>間違えた問題に印をつける</strong></td></tr>
+        <tr><td class="num">1:20–2:20</td><td>間違えたところの解説だけ読む。合っていたところは読まない</td></tr>
+        <tr><td class="num">2:20–2:45</td><td><strong>もう一度、間違えた問題だけ解き直す</strong></td></tr>
+        <tr><td class="num">2:45–3:00</td><td>最後のチェックリスト（巻末）を眺めて出発</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 模擬試験 ============ -->
+<section id="exam">
+  <h2 class="sec">模擬試験</h2>
+  <p class="lead">今年の出題範囲（演習5題／1.1〜1.4／2.3／4章章末(1)〜(3)／5.1・5.2／7.2・7.3・7.5／10.2〜10.7）だけで構成。<strong>解答は次のセクション。まず自力で最後まで通すこと。</strong></p>
+
+  <!-- 問1 -->
+  <div class="qhead"><span class="qno">問 1</span><span class="qsub">CPU内部と主記憶装置の状態</span><span class="tag t-p">17点</span><span class="tag t-t">型1＋型2</span></div>
+  <p>下図に示す主記憶装置内のプログラムの実行が、いま <strong>0023番地まで終了し、0024番地を開始</strong>しようとしている。この時点で、IRに格納されている値は2ワードで上位1ワードが<span class="blank">①</span>、下位1ワードが<span class="blank">②</span>、PCが<span class="blank">③</span>、MDRが<span class="blank">④</span>、MARが<span class="blank">⑤</span>、GR1が<span class="blank">⑥</span>である。</p>
+  <pre class="work">番地   内容      プログラム            番地   内容
+0020  1010  ┐  LD   GR1, A         0027  0032   A DC 50
+0021  0027  ┘                      0028  0064   B DC 100
+0022  2010  ┐  ADDA GR1, B         0029  0096   C DS 1
+0023  0028  ┘
+0024  1110  ┐  ST   GR1, C         命令コード
+0025  0029  ┘                        10=LD  20=ADDA
+0026  8100     RET                    11=ST  81=RET</pre>
+  <div class="choices"><b>【①〜⑥の選択肢】</b>
+    <span>(a)0020</span>, <span>(b)0022</span>, <span>(c)0023</span>, <span>(d)0024</span>, <span>(e)0026</span>, <span>(f)0027</span>, <span>(g)0028</span>, <span>(h)0029</span>, <span>(i)0032</span>, <span>(j)0064</span>, <span>(k)0096</span>, <span>(l)1010</span>, <span>(m)1110</span>, <span>(n)2010</span>, <span>(o)8100</span>
+  </div>
+  <p>また、CPUの構成要素 A〜G について、名称と役割をそれぞれ選べ。A＝名称<span class="blank">⑦</span>、B＝<span class="blank">⑧</span>、C＝<span class="blank">⑨</span>、D＝<span class="blank">⑩</span>、E＝<span class="blank">⑪</span>、F＝<span class="blank">⑫</span>、G＝<span class="blank">⑬</span> に対応する<strong>役割</strong>を答えよ。</p>
+  <div class="choices"><b>【⑦〜⑬に対応させる名称】</b>
+    A＝PC、B＝IR、C＝MAR、D＝MDR、E＝ALU、F＝SP、G＝Decoder<br>
+    <b style="margin-top:8px">【役割の選択肢】</b>
+    <span>(ｱ)番地の一時保持</span>, <span>(ｲ)命令の解読</span>, <span>(ｳ)現在実行中の命令保持</span>, <span>(ｴ)データの一時保持</span>, <span>(ｵ)算術演算や論理演算</span>, <span>(ｶ)スタック内の番地保持</span>, <span>(ｷ)次の命令の格納番地指定</span>, <span>(ｸ)演算時の桁あふれ等の保持</span>, <span>(ｹ)各種命令の実行で使用されるレジスタ</span>
+  </div>
+
+  <!-- 問2 -->
+  <div class="qhead"><span class="qno">問 2</span><span class="qsub">OSI参照モデル</span><span class="tag t-p">22点</span><span class="tag t-t">型3</span></div>
+  <p>第1層〜第7層それぞれに最も関連する用語や説明を選択肢から選び、<strong>過不足なく複数マーク</strong>せよ。（各選択肢は一度のみ使用する。）</p>
+  <div class="choices"><b>【選択肢】</b>
+    <span>(ｱ)物理層</span>, <span>(ｲ)光ファイバ</span>, <span>(ｳ)UTPケーブル</span>, <span>(ｴ)データリンク層</span>, <span>(ｵ)MACアドレス</span>, <span>(ｶ)フレーム</span>, <span>(ｷ)CSMA/CD</span>, <span>(ｸ)スイッチングハブ</span>, <span>(ｹ)サブネット内通信</span>, <span>(ｺ)ネットワーク層</span>, <span>(ｻ)IPアドレス</span>, <span>(ｼ)パケット</span>, <span>(ｽ)ルータ</span>, <span>(ｾ)サブネット間通信</span>, <span>(ｿ)トランスポート層</span>, <span>(ﾀ)UDP</span>, <span>(ﾁ)ポート番号</span>, <span>(ﾂ)セッション層</span>, <span>(ﾃ)論理的な通信の確立</span>, <span>(ﾄ)プレゼンテーション層</span>, <span>(ﾅ)データの表現形式</span>, <span>(ﾆ)アプリケーション層</span>, <span>(ﾇ)POP</span>, <span>(ﾈ)HTTP</span>, <span>(ﾉ)DNS</span>
+  </div>
+
+  <!-- 問3 -->
+  <div class="qhead"><span class="qno">問 3</span><span class="qsub">記憶システム</span><span class="tag t-p">25点</span><span class="tag t-t">型3＋型4</span></div>
+  <p><strong>(1)</strong> 記憶システムの階層について、①〜④の各階層（①がCPUに最も近い最上段、④が最下段）に該当するものを、<strong>過不足なく複数マーク</strong>せよ。（各選択肢は一度のみ使用する。）</p>
+  <div class="choices"><b>【選択肢】</b>
+    <span>(ｱ)CPU内レジスタ・キャッシュメモリ</span>, <span>(ｲ)主記憶</span>, <span>(ｳ)補助記憶・拡張記憶</span>, <span>(ｴ)大容量補助記憶</span>, <span>(ｵ)CPU内部にあり一時記憶</span>, <span>(ｶ)CPUが直接アクセスできるが揮発性</span>, <span>(ｷ)不揮発性でOSやデータを格納</span>, <span>(ｸ)バックアップやデータの運搬に利用</span>, <span>(ｹ)DRAM</span>, <span>(ｺ)HDD・SSD</span>, <span>(ｻ)光ディスク</span>
+  </div>
+  <p><strong>(2)</strong> キャッシュメモリのヒット率が <strong>90%</strong>、キャッシュのアクセス時間 <strong>Tc = 4 ns</strong>、主記憶のアクセス時間 <strong>Tm = 44 ns</strong> のときの平均アクセス時間を求め、単位を ns とした際の「十の位」と「一の位」をマークせよ。</p>
+  <p><strong>(3)</strong> <strong>Tc = 5 ns</strong>、<strong>Tm = 45 ns</strong> のキャッシュシステムで、平均アクセス時間が <strong>13 ns</strong> であった。このときのヒット率を百分率で求め、「十の位」と「一の位」をマークせよ。</p>
+  <p><strong>(4)</strong> ページング方式の仮想記憶で、主記憶は 4kB（1024B のブロック4個、物理アドレス12ビット）、補助記憶は 64kB（論理アドレス16ビット）である。CPUが仮想アドレス <code>001011 : 1101010101</code> にアクセスした。ページテーブルによればページ番号 001011 はブロック <code>10</code> に対応し、Q(p)=1 である。生成される<strong>物理アドレスを MSB から12桁分</strong>マークせよ。</p>
+
+  <!-- 問4 -->
+  <div class="qhead"><span class="qno">問 4</span><span class="qsub">入出力制御</span><span class="tag t-p">18点</span><span class="tag t-t">型1</span></div>
+  <p>次の説明文中の空欄①〜⑳にあてはまる用語を選択肢から1つずつ選べ。（使用しないものや複数回使用するものを含む。）</p>
+  <div class="card">
+    <p>・入出力機器の制御には、アクションがあってから制御を行う<span class="blank">①</span>型の処理が適しており、そのために<span class="blank">②</span>を利用する。機器からの信号によって生ずる<span class="blank">③</span>割込みのうち、緊急性が高いものに使うのが<span class="blank">④</span>方式、共通割込み要求線とデータバスを用い<span class="blank">⑤</span>によって要求元を特定するのが<span class="blank">⑥</span>方式、割込み受理通報線であらかじめ優先順位を付けられるのが<span class="blank">⑦</span>方式である。</p>
+    <p>・大量のデータ転送でCPUが拘束されるのを避けるため、<span class="blank">⑧</span>コントローラに転送を代行させる。1サイクルごとにバスの占有を解除する<span class="blank">⑨</span>モードは他の動作を邪魔しないが転送速度が落ち、指定回数の間バスを占有する<span class="blank">⑩</span>モードは高速だが他の機器が動作できない。</p>
+    <p>・マザーボードにおいて、ストレージの接続には<span class="blank">⑪</span>、グラフィックボードの接続には<span class="blank">⑫</span>、モニタの接続には<span class="blank">⑬</span>、主記憶装置の接続には<span class="blank">⑭</span>が用いられる。</p>
+    <p style="margin-bottom:0">・従来は<span class="blank">⑮</span>伝送が主流だったが、配線数の増加に加え、配線長の差による受信タイミングの<span class="blank">⑯</span>や、信号線間の干渉である<span class="blank">⑰</span>が生じるため、現在は<span class="blank">⑱</span>伝送が主流である。その信号伝送には、2本の信号線の<span class="blank">⑲</span>で信号レベルを表す<span class="blank">⑳</span>方式が使われる。</p>
+  </div>
+  <div class="choices"><b>【選択肢】</b>
+    <span>(ｱ)イベントドリブン</span>, <span>(ｲ)割込み</span>, <span>(ｳ)ハードウェア</span>, <span>(ｴ)ソフトウェア</span>, <span>(ｵ)専用線</span>, <span>(ｶ)ベクトル化</span>, <span>(ｷ)連鎖式</span>, <span>(ｸ)ポーリング</span>, <span>(ｹ)DMA</span>, <span>(ｺ)サイクルスチール</span>, <span>(ｻ)バースト</span>, <span>(ｼ)デマンド</span>, <span>(ｽ)SATA</span>, <span>(ｾ)PCI Express</span>, <span>(ｿ)HDMI</span>, <span>(ﾀ)DDR</span>, <span>(ﾁ)パラレル</span>, <span>(ﾂ)シリアル</span>, <span>(ﾃ)ずれ</span>, <span>(ﾄ)クロストーク</span>, <span>(ﾅ)電位差</span>, <span>(ﾆ)LVDS</span>, <span>(ﾇ)USB</span>
+  </div>
+
+  <!-- 問5 -->
+  <div class="qhead"><span class="qno">問 5</span><span class="qsub">文字データの表現法</span><span class="tag t-p">10点</span><span class="tag t-t">型1</span></div>
+  <div class="card">
+    <p style="margin-bottom:0">文字などを0,1のパターンで表現することを<span class="blank">①</span>、その逆を<span class="blank">②</span>、両者の対応表を<span class="blank">③</span>という。英数字と制御記号を扱う7ビットのコードが<span class="blank">④</span>で、これをもとにかなを追加した8ビットのコードが<span class="blank">⑤</span>である。漢字を扱うには<span class="blank">⑥</span>ビット必要であり、8ビットJISの未定義領域を利用することで<span class="blank">⑦</span>バイト目で全角か半角かを判断できるのが<span class="blank">⑧</span>である。全世界の主要な文字を包含する<span class="blank">⑨</span>のうち、ASCIIの上位互換で漢字を<span class="blank">⑩</span>バイトで表すのが<span class="blank">⑪</span>、漢字を<span class="blank">⑫</span>バイトで表すのが<span class="blank">⑬</span>である。</p>
+  </div>
+  <div class="choices"><b>【選択肢】</b>
+    <span>(ｱ)符号化</span>, <span>(ｲ)復号</span>, <span>(ｳ)文字コード</span>, <span>(ｴ)ASCII</span>, <span>(ｵ)8ビットJIS</span>, <span>(ｶ)シフトJIS</span>, <span>(ｷ)UNICODE</span>, <span>(ｸ)UTF-8</span>, <span>(ｹ)UTF-16</span>, <span>(ｺ)1</span>, <span>(ｻ)2</span>, <span>(ｼ)3</span>, <span>(ｽ)16</span>
+  </div>
+  <p><strong>(2)</strong> 文字「<strong>D</strong>」のASCIIコードを16進数2桁で求め、上位桁・下位桁の順にマークせよ。（'A' = 41₍₁₆₎）</p>
+
+  <!-- 問6 -->
+  <div class="qhead"><span class="qno">問 6</span><span class="qsub">コンピュータの歴史と基本構成</span><span class="tag t-p">8点</span><span class="tag t-t">型1</span></div>
+  <div class="card">
+    <p style="margin-bottom:0">1946年、世界初の電子計算機である<span class="blank">①</span>が完成したが、これは命令を<span class="blank">②</span>で与え、<span class="blank">③</span>進数で動作していた。1945年に<span class="blank">④</span>が提案した<span class="blank">⑤</span>方式は、プログラムを電子的な記憶装置に格納して順次読み込んで実行するもので、<span class="blank">⑥</span>進数を使用する。これを世界で初めて実現したのが1949年の<span class="blank">⑦</span>である。コンピュータの素子は、第1世代の<span class="blank">⑧</span>から第2世代の<span class="blank">⑨</span>、第3世代のLSIへと発展した。また、集積回路の素子数が一定期間ごとに2倍になるという経験則を<span class="blank">⑩</span>の法則という。</p>
+  </div>
+  <div class="choices"><b>【選択肢】</b>
+    <span>(ｱ)ENIAC</span>, <span>(ｲ)EDSAC</span>, <span>(ｳ)EDVAC</span>, <span>(ｴ)パッチボード上の配線</span>, <span>(ｵ)パンチカード</span>, <span>(ｶ)10</span>, <span>(ｷ)2</span>, <span>(ｸ)フォン・ノイマン</span>, <span>(ｹ)ショックレー</span>, <span>(ｺ)蓄積プログラム</span>, <span>(ｻ)真空管</span>, <span>(ｼ)トランジスタ</span>, <span>(ｽ)ムーア</span>
+  </div>
+</section>
+
+<!-- ============ 解答 ============ -->
+<section id="answers">
+  <h2 class="sec">解答・解説</h2>
+  <p class="lead">まず○×だけつけて、<strong>間違えた問題の解説だけ</strong>読むこと。合っていた問題の解説を読む時間はもう無い。</p>
+
+  <!-- 問1解答 -->
+  <div class="qhead"><span class="qno">問 1</span><span class="qsub">解答</span><span class="tag t-p">17点</span></div>
+  <div class="band b-a">
+    <p class="bh">解答</p>
+    <p class="ansrow" style="margin-bottom:6px"><b>①</b> 2010 (n)　<b>②</b> 0028 (g)　<b>③</b> 0024 (d)　<b>④</b> 0064 (j)　<b>⑤</b> 0028 (g)　<b>⑥</b> 0096 (k)</p>
+    <p class="ansrow" style="margin-bottom:0"><b>⑦</b>PC=(ｷ)　<b>⑧</b>IR=(ｳ)　<b>⑨</b>MAR=(ｱ)　<b>⑩</b>MDR=(ｴ)　<b>⑪</b>ALU=(ｵ)　<b>⑫</b>SP=(ｶ)　<b>⑬</b>Decoder=(ｲ)</p>
+  </div>
+  <div class="band b-e">
+    <p class="bh">解説</p>
+    <p><strong>直前に完了した命令を特定するのが全て。</strong>「0023番地まで終了」なので、0022〜0023に置かれた <code>ADDA GR1, B</code>（機械語 <code>2010 0028</code>）が終わったところ。</p>
+    <ul>
+      <li><strong>①②</strong>：IRには直前の命令が2語まるごと残る → 上位 <code>2010</code>、下位 <code>0028</code></li>
+      <li><strong>③</strong>：PCは「次に始める番地」なので問題文の数字そのまま → <code>0024</code></li>
+      <li><strong>⑤</strong>：MARは最後にアクセスした番地 → B番地の <code>0028</code>（IRの下位と同じ）</li>
+      <li><strong>④</strong>：ADDAは<u>読む</u>命令なので、MDRには<strong>読み出した値</strong> → 0028番地の中身 <code>0064</code></li>
+      <li><strong>⑥</strong>：GR1 = 50 + 100 = 150 = <code>0096</code></li>
+    </ul>
+    <div class="band b-w" style="margin-bottom:0">
+      <p class="bh">本番で形を変えられたら</p>
+      <p style="margin-bottom:0">今回は ADDA（読む）だったので MDR = 読んだ値だったが、<strong>ST（書く）で聞かれたら MDR = GR1の値</strong>になる。<code>ST GR1,C</code> のとき（0025まで終了・0026開始）は MAR=0029、<strong>MDR=0096</strong>、GR1=0096。<u>この2パターンだけ覚えておけば、どちらで来ても対応できる。</u></p>
+    </div>
+  </div>
+
+  <!-- 問2解答 -->
+  <div class="qhead"><span class="qno">問 2</span><span class="qsub">解答</span><span class="tag t-p">22点</span></div>
+  <div class="band b-a">
+    <p class="bh">解答</p>
+    <div class="scroll" style="margin:6px 0 0">
+    <table>
+      <thead><tr><th class="num">層</th><th>マークするもの</th><th class="num">個数</th></tr></thead>
+      <tbody>
+        <tr><td class="num">1層</td><td>(ｱ)物理層、(ｲ)光ファイバ、(ｳ)UTPケーブル</td><td class="num">3</td></tr>
+        <tr><td class="num">2層</td><td>(ｴ)データリンク層、(ｵ)MACアドレス、(ｶ)フレーム、(ｷ)CSMA/CD、(ｸ)スイッチングハブ、(ｹ)サブネット内通信</td><td class="num">6</td></tr>
+        <tr><td class="num">3層</td><td>(ｺ)ネットワーク層、(ｻ)IPアドレス、(ｼ)パケット、(ｽ)ルータ、(ｾ)サブネット間通信</td><td class="num">5</td></tr>
+        <tr><td class="num">4層</td><td>(ｿ)トランスポート層、(ﾀ)UDP、(ﾁ)ポート番号</td><td class="num">3</td></tr>
+        <tr><td class="num">5層</td><td>(ﾂ)セッション層、(ﾃ)論理的な通信の確立</td><td class="num">2</td></tr>
+        <tr><td class="num">6層</td><td>(ﾄ)プレゼンテーション層、(ﾅ)データの表現形式</td><td class="num">2</td></tr>
+        <tr><td class="num">7層</td><td>(ﾆ)アプリケーション層、(ﾇ)POP、(ﾈ)HTTP、(ﾉ)DNS</td><td class="num">4</td></tr>
+        <tr><td class="num"></td><td style="text-align:right"><strong>合計</strong></td><td class="num"><strong>25</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <div class="band b-e">
+    <p class="bh">解説</p>
+    <p><strong>「隣か、遠くか」で2層と3層を切る。</strong>この1軸で11個が片付く。</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th></th><th>2層（隣の機器まで）</th><th>3層（世界中まで）</th></tr></thead>
+      <tbody>
+        <tr><td>範囲</td><td>サブネット<strong>内</strong>通信</td><td>サブネット<strong>間</strong>通信</td></tr>
+        <tr><td>名前</td><td><strong>MACアドレス</strong></td><td><strong>IPアドレス</strong></td></tr>
+        <tr><td>単位</td><td><strong>フレーム</strong></td><td><strong>パケット</strong></td></tr>
+        <tr><td>機器</td><td><strong>スイッチングハブ</strong></td><td><strong>ルータ</strong></td></tr>
+        <tr><td>取り決め</td><td><strong>CSMA/CD</strong></td><td>IP</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p>残りも機械的に決まる。<strong>光ファイバ・UTPケーブルはモノそのもの</strong>なので1層。<strong>UDPとポート番号は4層</strong>（TCPと同じ仲間）。<strong>POP・HTTP・DNSはサービス名</strong>なので7層。5層と6層は説明文とペアで1つずつ。</p>
+    <div class="band b-w" style="margin-bottom:0">
+      <p class="bh">必ず数える</p>
+      <p style="margin-bottom:0">3+6+5+3+2+2+4 = <strong>25</strong>。選択肢は ｱ〜ﾉ の25個なので一致する。マークし終わったら必ず数えること。ここで1個ずれていれば、どこかに重複か漏れがある。</p>
+    </div>
+  </div>
+
+  <!-- 問3解答 -->
+  <div class="qhead"><span class="qno">問 3</span><span class="qsub">解答</span><span class="tag t-p">25点</span></div>
+  <div class="band b-a">
+    <p class="bh">解答</p>
+    <p class="ansrow" style="margin-bottom:8px"><b>(1)</b> ① (ｱ)(ｵ)　② (ｲ)(ｶ)(ｹ)　③ (ｳ)(ｷ)(ｺ)　④ (ｴ)(ｸ)(ｻ)　［合計 2+3+3+3 = 11］</p>
+    <p class="ansrow" style="margin-bottom:8px"><b>(2)</b> 十の位 <span class="key">0</span>　一の位 <span class="key">8</span>　（8 ns）</p>
+    <p class="ansrow" style="margin-bottom:8px"><b>(3)</b> 十の位 <span class="key">8</span>　一の位 <span class="key">0</span>　（80%）</p>
+    <p class="ansrow" style="margin-bottom:0"><b>(4)</b> <span class="key">1 0 1 1 0 1 0 1 0 1 0 1</span></p>
+  </div>
+  <div class="band b-e">
+    <p class="bh">解説</p>
+    <h4>(1) 上から「速い・小さい」→「遅い・大きい」の順</h4>
+    <p>各段に「名前」「説明文」が1つずつ、②〜④にはさらに「実体」が1つ付く。</p>
+    <pre class="work">① CPU内レジスタ・キャッシュ ＋ CPU内部にあり一時記憶
+② 主記憶 ＋ CPUが直接アクセスできるが揮発性 ＋ DRAM
+③ 補助記憶・拡張記憶 ＋ 不揮発性でOSやデータを格納 ＋ HDD・SSD
+④ 大容量補助記憶 ＋ バックアップやデータの運搬に利用 ＋ 光ディスク</pre>
+    <p class="cap">②と③を分ける決め手は<strong>揮発性か不揮発性か</strong>。主記憶は電源を切ると消えるので、普段はHDD/SSDに置いてある。</p>
+
+    <h4>(2) 順に計算するだけ</h4>
+    <pre class="work">T = h·Tc + (1 − h)·Tm
+  = 0.9 × 4 + 0.1 × 44
+  = 3.6 + 4.4
+  = 8.0 ns   → 十の位 0、一の位 8</pre>
+    <p class="cap">ヒット率は必ず小数に直す（90ではなく0.9）。答えは Tc=4 と Tm=44 の間にあるので妥当。</p>
+
+    <h4>(3) 逆算 ─ 今年の要注意</h4>
+    <pre class="work">T = h·Tc + (1 − h)·Tm を h について解くと
+
+h = (Tm − T) / (Tm − Tc)
+  = (45 − 13) / (45 − 5)
+  = 32 / 40
+  = 0.8  → 80%   → 十の位 8、一の位 0</pre>
+    <p class="cap">式を覚えていなくても、その場で展開して h でくくれば導ける。<code>T = Tm − h(Tm − Tc)</code> の形にするのがコツ。</p>
+
+    <h4>(4) ページング ─ 上位だけ置き換える</h4>
+    <pre class="work">仮想アドレス  001011 : 1101010101
+              └6bit┘   └──10bit──┘
+                 ↓ ページ番号 → ブロック番号 10 に置換
+                          ↓ 下位10bitはそのまま
+
+物理アドレス      10 : 1101010101  ＝ 101101010101（12bit）</pre>
+    <div class="band b-w" style="margin-bottom:0">
+      <p class="bh">下位10ビットは絶対に変わらない</p>
+      <p style="margin-bottom:0">ページとブロックは<strong>同じ1024Bのカタマリ</strong>なので、移しても中身の並びは変わらない。だから「カタマリの中の何バイト目か」＝下位10bitはそのまま。変わるのは「どのカタマリにいるか」＝上位だけ。</p>
+    </div>
+  </div>
+
+  <!-- 問4解答 -->
+  <div class="qhead"><span class="qno">問 4</span><span class="qsub">解答</span><span class="tag t-p">18点</span></div>
+  <div class="band b-a">
+    <p class="bh">解答</p>
+    <p class="ansrow" style="margin-bottom:6px"><b>①</b>(ｱ)イベントドリブン　<b>②</b>(ｲ)割込み　<b>③</b>(ｳ)ハードウェア　<b>④</b>(ｵ)専用線　<b>⑤</b>(ｸ)ポーリング　<b>⑥</b>(ｶ)ベクトル化　<b>⑦</b>(ｷ)連鎖式</p>
+    <p class="ansrow" style="margin-bottom:6px"><b>⑧</b>(ｹ)DMA　<b>⑨</b>(ｺ)サイクルスチール　<b>⑩</b>(ｻ)バースト</p>
+    <p class="ansrow" style="margin-bottom:6px"><b>⑪</b>(ｽ)SATA　<b>⑫</b>(ｾ)PCI Express　<b>⑬</b>(ｿ)HDMI　<b>⑭</b>(ﾀ)DDR</p>
+    <p class="ansrow" style="margin-bottom:6px"><b>⑮</b>(ﾁ)パラレル　<b>⑯</b>(ﾃ)ずれ　<b>⑰</b>(ﾄ)クロストーク　<b>⑱</b>(ﾂ)シリアル　<b>⑲</b>(ﾅ)電位差　<b>⑳</b>(ﾆ)LVDS</p>
+    <p style="margin-bottom:0"><strong>使わない選択肢：</strong>(ｴ)ソフトウェア、(ｼ)デマンド、(ﾇ)USB の3つ</p>
+  </div>
+  <div class="band b-e">
+    <p class="bh">解説</p>
+    <p><strong>この型は問題文の中に答えのヒントが埋まっている。</strong>キーワードを拾うだけで解ける。</p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th>問題文の手がかり</th><th>答え</th></tr></thead>
+      <tbody>
+        <tr><td>「<strong>緊急性が高い</strong>」</td><td>専用線</td></tr>
+        <tr><td>「<strong>共通割込み要求線とデータバス</strong>」</td><td>ベクトル化（要求元を探すのがポーリング）</td></tr>
+        <tr><td>「<strong>割込み受理通報線</strong>／優先順位」</td><td>連鎖式</td></tr>
+        <tr><td>「1サイクルごとに<strong>占有を解除</strong>」</td><td>サイクルスチール</td></tr>
+        <tr><td>「指定回数の間<strong>バスを占有</strong>」</td><td>バースト</td></tr>
+        <tr><td>「2本の信号線の<strong>電位差</strong>」</td><td>LVDS</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p><strong>接続先の対応は丸暗記。</strong>ストレージ=SATA／グラボ=PCIe／モニタ=HDMI／主記憶=DDR。</p>
+    <div class="band b-w" style="margin-bottom:0">
+      <p class="bh">余った3つが検算になる</p>
+      <p style="margin-bottom:0">(ｴ)ソフトウェア（割込みだが機器由来ではない）、(ｼ)デマンド（DMAの3つ目のモードだが今回は問われていない）、(ﾇ)USB。<strong>この3つがきれいに余れば、他が全部正しく埋まっている証拠。</strong></p>
+    </div>
+  </div>
+
+  <!-- 問5解答 -->
+  <div class="qhead"><span class="qno">問 5</span><span class="qsub">解答</span><span class="tag t-p">10点</span></div>
+  <div class="band b-a">
+    <p class="bh">解答</p>
+    <p class="ansrow" style="margin-bottom:6px"><b>①</b>(ｱ)符号化　<b>②</b>(ｲ)復号　<b>③</b>(ｳ)文字コード　<b>④</b>(ｴ)ASCII　<b>⑤</b>(ｵ)8ビットJIS　<b>⑥</b>(ｽ)16　<b>⑦</b>(ｺ)1</p>
+    <p class="ansrow" style="margin-bottom:6px"><b>⑧</b>(ｶ)シフトJIS　<b>⑨</b>(ｷ)UNICODE　<b>⑩</b>(ｼ)3　<b>⑪</b>(ｸ)UTF-8　<b>⑫</b>(ｻ)2　<b>⑬</b>(ｹ)UTF-16</p>
+    <p class="ansrow" style="margin-bottom:0"><b>(2)</b> 上位 <span class="key">4</span>　下位 <span class="key">4</span>　（D = 44₍₁₆₎）</p>
+  </div>
+  <div class="band b-e">
+    <p class="bh">解説</p>
+    <p><strong>数字だけ押さえれば全部取れる。</strong></p>
+    <div class="scroll">
+    <table>
+      <thead><tr><th>コード</th><th class="num">ビット数</th><th>決め手のフレーズ</th></tr></thead>
+      <tbody>
+        <tr><td>ASCII</td><td class="num">7bit</td><td>英数字・制御記号</td></tr>
+        <tr><td>8ビットJIS</td><td class="num">8bit</td><td>ASCIIに<strong>かなを追加</strong></td></tr>
+        <tr><td>16ビットJIS</td><td class="num">16bit</td><td><strong>漢字</strong>が扱える</td></tr>
+        <tr><td>シフトJIS</td><td class="num">16bit</td><td><strong>1バイト目</strong>で全角/半角を判断できる</td></tr>
+        <tr><td><strong>UTF-8</strong></td><td class="num">可変長</td><td><strong>ASCIIの上位互換</strong>／漢字は<strong>3バイト</strong></td></tr>
+        <tr><td><strong>UTF-16</strong></td><td class="num">可変長</td><td>漢字は<strong>2バイト</strong>で済む</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-bottom:0"><strong>(2)</strong> 'A' = 41 から数える。A→41、B→42、C→43、<strong>D→44</strong>。<em>'0'=30、'a'=61 も一緒に覚えておくと、どの文字を聞かれても出せる。</em></p>
+  </div>
+
+  <!-- 問6解答 -->
+  <div class="qhead"><span class="qno">問 6</span><span class="qsub">解答</span><span class="tag t-p">8点</span></div>
+  <div class="band b-a">
+    <p class="bh">解答</p>
+    <p class="ansrow" style="margin-bottom:0"><b>①</b>(ｱ)ENIAC　<b>②</b>(ｴ)パッチボード上の配線　<b>③</b>(ｶ)10　<b>④</b>(ｸ)フォン・ノイマン　<b>⑤</b>(ｺ)蓄積プログラム　<b>⑥</b>(ｷ)2　<b>⑦</b>(ｲ)EDSAC　<b>⑧</b>(ｻ)真空管　<b>⑨</b>(ｼ)トランジスタ　<b>⑩</b>(ｽ)ムーア</p>
+  </div>
+  <div class="band b-e">
+    <p class="bh">解説</p>
+    <div class="band b-w" style="margin-top:0">
+      <p class="bh">ここが唯一のひっかけ</p>
+      <p style="margin-bottom:0"><strong>ENIAC は世界初だが、ノイマン型ではない。</strong>命令をパッチボードの配線で与え、<strong>10進数</strong>で動いていた。<br>
+      <strong>ノイマン型（蓄積プログラム方式）は2進数</strong>で、これを世界初に実現したのが <strong>EDSAC</strong>（1949）。<u>「世界初のコンピュータ」＝ENIAC、「世界初のノイマン型」＝EDSAC</u> の2つを取り違えないこと。</p>
+    </div>
+    <p style="margin-bottom:0">世代の素子は<strong>真空管 → トランジスタ → LSI → VLSI</strong>の順。ムーアの法則は「18ヶ月で2倍」、提唱者のゴードン・ムーアはインテル創業者。</p>
+  </div>
+</section>
+
+<!-- ============ 直前 ============ -->
+<section id="final">
+  <h2 class="sec">出発10分前に見るもの</h2>
+  <p class="lead">これだけ確認したら閉じる。</p>
+
+  <div class="band b-a">
+    <p class="bh">絶対に落とさない5つ</p>
+    <ol style="margin-bottom:0">
+      <li><strong>T = h·Tc + (1−h)·Tm</strong>／逆算は <strong>h = (Tm−T)/(Tm−Tc)</strong>。ヒット率は小数に直す</li>
+      <li><strong>PCは問題文の番地をそのまま書く。</strong>IRは直前の命令2語。MARはIRの下位。<strong>MDRは、読む命令なら読んだ値・書く命令ならGR1の値</strong></li>
+      <li><strong>ページングは下位10bitを触らない。</strong>上位のページ番号をブロック番号に置き換えるだけ</li>
+      <li><strong>MAC=2層、IP=3層。フレーム=2層、パケット=3層。</strong>「隣か遠くか」で切る</li>
+      <li><strong>「過不足なく」は個数の合計で検算する。</strong>使わない選択肢が余るのは正常</li>
+    </ol>
+  </div>
+
+  <ul class="check">
+    <li>割込み：<strong>緊急性＝専用線／ポーリング＝ベクトル化／受理通報線＝連鎖式</strong></li>
+    <li>DMA：<strong>解除＝サイクルスチール／占有＝バースト／要求時＝デマンド</strong></li>
+    <li>接続：<strong>SATA＝ストレージ／PCIe＝グラボ／HDMI＝モニタ／DDR＝主記憶</strong></li>
+    <li>パラレル→シリアルの理由：<strong>配線数増／タイミングのずれ／クロストーク</strong></li>
+    <li><strong>LVDS＝2本の信号線の電位差</strong></li>
+    <li><strong>UTF-8＝漢字3バイト・ASCII上位互換／UTF-16＝漢字2バイト</strong></li>
+    <li><strong>シフトJIS＝1バイト目で全角/半角を判別</strong></li>
+    <li><strong>ENIAC＝世界初だがノイマン型でない／EDSAC＝世界初のノイマン型</strong></li>
+    <li>記憶階層：<strong>主記憶＝DRAM・揮発性／補助記憶＝HDD,SSD・不揮発性</strong></li>
+    <li>論理アドレス＝CPU側／<strong>物理アドレス＝主記憶にハードウェア的に付与</strong></li>
+    <li>TCP＝ACKと再送で確実／UDP＝速さ優先。<strong>80=HTTP、110=POP、21=FTP、22=ssh</strong></li>
+    <li>5層＝<strong>論理的な通信の確立</strong>／6層＝<strong>データの表現形式</strong></li>
+  </ul>
+
+  <div class="band b-e">
+    <p class="bh">試験中の立ち回り</p>
+    <ul style="margin-bottom:0">
+      <li><strong>配点の重い問題から解く。</strong>OSI（22点前後）と記憶システム（25点前後）が最大。計算問題は配点が軽いので後回しでいい</li>
+      <li><strong>分からない空欄は飛ばして先に進む。</strong>後半の穴埋めは前後の文脈で埋まることが多い</li>
+      <li><strong>「過不足なく」形式は最後に必ず個数を数える。</strong>ここだけで数点変わる</li>
+      <li>問題は<strong>裏面にもある</strong>。最後に必ず全ページを確認する</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p>2026年8月4日実施の前期到達度評価試験に向けた予想問題。出題形式は2025年7月29日実施の本試験に準拠し、内容はLETUS掲示の出題範囲と第1〜4・6〜14回の講義資料にもとづいて作成した。<strong>本試験の問題を予測したものであり、実際の出題を保証するものではない。</strong></p>
+  <p style="margin-bottom:0">頑張ってください。</p>
+</footer>
+
+</div>
+</body></html>

@@ -5,8 +5,11 @@ Excel グラフを報告書用の画像にする処理。
 - build_workbook(): 提出・確認用の .xlsx（Excel ネイティブのグラフ、計算は数式）
 - render_figures(): 同じ定義のグラフを LibreOffice で PDF 化し、PNG に切り出して img/ に保存
 """
+import io
 import os
+import re
 import shutil
+import zipfile
 import subprocess
 import tempfile
 
@@ -18,6 +21,7 @@ from openpyxl.chart.shapes import GraphicalProperties
 from openpyxl.drawing.line import LineProperties
 from openpyxl.styles import Alignment, Border, Font, Side
 from openpyxl.utils import get_column_letter
+from lxml import etree
 from PIL import Image, ImageChops
 
 import analysis as A
@@ -308,7 +312,10 @@ def build_workbook(R, D, path):
     sheet_lsq(wb, R)
     sheet_dev(wb, R)
     wb.calculation.fullCalcOnLoad = True
-    wb.save(path)
+    bio = io.BytesIO()
+    wb.save(bio)
+    with open(path, "wb") as f:
+        f.write(_patch_xlsx(bio.getvalue()))
     return path
 
 
@@ -378,27 +385,77 @@ def _ref_values(ws, formula):
     return [ws[f"{col}{r}"].value for r in range(r0, r1 + 1)]
 
 
+A_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
+
+
+def _q(t):
+    return f"{{{C_NS}}}{t}"
+
+
+def _fix_layout(root):
+    """Excel が保存するときと同じ指定を加える：軸の題名と凡例をグラフ領域に重ねない，
+    グラフタイトルなし，角丸なし，文字は本文と同じフォント 9 pt。"""
+    if root.find(_q("roundedCorners")) is None:
+        rc = etree.Element(_q("roundedCorners"))
+        rc.set("val", "0")
+        root.insert(0, rc)
+    for title in root.iter(_q("title")):
+        if title.find(_q("overlay")) is None:
+            ov = etree.Element(_q("overlay"))
+            ov.set("val", "0")
+            title.find(_q("tx")).addnext(ov)
+    for legend in root.iter(_q("legend")):
+        if legend.find(_q("overlay")) is None:
+            ov = etree.Element(_q("overlay"))
+            ov.set("val", "0")
+            legend.find(_q("legendPos")).addnext(ov)
+    chart = root.find(_q("chart"))
+    if chart.find(_q("autoTitleDeleted")) is None:
+        atd = etree.Element(_q("autoTitleDeleted"))
+        atd.set("val", "1")
+        chart.insert(0, atd)
+    if root.find(_q("txPr")) is None:
+        tx = etree.fromstring(
+            f'<c:txPr xmlns:c="{C_NS}" xmlns:a="{A_NS}"><a:bodyPr/><a:lstStyle/><a:p><a:pPr>'
+            f'<a:defRPr sz="900"><a:latin typeface="Times New Roman"/><a:ea typeface="ＭＳ 明朝"/>'
+            f'</a:defRPr></a:pPr><a:endParaRPr lang="ja-JP"/></a:p></c:txPr>')
+        sppr = root.find(_q("spPr"))
+        (sppr if sppr is not None else chart).addnext(tx)
+    return root
+
+
+def _patch_xlsx(blob):
+    """xlsx 内のすべてのグラフに _fix_layout を適用した xlsx を返す。"""
+    zin = zipfile.ZipFile(io.BytesIO(blob))
+    out = io.BytesIO()
+    with zipfile.ZipFile(out, "w", zipfile.ZIP_DEFLATED) as zout:
+        for item in zin.infolist():
+            data = zin.read(item.filename)
+            if re.match(r"xl/charts/chart\d+\.xml$", item.filename):
+                data = etree.tostring(_fix_layout(etree.fromstring(data)), xml_declaration=True,
+                                      encoding="UTF-8", standalone=True)
+            zout.writestr(item, data)
+    return out.getvalue()
+
+
 def _with_cache(chart_xml, ws, embed_rid):
     """グラフ XML に数値キャッシュと埋め込みブックへの参照を加える（Word が描画に使う）。"""
-    root = etree.fromstring(chart_xml)
-    q = lambda t: f"{{{C_NS}}}{t}"
-    for ref in root.iter(q("numRef")):
-        f = ref.find(q("f")).text
-        vals = _ref_values(ws, f)
-        cache = etree.SubElement(ref, q("numCache"))
-        etree.SubElement(cache, q("formatCode")).text = "General"
-        etree.SubElement(cache, q("ptCount")).set("val", str(len(vals)))
+    root = _fix_layout(etree.fromstring(chart_xml))
+    for ref in root.iter(_q("numRef")):
+        if ref.find(_q("numCache")) is not None:
+            continue
+        vals = _ref_values(ws, ref.find(_q("f")).text)
+        cache = etree.SubElement(ref, _q("numCache"))
+        etree.SubElement(cache, _q("formatCode")).text = "General"
+        etree.SubElement(cache, _q("ptCount")).set("val", str(len(vals)))
         for i, v in enumerate(vals):
             if isinstance(v, (int, float)):
-                pt = etree.SubElement(cache, q("pt"))
+                pt = etree.SubElement(cache, _q("pt"))
                 pt.set("idx", str(i))
-                etree.SubElement(pt, q("v")).text = repr(float(v))
-    rc = etree.Element(q("roundedCorners"))
-    rc.set("val", "0")
-    root.insert(0, rc)
-    ext = etree.SubElement(root, q("externalData"))
+                etree.SubElement(pt, _q("v")).text = repr(float(v))
+    ext = etree.SubElement(root, _q("externalData"))
     ext.set(f"{{{R_NS}}}id", embed_rid)
-    etree.SubElement(ext, q("autoUpdate")).set("val", "0")
+    etree.SubElement(ext, _q("autoUpdate")).set("val", "0")
     return etree.tostring(root, xml_declaration=True, encoding="UTF-8", standalone=True)
 
 
@@ -420,6 +477,6 @@ def native_chart(kind, R, D, m=None, embed_rid="rId1"):
     ws.add_chart(ch, anchor)
     bio = io.BytesIO()
     wb.save(bio)
-    xlsx = bio.getvalue()
+    xlsx = _patch_xlsx(bio.getvalue())
     chart_xml = zipfile.ZipFile(io.BytesIO(xlsx)).read("xl/charts/chart1.xml")
     return xlsx, _with_cache(chart_xml, ws, embed_rid), size

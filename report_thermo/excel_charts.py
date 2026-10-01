@@ -356,3 +356,70 @@ def render_figures(R, D, imgdir, dpi=220):
         im = Image.open(os.path.join(tmp, pg)).convert("RGB")
         _trim(im).save(os.path.join(imgdir, name + ".png"))
     shutil.rmtree(tmp, ignore_errors=True)
+
+
+# ---------------------------------------------------------------- Word に埋め込む本物のグラフ
+import io
+import re
+import zipfile
+
+from lxml import etree
+
+C_NS = "http://schemas.openxmlformats.org/drawingml/2006/chart"
+R_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+
+
+def _ref_values(ws, formula):
+    """'シート名'!$B$4:$B$42 の値のリスト（空欄は None）。"""
+    m = re.match(r"^'?(.*?)'?!\$([A-Z]+)\$(\d+):\$([A-Z]+)\$(\d+)$", formula)
+    if not m:
+        raise ValueError(formula)
+    col, r0, r1 = m.group(2), int(m.group(3)), int(m.group(5))
+    return [ws[f"{col}{r}"].value for r in range(r0, r1 + 1)]
+
+
+def _with_cache(chart_xml, ws, embed_rid):
+    """グラフ XML に数値キャッシュと埋め込みブックへの参照を加える（Word が描画に使う）。"""
+    root = etree.fromstring(chart_xml)
+    q = lambda t: f"{{{C_NS}}}{t}"
+    for ref in root.iter(q("numRef")):
+        f = ref.find(q("f")).text
+        vals = _ref_values(ws, f)
+        cache = etree.SubElement(ref, q("numCache"))
+        etree.SubElement(cache, q("formatCode")).text = "General"
+        etree.SubElement(cache, q("ptCount")).set("val", str(len(vals)))
+        for i, v in enumerate(vals):
+            if isinstance(v, (int, float)):
+                pt = etree.SubElement(cache, q("pt"))
+                pt.set("idx", str(i))
+                etree.SubElement(pt, q("v")).text = repr(float(v))
+    rc = etree.Element(q("roundedCorners"))
+    rc.set("val", "0")
+    root.insert(0, rc)
+    ext = etree.SubElement(root, q("externalData"))
+    ext.set(f"{{{R_NS}}}id", embed_rid)
+    etree.SubElement(ext, q("autoUpdate")).set("val", "0")
+    return etree.tostring(root, xml_declaration=True, encoding="UTF-8", standalone=True)
+
+
+def native_chart(kind, R, D, m=None, embed_rid="rId1"):
+    """Word に埋め込むための (埋め込み用xlsx, グラフXML, (幅cm, 高さcm)) を返す。
+    kind: 'cool'（金属 m の冷却曲線）, 'cal'（検定）, 'dev'（規格との比較）"""
+    wb = Workbook()
+    wb.remove(wb.active)
+    if kind == "cool":
+        ws, ch = sheet_cooling(wb, R, D, m, anchor_chart=False)
+        anchor = "H3"
+    elif kind == "cal":
+        ws, ch = sheet_lsq(wb, R, anchor_chart=False)
+        anchor = "O3"
+    else:
+        ws, ch = sheet_dev(wb, R, anchor_chart=False)
+        anchor = "I3"
+    size = (ch.width, ch.height)
+    ws.add_chart(ch, anchor)
+    bio = io.BytesIO()
+    wb.save(bio)
+    xlsx = bio.getvalue()
+    chart_xml = zipfile.ZipFile(io.BytesIO(xlsx)).read("xl/charts/chart1.xml")
+    return xlsx, _with_cache(chart_xml, ws, embed_rid), size

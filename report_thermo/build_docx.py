@@ -38,7 +38,7 @@ R = A.compute(D) if COMPLETE else None
 A.make_static_figs(IMG)
 XLSX = os.path.join(HERE, "熱電対の検定実験_データとグラフ.xlsx")
 if COMPLETE:
-    X.render_figures(R, D, IMG)        # グラフは Excel のグラフとして作成し，画像にして貼る
+    # グラフは Excel のグラフオブジェクトとして文書に埋め込む（chart_figure）
     X.build_workbook(R, D, XLSX)
 
 BODY, HEAD, LATIN = "ＭＳ 明朝", "ＭＳ ゴシック", "Times New Roman"
@@ -145,6 +145,45 @@ CNT = {"fig": 0, "tab": 0, "eq": 0}
 def nxt(kind):
     CNT[kind] += 1
     return CNT[kind]
+
+
+_CHART_N = [0]
+
+
+def chart_figure(native, caption, num, width=125):
+    """Excel のグラフ（DrawingML チャート＋埋め込みブック）を図として挿入する。"""
+    from docx.opc.constants import RELATIONSHIP_TYPE as RT
+    from docx.opc.packuri import PackURI
+    from docx.opc.part import Part
+    from docx.oxml import parse_xml
+    xlsx, _, (wcm, hcm) = native
+    _CHART_N[0] += 1
+    n = _CHART_N[0]
+    pkg = doc.part.package
+    chart_part = Part(PackURI(f"/word/charts/chart{n}.xml"),
+                      "application/vnd.openxmlformats-officedocument.drawingml.chart+xml", b"", pkg)
+    xlsx_part = Part(PackURI(f"/word/embeddings/Microsoft_Excel_Worksheet{n}.xlsx"),
+                     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", xlsx, pkg)
+    rid_x = chart_part.relate_to(xlsx_part, RT.PACKAGE)
+    chart_part._blob = native[1].replace(b'r:id="rId1"', f'r:id="{rid_x}"'.encode())
+    rid_c = doc.part.relate_to(chart_part, RT.CHART)
+    cx = int(width * 36000)
+    cy = int(width * hcm / wcm * 36000)
+    p = para(align=WD_ALIGN_PARAGRAPH.CENTER, sb=6, sa=2, keep=True)
+    drawing = parse_xml(
+        '<w:drawing xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" '
+        'xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" '
+        'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" '
+        'xmlns:c="http://schemas.openxmlformats.org/drawingml/2006/chart" '
+        'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
+        f'<wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="{cx}" cy="{cy}"/>'
+        '<wp:effectExtent l="0" t="0" r="0" b="0"/>'
+        f'<wp:docPr id="{5000 + n}" name="グラフ {n}"/><wp:cNvGraphicFramePr/>'
+        '<a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/chart">'
+        f'<c:chart r:id="{rid_c}"/></a:graphicData></a:graphic></wp:inline></w:drawing>')
+    p.add_run()._r.append(drawing)
+    c = para(align=WD_ALIGN_PARAGRAPH.CENTER, sa=10)
+    font(c.add_run(f"図{num}　{caption}"), LATIN, BODY, 9.5)
 
 
 def figure(path, caption, num, width=130):
@@ -483,7 +522,7 @@ def data_results():
         tn, fn = nums[m]
         heading(f"5.3.{A.ORDER.index(m) + 1}　{A.NAME_JP[m]}（{m}，融点 {A.MELT[m]:.2f} ℃）", 3)
         cooling_table(m, tn)
-        figure(os.path.join(IMG, f"fig_cool_{m}.png"),
+        chart_figure(X.native_chart("cool", R, D, m),
                f"{A.NAME_JP[m]}（{m}）の冷却曲線（■：融点とみなした区間，破線：その平均値）", fn, 125)
         vals = " ＋ ".join(f"{x:.3f}" for x in c["values"])
         body(f"図{fn}より，{c['t0']:.0f}〜{c['t1']:.0f} s の{c['n']}点がプラトーにあたる．この区間の平均は")
@@ -576,7 +615,7 @@ def data_results():
     tr = nxt("tab")
     body(f"5つの測定点と，近似直線（式({n_res_lin})）および近似曲線（式({n_res_quad})）を図{fc}に示す．"
          f"また，各点における近似式からの残差（測定値－近似式の値）を表{tr}に示す．")
-    figure(os.path.join(IMG, "fig_calibration.png"), "検定に用いた5点と，最小二乗法による近似直線・近似曲線",
+    chart_figure(X.native_chart("cal", R, D), "検定に用いた5点と，最小二乗法による近似直線・近似曲線",
            fc, 130)
     rr = []
     for c, r1, r2 in zip(R["comp"], L["res1"], L["res2"]):
@@ -677,7 +716,7 @@ if COMPLETE:
          "定点の温度そのものに±1 ℃程度の不確かさがあると考えられる．")
     body(f"図{fd}に，近似直線・近似曲線と測定点のそれぞれについて，規格の熱起電力からのずれを温度に換算して"
          f"示す．")
-    figure(os.path.join(IMG, "fig_deviation.png"), "規格の熱起電力からのずれ（温度換算）", fd, 125)
+    chart_figure(X.native_chart("dev", R, D), "規格の熱起電力からのずれ（温度換算）", fd, 125)
 else:
     todo("【測定データ受領後に作成】JIS C 1602の熱起電力表（基準接点0 ℃）の値と測定値を比較する表（ΔE，温度換算"
          "ΔT，相対誤差，クラス2許容差との比較），ずれの傾向と原因（0 ℃のオフセット，熱の逃げ，凝固点降下，"

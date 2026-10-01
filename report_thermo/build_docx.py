@@ -20,6 +20,7 @@ from docx.oxml.ns import qn
 from docx.shared import Mm, Pt, RGBColor
 
 import analysis as A
+import excel_charts as X
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMG = os.path.join(HERE, "img")
@@ -35,8 +36,10 @@ out_path = sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, "熱電対�
 COMPLETE = A.is_complete(D)
 R = A.compute(D) if COMPLETE else None
 A.make_static_figs(IMG)
+XLSX = os.path.join(HERE, "熱電対の検定実験_データとグラフ.xlsx")
 if COMPLETE:
-    A.make_data_figs(R, D, IMG)
+    X.render_figures(R, D, IMG)        # グラフは Excel のグラフとして作成し，画像にして貼る
+    X.build_workbook(R, D, XLSX)
 
 BODY, HEAD, LATIN = "ＭＳ 明朝", "ＭＳ ゴシック", "Times New Roman"
 TODO = "【要記入】"
@@ -481,7 +484,7 @@ def data_results():
         heading(f"5.3.{A.ORDER.index(m) + 1}　{A.NAME_JP[m]}（{m}，融点 {A.MELT[m]:.2f} ℃）", 3)
         cooling_table(m, tn)
         figure(os.path.join(IMG, f"fig_cool_{m}.png"),
-               f"{A.NAME_JP[m]}（{m}）の冷却曲線（灰色の帯：融点とみなした区間）", fn, 130)
+               f"{A.NAME_JP[m]}（{m}）の冷却曲線（■：融点とみなした区間，破線：その平均値）", fn, 125)
         vals = " ＋ ".join(f"{x:.3f}" for x in c["values"])
         body(f"図{fn}より，{c['t0']:.0f}〜{c['t1']:.0f} s の{c['n']}点がプラトーにあたる．この区間の平均は")
         para(f"（{vals}）／{c['n']} ＝ {c['mean']:.3f} mV", left=6, sa=4, size=10)

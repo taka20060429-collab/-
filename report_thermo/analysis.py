@@ -19,7 +19,8 @@ plt.rcParams["mathtext.fontset"] = "dejavuserif"
 MELT = {"Sn": 231.97, "Pb": 327.52, "Zn": 419.58}           # 融点 [℃]（テキスト記載値）
 NAME_JP = {"Sn": "スズ", "Pb": "鉛", "Zn": "亜鉛"}
 ORDER = ["Sn", "Pb", "Zn"]
-PLATEAU_THR = 0.05                                             # プラトー判定のしきい値 [mV/15 s]
+PLATEAU_THR = 0.02                                             # 冷却時プラトー判定のしきい値 [mV/15 s]
+HEAT_THR = 0.05                                                # 加熱時に上昇が鈍った区間の判定 [mV/15 s]
 
 # ---- K熱電対の基準熱起電力（NIST ITS-90, 0〜1372 ℃, E[mV], t[℃]） ----
 _C = [-0.176004136860E-01, 0.389212049750E-01, 0.185587700320E-04, -0.994575928740E-07,
@@ -45,9 +46,21 @@ def tol_class2(t):
 
 
 # ---------------------------------------------------------------- データ判定
+def split_run(D, m):
+    """(冷却データ, 加熱データ, 最大点の添字) を返す。RAW があれば最大点で分割する。"""
+    raw = getattr(D, "RAW", None) or {}
+    if raw.get(m):
+        E = list(raw[m])
+        ip = max(range(len(E)), key=lambda i: E[i])
+        return E[ip:], E[:ip + 1], ip
+    return list(D.COOLING[m]), None, None
+
+
 def is_complete(D):
+    raw = getattr(D, "RAW", None) or {}
+    cool = getattr(D, "COOLING", None) or {}
     return (D.ROOM_TEMP is not None and D.ROOM_EMF is not None and D.ZERO_EMF is not None
-            and all(D.COOLING.get(m) for m in ORDER))
+            and all(raw.get(m) or cool.get(m) for m in ORDER))
 
 
 # ---------------------------------------------------------------- プラトー判定
@@ -131,13 +144,18 @@ def inv_quad(E, a, b, c):
 def compute(D):
     R = {"cool": {}}
     for m in ORDER:
-        E = list(D.COOLING[m])
+        E, H, ip = split_run(D, m)
         i0, i1 = find_plateau(E, D.DT, (D.PLATEAU or {}).get(m))
         st = plateau_stats(E, i0, i1)
         R["cool"][m] = {"E": E, "t": [i * D.DT for i in range(len(E))], "i0": i0, "i1": i1,
                         "t0": i0 * D.DT, "t1": i1 * D.DT, **st,
                         "Emin": min(E), "Emax": max(E),
-                        "supercool": _supercool(E, i0)}
+                        "supercool": _supercool(E, i0),
+                        "t_peak": None if ip is None else ip * D.DT, "E_peak": max(E)}
+        if H and len(H) > 3:
+            h0, h1 = find_plateau(H, D.DT, thr=HEAT_THR)
+            hs = plateau_stats(H, h0, h1)
+            R["cool"][m]["heat"] = {"t0": h0 * D.DT, "t1": h1 * D.DT, **hs}
     pts = [("0 ℃（氷水）", 0.0, D.ZERO_EMF), ("室温", float(D.ROOM_TEMP), D.ROOM_EMF)]
     pts += [(f"{NAME_JP[m]}（{m}）の融点", MELT[m], R["cool"][m]["mean"]) for m in ORDER]
     R["points"] = pts
@@ -207,7 +225,7 @@ def fig_cooling(R, m, D, path):
     ax.set_ylim(E.min() - pad, E.max() + pad)
     ax.set_xlim(0, t[-1] + D.DT)
     ax.set_xlabel("時間 [s]", fontsize=10); ax.set_ylabel("熱起電力 [mV]", fontsize=10)
-    ax.legend(fontsize=8, frameon=False, loc="lower left")
+    ax.legend(fontsize=8, loc="upper right", framealpha=1.0, edgecolor="0.6")
     _ax_style(ax)
     fig.tight_layout(); fig.savefig(path, dpi=200); plt.close(fig)
 

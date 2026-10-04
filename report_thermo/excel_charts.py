@@ -27,6 +27,8 @@ from PIL import Image, ImageChops
 import analysis as A
 
 FONT_JP = "游ゴシック"
+BLUE, ORANGE, GRAY = "4472C4", "ED7D31", "A5A5A5"   # Excel 既定の系列色（Office テーマ）
+AXIS_GRAY, TEXT_GRAY = "D9D9D9", "595959"
 THIN = Side(style="thin", color="000000")
 BOX = Border(left=THIN, right=THIN, top=THIN, bottom=THIN)
 
@@ -50,16 +52,17 @@ def _line(series, color="000000", width=9525, dash=None, none=False):
 
 def _base_chart(xtitle, ytitle, w=16, h=9.5):
     ch = ScatterChart()
-    ch.style = 1
+    ch.style = 2
     ch.title = None
     ch.x_axis.title = xtitle
     ch.y_axis.title = ytitle
-    ch.x_axis.delete = False
-    ch.y_axis.delete = False
-    ch.x_axis.majorGridlines = None
-    ch.y_axis.majorGridlines = ChartLines(spPr=GraphicalProperties(ln=LineProperties(solidFill="D9D9D9")))
-    ch.x_axis.majorTickMark = "in"
-    ch.y_axis.majorTickMark = "in"
+    for ax in (ch.x_axis, ch.y_axis):
+        ax.delete = False
+        ax.majorGridlines = ChartLines(spPr=GraphicalProperties(ln=LineProperties(solidFill=AXIS_GRAY, w=9525)))
+        ax.majorTickMark = "none"
+        ax.minorTickMark = "none"
+        ax.spPr = GraphicalProperties(ln=LineProperties(solidFill=AXIS_GRAY, w=9525))
+        ax.number_format = "General"
     ch.legend.position = "b"
     ch.graphical_properties = GraphicalProperties(ln=LineProperties(noFill=True))
     ch.width, ch.height = w, h
@@ -148,21 +151,20 @@ def sheet_cooling(wb, R, D, m, anchor_chart=True):
     ch = _base_chart("時間 [s]", "熱起電力 [mV]")
     x = Reference(ws, min_col=1, min_row=4, max_row=3 + n)
     s1 = Series(Reference(ws, min_col=2, min_row=4, max_row=3 + n), x, title="測定値")
-    s1.marker = _marker("circle", 3, "FFFFFF")
-    _line(s1, width=6350)
+    s1.marker = _marker("circle", 5, BLUE, BLUE)
+    _line(s1, BLUE, width=28575)
     s2 = Series(Reference(ws, min_col=3, min_row=4, max_row=3 + n), x, title="融点とみなした区間")
-    s2.marker = _marker("square", 5)
+    s2.marker = _marker("circle", 5, ORANGE, ORANGE)
     _line(s2, none=True)
     s3 = Series(Reference(ws, min_col=6, min_row=13, max_row=14), Reference(ws, min_col=5, min_row=13, max_row=14),
                 title=f"平均値 {c['mean']:.3f} mV")
     s3.marker = Marker(symbol="none")
-    _line(s3, dash="dash", width=9525)
+    _line(s3, GRAY, width=19050, dash="dash")
     for s in (s1, s2, s3):
         ch.series.append(s)
     lo, hi = _nice(min(c["E"]) - 0.1, max(c["E"]) + 0.1, 0.5)
     ch.y_axis.scaling.min, ch.y_axis.scaling.max = lo, hi
     ch.y_axis.majorUnit = 0.5 if hi - lo <= 3 else 1.0
-    ch.y_axis.number_format = "0.0"
     xmax = _nice(0, c["t"][-1], 100)[1]
     ch.x_axis.scaling.min, ch.x_axis.scaling.max = 0, xmax
     ch.x_axis.majorUnit = 100 if xmax <= 800 else 200
@@ -234,18 +236,16 @@ def sheet_lsq(wb, R, anchor_chart=True):
     nx = len(ts)
     xs = Reference(ws, min_col=11, min_row=4, max_row=3 + nx)
     s_l = Series(Reference(ws, min_col=12, min_row=4, max_row=3 + nx), xs, title="近似直線（1次式）")
-    s_l.marker = Marker(symbol="none"); _line(s_l, width=12700)
+    s_l.marker = Marker(symbol="none"); _line(s_l, ORANGE, width=28575)
     s_q = Series(Reference(ws, min_col=13, min_row=4, max_row=3 + nx), xs, title="近似曲線（2次式）")
-    s_q.marker = Marker(symbol="none"); _line(s_q, color="595959", width=12700, dash="dash")
+    s_q.marker = Marker(symbol="none"); _line(s_q, GRAY, width=28575, dash="dash")
     s_p = Series(Reference(ws, min_col=3, min_row=4, max_row=8), Reference(ws, min_col=2, min_row=4, max_row=8),
                  title="測定点")
-    s_p.marker = _marker("circle", 7); _line(s_p, none=True)
+    s_p.marker = _marker("circle", 7, BLUE, BLUE); _line(s_p, none=True)
     for s in (s_l, s_q, s_p):
         ch.series.append(s)
     ch.x_axis.scaling.min, ch.x_axis.scaling.max, ch.x_axis.majorUnit = 0, 450, 50
     ch.y_axis.scaling.min, ch.y_axis.scaling.max, ch.y_axis.majorUnit = 0, 20, 2
-    ch.y_axis.number_format = "0"
-    ch.x_axis.number_format = "0"
     if anchor_chart:
         ws.add_chart(ch, "O3")
     return ws, ch
@@ -279,12 +279,12 @@ def sheet_dev(wb, R, anchor_chart=True):
     n = len(ts)
     xs = Reference(ws, min_col=1, min_row=12, max_row=11 + n)
     s1 = Series(Reference(ws, min_col=2, min_row=12, max_row=11 + n), xs, title="近似直線（1次式）")
-    s1.marker = Marker(symbol="none"); _line(s1, width=12700)
+    s1.marker = Marker(symbol="none"); _line(s1, ORANGE, width=28575)
     s2 = Series(Reference(ws, min_col=3, min_row=12, max_row=11 + n), xs, title="近似曲線（2次式）")
-    s2.marker = Marker(symbol="none"); _line(s2, color="595959", width=12700, dash="dash")
+    s2.marker = Marker(symbol="none"); _line(s2, GRAY, width=28575, dash="dash")
     s3 = Series(Reference(ws, min_col=6, min_row=4, max_row=8), Reference(ws, min_col=2, min_row=4, max_row=8),
                 title="測定点")
-    s3.marker = _marker("circle", 7); _line(s3, none=True)
+    s3.marker = _marker("circle", 7, BLUE, BLUE); _line(s3, none=True)
     for s in (s1, s2, s3):
         ch.series.append(s)
     vals = [x for c in R["comp"] for x in [c["dT"]]]
@@ -293,8 +293,6 @@ def sheet_dev(wb, R, anchor_chart=True):
     d2 = [((L["a2"] * t * t + L["b2"] * t + L["c2"]) - A.emf_std(t)) / A.seebeck_std(t) for t in ts]
     lo, hi = _nice(min(vals + d1 + d2) - 0.5, max(vals + d1 + d2 + [0]) + 0.5, 1)
     ch.y_axis.scaling.min, ch.y_axis.scaling.max, ch.y_axis.majorUnit = lo, hi, 1
-    ch.y_axis.number_format = "0"
-    ch.x_axis.number_format = "0"
     ch.x_axis.scaling.min, ch.x_axis.scaling.max, ch.x_axis.majorUnit = 0, 450, 50
     ch.x_axis.crosses = "min"
     if anchor_chart:
@@ -394,7 +392,7 @@ def _q(t):
 
 def _fix_layout(root):
     """Excel が保存するときと同じ指定を加える：軸の題名と凡例をグラフ領域に重ねない，
-    グラフタイトルなし，角丸なし，文字は本文と同じフォント 9 pt。"""
+    グラフタイトルなし，角丸なし，文字は Excel 既定と同じ游ゴシック・濃い灰色・9 pt。"""
     if root.find(_q("roundedCorners")) is None:
         rc = etree.Element(_q("roundedCorners"))
         rc.set("val", "0")
@@ -417,7 +415,8 @@ def _fix_layout(root):
     if root.find(_q("txPr")) is None:
         tx = etree.fromstring(
             f'<c:txPr xmlns:c="{C_NS}" xmlns:a="{A_NS}"><a:bodyPr/><a:lstStyle/><a:p><a:pPr>'
-            f'<a:defRPr sz="900"><a:latin typeface="Times New Roman"/><a:ea typeface="ＭＳ 明朝"/>'
+            f'<a:defRPr sz="900"><a:solidFill><a:srgbClr val="{TEXT_GRAY}"/></a:solidFill>'
+            f'<a:latin typeface="游ゴシック"/><a:ea typeface="游ゴシック"/>'
             f'</a:defRPr></a:pPr><a:endParaRPr lang="ja-JP"/></a:p></c:txPr>')
         sppr = root.find(_q("spPr"))
         (sppr if sppr is not None else chart).addnext(tx)

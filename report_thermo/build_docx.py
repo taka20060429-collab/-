@@ -523,7 +523,7 @@ def data_results():
         heading(f"5.3.{A.ORDER.index(m) + 1}　{A.NAME_JP[m]}（{m}，融点 {A.MELT[m]:.2f} ℃）", 3)
         cooling_table(m, tn)
         chart_figure(X.native_chart("cool", R, D, m),
-               f"{A.NAME_JP[m]}（{m}）の冷却曲線（■：融点とみなした区間，破線：その平均値）", fn, 125)
+               f"{A.NAME_JP[m]}（{m}）の冷却曲線（橙色の点：融点とみなした区間，破線：その平均値）", fn, 125)
         vals = " ＋ ".join(f"{x:.3f}" for x in c["values"])
         body(f"図{fn}より，{c['t0']:.0f}〜{c['t1']:.0f} s の{c['n']}点がプラトーにあたる．この区間の平均は")
         para(f"（{vals}）／{c['n']} ＝ {c['mean']:.3f} mV", left=6, sa=4, size=10)

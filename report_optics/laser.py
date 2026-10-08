@@ -22,41 +22,46 @@ META = {"kai": None, "date": None, "submit": None, "han": "D班", "name": "森�
 
 # ---------------------------------------------------------------- 測定値（実験ノートの Excel より）
 LAM = 632.8e-9     # He-Ne レーザの波長 [m]
-L = 1.40           # スリット（ピンホール，格子）とスクリーンの距離 l [m]
-SLIT = [("狭いスリット", 25.0, 0.06), ("広いスリット", 13.5, 0.12)]        # (名前, PQ=x1 [mm], 公称の幅 [mm])
-PIN = [(0.1, 14.05), (0.2, 9.15), (0.3, 6.20)]                            # (公称の直径 r [mm], R1 [mm])
-DOUBLE = [(0.4, 5, 11.25), (0.2, 2, 7.80)]   # (公称の間隔 d [mm], はさんだ干渉じまの数, その長さ [mm])
-GRATING_X = 176.8                            # 1次の光点の間隔 PP′ [mm]
+L_SLIT = 1.40      # 単スリットとスクリーンの距離 l [m]
+L_PIN = 1.59       # ピンホールとスクリーンの距離 [m]
+L_DBL = 1.59       # 複スリットとスクリーンの距離 [m]
+L_GR = 1.59        # 回折格子とスクリーンの距離 [m]
+SLIT = [("狭いスリット", 29.6, 0.06), ("広いスリット", 16.9, 0.12)]        # (名前, PQ=x1 [mm], 公称の幅 [mm])
+PIN = [(0.1, 14.70), (0.2, 12.15), (0.3, 10.00)]                          # (公称の直径 r [mm], R1 [mm])
+DOUBLE = [(0.4, 5, 3.15), (0.2, 2, 3.95)]    # (公称の間隔 d [mm], 測定した干渉じまの数, 暗線の間隔Δx [mm])
+GRATING_X = 202.0                            # 1次の光点の間隔 PP′ [mm]
 GRATING_NOM = 1000                           # 回折格子の公称の本数 [本/cm]
+READ = 0.5                                   # スクリーン上の長さの読み取り誤差 [mm]（目安）
 
 # ---------------------------------------------------------------- 計算
 slit = []
 for name, x, nom in SLIT:
-    th = x * 1e-3 / (2 * L)
+    th = x * 1e-3 / (2 * L_SLIT)
     d = LAM / th
-    slit.append(dict(name=name, x=x, nom=nom, th=th, d=d * 1e3, err=(d * 1e3 - nom) / nom * 100))
+    slit.append(dict(name=name, x=x, nom=nom, th=th, d=d * 1e3, err=(d * 1e3 - nom) / nom * 100,
+                     rel_read=READ / x * 100))
 pin = []
 for nom, R in PIN:
-    th = R * 1e-3 / (2 * L)
+    th = R * 1e-3 / (2 * L_PIN)
     r = 1.22 * LAM / th
-    pin.append(dict(nom=nom, R=R, th=th, r=r * 1e3, err=(r * 1e3 - nom) / nom * 100))
+    pin.append(dict(nom=nom, R=R, th=th, r=r * 1e3, err=(r * 1e3 - nom) / nom * 100, rel_read=READ / R * 100,
+                    R_th=2.44 * L_PIN * LAM / (nom * 1e-3) * 1e3))
 dbl = []
-for nom, k, tot in DOUBLE:
-    dx = tot / k
-    d = L * LAM / (dx * 1e-3)
-    dbl.append(dict(nom=nom, k=k, tot=tot, dx=dx, d=d * 1e3, err=(d * 1e3 - nom) / nom * 100,
-                    rel_read=0.5 / tot * 100))
-gth = GRATING_X * 1e-3 / (2 * L)
+for nom, k, dx in DOUBLE:
+    d = L_DBL * LAM / (dx * 1e-3)
+    dbl.append(dict(nom=nom, k=k, dx=dx, d=d * 1e3, err=(d * 1e3 - nom) / nom * 100,
+                    rel_read=READ / dx * 100, rel_read_k=READ / (dx * k) * 100,
+                    dx_th=L_DBL * LAM / (nom * 1e-3) * 1e3))
+gth = GRATING_X * 1e-3 / (2 * L_GR)
 g_d = LAM / gth                         # [m]
 g_n = 1 / (g_d * 100)                   # 1 cm あたりの本数
+g_err = (g_n - GRATING_NOM) / GRATING_NOM * 100
 g_d_exact = LAM / math.sin(math.atan(gth))
 th_max = gth
-# スクリーン上の読み取り誤差 ±0.5 mm による相対誤差
-for s in slit:
-    s["rel_read"] = 0.5 / s["x"] * 100
-for p in pin:
-    p["rel_read"] = 0.5 / p["R"] * 100
 beam10 = 0.7 + 10 * 1.2e-3 * 1e3      # [mm]
+ALL = ([("単スリット（" + s_["name"] + "）", s_["err"], s_["rel_read"]) for s_ in slit] +
+       [(f"ピンホール（{p_['nom']:.1f} mm）", p_["err"], p_["rel_read"]) for p_ in pin] +
+       [(f"複スリット（{d_['nom']:.1f} mm）", d_["err"], d_["rel_read"]) for d_ in dbl])
 
 
 # ---------------------------------------------------------------- 模式図（自作）
@@ -145,7 +150,7 @@ def chart_pinhole():
     ws.append(["1/r [mm⁻¹]", "R1 測定 [mm]", "", "1/r [mm⁻¹]", "R1 理論 [mm]"])
     for p in pin:
         ws.append([1 / p["nom"], p["R"]])
-    k = 2.44 * L * LAM * 1e6      # R1 [mm] = k / r [mm]
+    k = 2.44 * L_PIN * LAM * 1e6      # R1 [mm] = k / r [mm]
     for i, x in enumerate(np.linspace(0, 11, 12)):
         ws.cell(row=2 + i, column=4, value=float(x))
         ws.cell(row=2 + i, column=5, value=float(k * x))
@@ -232,7 +237,8 @@ body("本実験で用いたHe-Neレーザは，ヘリウムとネオンの混合
 heading("B.4　実験方法")
 body("レーザ装置のアースが接続されていることを確認して電源を入れた．レーザ光を直接目に入れないこと，反射光を"
      "見つめないこと，スリットや回折格子に指で触れないことに注意した．光学台上で，スリット（またはピンホール，"
-     f"回折格子）とスクリーンの距離を l＝{L:.2f} m とした．")
+     f"回折格子）とスクリーンの距離 l は，単スリットでは {L_SLIT:.2f} m，ピンホール・複スリット・回折格子では"
+     f" {L_PIN:.2f} m とした．")
 heading("(1)　単スリットによる回折", 2)
 body("フィルムに幅の異なる2つの窓をあけた単スリットを光学台のマウントに取り付け，はじめに狭い方，次に広い方に"
      "レーザ光を当てた．スクリーン上の回折じまを見ながらスリットとレーザの位置を調整し，中央の明るい帯をはさむ"
@@ -242,8 +248,7 @@ body("直径0.1 mm，0.2 mm，0.3 mmの3種類のピンホールに交換し，�
      "R_{1}を測定した．式(" + str(n_pin) + ")からピンホールの直径rを求めた．")
 heading("(3)　複スリットによる干渉", 2)
 body("スリットの間隔が d＝0.4 mm と 0.2 mm の2種類の複スリット（スリットの幅はいずれも0.1 mm）に交換し，"
-     "スクリーン上の干渉じまについて，いくつかのしまをはさむ暗線間の距離を測定した．これをしまの数で割って"
-     "Δxとし，式(" + str(n_dx) + ")からdを求めた．")
+     "スクリーン上の干渉じまについて，隣り合う暗線の間隔Δxを測定した．式(" + str(n_dx) + ")からdを求めた．")
 heading("(4)　回折格子による干渉", 2)
 body("回折格子に交換し，スクリーン上の0次の光点の左右に現れる1次の光点P，P′の間隔xを測定した．式("
      + str(n_grd) + ")から格子定数dと1 cmあたりの本数1/dを求めた．")
@@ -262,46 +267,46 @@ table("使用器具", t_eq, ["器具", "数量", "備考"],
 
 # ---------------------------------------------------------------- 5 実験結果
 heading("B.5　実験結果と考察")
-body(f"すべての測定で，スクリーンまでの距離は l＝{L:.2f} m，レーザの波長は λ＝632.8 nm＝6.328×10⁻⁷ m である．")
+body(f"レーザの波長は λ＝632.8 nm＝6.328×10⁻⁷ m である．スクリーンまでの距離は，単スリットで l＝{L_SLIT:.2f} m，"
+     f"ピンホール・複スリット・回折格子で l＝{L_PIN:.2f} m である．")
 heading("(1)　単スリットによる回折", 2)
 t1 = nxt("tab")
 body(f"測定した第1暗点の間隔xと，式(" + str(n_slit) + f")から求めたスリットの幅dを表{t1}に示す．")
 table("単スリットの幅", t1, ["スリット", "x＝PQ [mm]", "θ_{1} [rad]", "d [mm]", "公称値 [mm]", "公称値との差 [%]"],
-      [[s["name"], f"{s['x']:.1f}", sci(s["th"], 3), f"{s['d']:.3f}", f"{s['nom']:.2f}", f"{s['err']:+.0f}"]
+      [[s["name"], f"{s['x']:.1f}", sci(s["th"], 3), f"{s['d']:.3f}", f"{s['nom']:.2f}", f"{s['err']:+.1f}"]
        for s in slit], [30, 22, 26, 22, 24, 30])
 s = slit[0]
 body("狭いスリットを例に計算過程を示す．")
-eq(rf"d\approx\dfrac{{2l\lambda}}{{x}}=\dfrac{{2\times{L:.2f}\times6.328\times10^{{-7}}}}{{{s['x'] * 1e-3:.4f}}}"
+eq(rf"d\approx\dfrac{{2l\lambda}}{{x}}=\dfrac{{2\times{L_SLIT:.2f}\times6.328\times10^{{-7}}}}{{{s['x'] * 1e-3:.4f}}}"
    rf"={tsci(s['d'] * 1e-3, 3)}\ \mathrm{{m}}={s['d']:.3f}\ \mathrm{{mm}}", numbered=False, size=11)
 
 heading("(2)　ピンホールによる回折", 2)
 t2 = nxt("tab")
 body(f"第一暗環の直径R_{{1}}と，式(" + str(n_pin) + f")から求めたピンホールの直径rを表{t2}に示す．")
 table("ピンホールの直径", t2, ["公称の直径 [mm]", "R_{1} [mm]", "θ_{1} [rad]", "r [mm]", "公称値との差 [%]"],
-      [[f"{p['nom']:.1f}", f"{p['R']:.2f}", sci(p["th"], 3), f"{p['r']:.3f}", f"{p['err']:+.0f}"] for p in pin],
+      [[f"{p['nom']:.1f}", f"{p['R']:.2f}", sci(p["th"], 3), f"{p['r']:.3f}", f"{p['err']:+.1f}"] for p in pin],
       [30, 24, 26, 24, 32])
 p = pin[0]
 body("直径0.1 mmのピンホールを例に計算過程を示す．")
-eq(rf"r\approx\dfrac{{2.44\,l\lambda}}{{R_1}}=\dfrac{{2.44\times{L:.2f}\times6.328\times10^{{-7}}}}"
+eq(rf"r\approx\dfrac{{2.44\,l\lambda}}{{R_1}}=\dfrac{{2.44\times{L_PIN:.2f}\times6.328\times10^{{-7}}}}"
    rf"{{{p['R'] * 1e-3:.5f}}}={tsci(p['r'] * 1e-3, 3)}\ \mathrm{{m}}={p['r']:.3f}\ \mathrm{{mm}}",
    numbered=False, size=11)
 
 heading("(3)　複スリットによる干渉", 2)
 t3 = nxt("tab")
-body(f"いくつかの干渉じまをはさむ暗線間の距離と，そこから求めたΔxおよびdを表{t3}に示す．")
-table("複スリットの間隔", t3, ["公称の間隔 [mm]", "しまの数", "暗線間の距離 [mm]", "Δx [mm]", "d [mm]",
-                            "公称値との差 [%]"],
-      [[f"{d['nom']:.1f}", d["k"], f"{d['tot']:.2f}", f"{d['dx']:.2f}", f"{d['d']:.3f}", f"{d['err']:+.1f}"]
-       for d in dbl], [26, 18, 28, 20, 22, 30])
+body(f"測定した暗線の間隔Δxと，式(" + str(n_dx) + f")から求めたdを表{t3}に示す．参考として，公称の間隔から"
+     f"計算されるΔxの値も併記した．")
+table("複スリットの間隔", t3, ["公称の間隔 [mm]", "Δx 測定 [mm]", "Δx 公称値から [mm]", "d [mm]", "公称値との差 [%]"],
+      [[f"{d['nom']:.1f}", f"{d['dx']:.2f}", f"{d['dx_th']:.2f}", f"{d['d']:.3f}", f"{d['err']:+.0f}"]
+       for d in dbl], [28, 28, 34, 24, 32])
 d = dbl[0]
 body("間隔0.4 mmの複スリットを例に計算過程を示す．")
-eq(rf"\Delta x=\dfrac{{{d['tot']:.2f}}}{{{d['k']}}}={d['dx']:.2f}\ \mathrm{{mm}},\quad"
-   rf"d=\dfrac{{l\lambda}}{{\Delta x}}=\dfrac{{{L:.2f}\times6.328\times10^{{-7}}}}{{{d['dx'] * 1e-3:.5f}}}"
+eq(rf"d=\dfrac{{l\lambda}}{{\Delta x}}=\dfrac{{{L_DBL:.2f}\times6.328\times10^{{-7}}}}{{{d['dx'] * 1e-3:.5f}}}"
    rf"={tsci(d['d'] * 1e-3, 3)}\ \mathrm{{m}}={d['d']:.3f}\ \mathrm{{mm}}", numbered=False, size=11)
 
 heading("(4)　回折格子による干渉", 2)
 body(f"1次の光点P，P′の間隔は x＝{GRATING_X:.1f} mm であった．式(" + str(n_grd) + ")より，")
-eq(rf"d\approx\dfrac{{2l\lambda}}{{x}}=\dfrac{{2\times{L:.2f}\times6.328\times10^{{-7}}}}{{{GRATING_X * 1e-3:.4f}}}"
+eq(rf"d\approx\dfrac{{2l\lambda}}{{x}}=\dfrac{{2\times{L_GR:.2f}\times6.328\times10^{{-7}}}}{{{GRATING_X * 1e-3:.4f}}}"
    rf"={tsci(g_d, 3)}\ \mathrm{{m}}={tsci(g_d * 100, 3)}\ \mathrm{{cm}}", numbered=False, size=11)
 body(f"となり，1 cmあたりの溝の本数は 1/d＝{g_n:.0f} 本/cm であった．公称値 {GRATING_NOM} 本/cm に対する相対誤差は"
      f"{abs(g_n - GRATING_NOM) / GRATING_NOM * 100:.1f} %である．")
@@ -327,30 +332,41 @@ table("実験結果のまとめ", t5, ["測定対象", "測定値", "公称値"]
 # ---------------------------------------------------------------- 6 考察
 heading("(5)　考察", 2)
 heading("(a)　測定値と公称値の比較", 3)
-body(f"図{f_c}より，すべての測定値は公称値と同じ程度の大きさになり，回折・干渉の式から光の波長とスクリーン上の"
-     f"長さだけを用いて，0.1 mm程度の微小な寸法を求められることが確かめられた．ただし，ほとんどの測定値は公称値"
-     f"よりも大きかった（単スリット{slit[0]['err']:+.0f} %，{slit[1]['err']:+.0f} %，ピンホール"
-     f"{pin[0]['err']:+.0f} %，{pin[1]['err']:+.0f} %，{pin[2]['err']:+.0f} %）．")
-body(f"スクリーン上の長さを読み取るときの誤差を±0.5 mm とすると，それによる相対誤差は，単スリットで"
-     f"{slit[0]['rel_read']:.0f} %，{slit[1]['rel_read']:.0f} %，ピンホールで{pin[0]['rel_read']:.0f}〜"
-     f"{pin[2]['rel_read']:.0f} %程度にとどまり，公称値との差を説明できない．式(" + str(n_slit) +
-     f")，(" + str(n_pin) + ")では求める寸法はスクリーン上の長さに反比例するので，測定値が大きく出たということは，"
-     "暗点や暗環の間隔を実際より短く読んでいたことを意味する．回折じまの暗い部分は幅をもってぼやけて見えるため，"
-     "最も暗い中心ではなく，中央の明るい部分の縁（暗部の内側）を読んでいたと考えられる．とくに直径0.1 mmの"
-     "ピンホールでは第一暗環の直径が14 mm と大きく，光が広がって暗くなるため，暗環の位置の判断が難しく差が大きく"
-     "なったと考えられる．")
-body(f"図{f_p}を見ると，R_{{1}}は1/rが大きいほど大きくなり，R_{{1}}がrに反比例するという関係は定性的に確認できた．"
-     f"ただし，r＝0.1 mm の点は理論の直線（{k_pin:.1f}/r mm）より下にあり，上で述べたように暗環を小さめに読んだ"
-     f"影響が最も大きく出ている．")
-body(f"複スリットでは，間隔0.4 mmで{dbl[0]['err']:+.1f} %とよく一致したのに対し，0.2 mmでは{dbl[1]['err']:+.1f} %"
-     f"と差が大きかった．0.4 mmでは干渉じま{dbl[0]['k']}個分（{dbl[0]['tot']:.2f} mm）をまとめて測ったのに対し，"
-     f"0.2 mmでは{dbl[1]['k']}個分（{dbl[1]['tot']:.2f} mm）しか測っていない．読み取り誤差±0.5 mmによる相対誤差は"
-     f"それぞれ{dbl[0]['rel_read']:.0f} %，{dbl[1]['rel_read']:.0f} %であり，測定するしまの数が少ないほど誤差が"
-     f"大きくなることと整合する．しまの間隔は，できるだけ多くのしまをまとめて測って割ることで精度が上がる．")
-body(f"回折格子では 1/d＝{g_n:.0f} 本/cm となり，公称値 {GRATING_NOM} 本/cm との差は"
-     f"{(g_n - GRATING_NOM) / GRATING_NOM * 100:+.1f} %であった．回折格子では光点が鋭く，しかも1次の光点の間隔が"
-     f"{GRATING_X:.0f} mm と長いため，±0.5 mm の読み取り誤差による相対誤差は{0.5 / GRATING_X * 100:.1f} %にすぎない．"
-     f"スリットやピンホールに比べて格段に精度よく測定できたのはこのためである．")
+good = [n for n, e, _ in ALL if abs(e) < 5]
+bad = [(n, e, rr) for n, e, rr in ALL if abs(e) >= 5]
+n_pos = sum(1 for _, e, _ in ALL if e > 0)
+n_neg = sum(1 for _, e, _ in ALL if e < 0)
+body(f"図{f_c}より，測定値はいずれも公称値と同じ程度の大きさになり，光の波長とスクリーン上の長さだけから"
+     f"0.1 mm程度の微小な寸法を求められることが確かめられた．公称値との差が5 %未満だったのは"
+     + ("，".join(good) if good else "なし") + f"であり，回折格子も{g_err:+.1f} %と非常によく一致した．"
+     f"一方で，" + "，".join(f"{n}（{e:+.0f} %）" for n, e, _ in bad) + "は差が大きかった．")
+body(f"スクリーン上の長さの読み取り誤差を±{READ} mm とすると，それによる相対誤差は"
+     + "，".join(f"{n}で{rr:.0f} %" for n, _, rr in bad) +
+     "である．式(" + str(n_slit) + ")，(" + str(n_pin) + ")，(" + str(n_dx) + ")では求める寸法がスクリーン上の"
+     "長さに反比例するので，長さの相対誤差がそのまま寸法の相対誤差になる．"
+     + ("差の大きかった測定のうち，複スリットは読み取り誤差と同程度の差であり，間隔の小さいしまを1つ分だけ読んだ"
+        "ことが主な原因と考えられる．" if all(abs(d_['err']) < 2.5 * d_['rel_read'] for d_ in dbl) and
+        any(abs(d_['err']) >= 5 for d_ in dbl) else "")
+     + f"また，公称値より大きい測定値が{n_pos}個，小さい測定値が{n_neg}個あり，"
+     + ("ずれの向きがそろっていないことから，一方向の系統誤差よりも，ぼやけたしまの位置をどこと判断したかという"
+        "読み取りのばらつきが主な原因と考えられる．" if n_pos and n_neg else
+        "ずれの向きがそろっていることから，しまの位置を一方向にずらして読む系統的な癖があったと考えられる．"))
+pin_sorted = sorted(pin, key=lambda p_: p_["nom"])
+body(f"ピンホールでは，式(" + str(n_pin) + f")より第一暗環の直径R_{{1}}は直径rに反比例するはずである．図{f_p}を見ると，"
+     f"rが大きいほどR_{{1}}は小さくなっており，反比例の傾向は確認できた．しかし理論値（{k_pin:.1f}/r mm）と比べると，"
+     + "，".join(f"r＝{p_['nom']:.1f} mm では測定値 {p_['R']:.2f} mm に対し理論値 {p_['R_th']:.1f} mm"
+                for p_ in pin_sorted)
+     + f"であり，とくに直径0.1 mmのピンホールで差が大きい．小さいピンホールほど光が大きく広がって暗くなるため，"
+     f"外側の暗環の位置を判断しにくく，内側の明るい部分の縁を暗環と見なしてR_{{1}}を小さく読んだ可能性がある．")
+body(f"複スリットについて，公称の間隔から計算されるΔxは0.4 mmで{dbl[0]['dx_th']:.2f} mm，0.2 mmで"
+     f"{dbl[1]['dx_th']:.2f} mm であり，測定値（{dbl[0]['dx']:.2f} mm，{dbl[1]['dx']:.2f} mm）との差は0.5 mm を"
+     f"超えるものもある．暗線の間隔が数 mm と小さいため，1つ分の間隔を読むと読み取り誤差の影響が大きい．"
+     f"5つ分の間隔をまとめて測れば，同じ読み取り誤差でも相対誤差は1/5になる"
+     f"（0.4 mmのスリットで{dbl[0]['rel_read']:.0f} %→{dbl[0]['rel_read'] / 5:.0f} %）．")
+body(f"回折格子では 1/d＝{g_n:.0f} 本/cm となり，公称値 {GRATING_NOM} 本/cm との差は{g_err:+.1f} %であった．"
+     f"回折格子では光点が鋭く，しかも1次の光点の間隔が {GRATING_X:.0f} mm と長いため，±{READ} mm の読み取り誤差に"
+     f"よる相対誤差は{READ / GRATING_X * 100:.1f} %にすぎない．他の測定に比べて格段に精度よく測定できたのはこのため"
+     f"である．")
 
 heading("(b)　小角近似の妥当性", 3)
 body(f"本実験では sinθ≈tanθ≈θ と近似した．回折角が最も大きいのは回折格子の1次の光で，θ_{{1}}≈x/(2l)＝"

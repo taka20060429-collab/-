@@ -43,6 +43,7 @@ TEXT_W = 160  # 本文幅 [mm]
 doc = None
 EQDIR = None
 CNT = {}
+PART = [""]          # 部の記号（"A"，"B"）．番号は A-1，A-2 … の形になる
 _CHART_N = [0]
 
 
@@ -147,7 +148,13 @@ def todo(text):
 
 def nxt(kind):
     CNT[kind] += 1
-    return CNT[kind]
+    return f"{PART[0]}-{CNT[kind]}" if PART[0] else CNT[kind]
+
+
+def set_part(prefix):
+    """部を切り替え，図・表・式の番号を 1 から付け直す。"""
+    PART[0] = prefix
+    CNT.update({"fig": 0, "tab": 0, "eq": 0})
 
 
 # ---------------------------------------------------------------- 図・表・式

@@ -196,27 +196,6 @@ def chart_inverse():
     return C.native(ws, ch, "G2")
 
 
-def chart_compare():
-    """測定ごとの焦点距離（3 つの方法）。"""
-    ws = C.new_sheet("f")
-    ws.append(["回", "凸（レンズの公式）f [cm]", "凸（ベッセル）f [cm]", "凹 f′ [cm]"])
-    for i in range(4):
-        ws.append([i + 1, cv[i]["f"], bs[i]["f"], cc[i]["f"]])
-    ch = C.base_chart("測定回", "焦点距離 [cm]", h=9)
-    for col, color, name in [(2, C.BLUE, "凸レンズ（レンズの公式）"), (3, C.ORANGE, "凸レンズ（ベッセルの方法）"),
-                             (4, C.GRAY, "凹レンズ")]:
-        s = Series(Reference(ws, min_col=col, min_row=2, max_row=5), Reference(ws, min_col=1, min_row=2, max_row=5),
-                   title=name)
-        s.marker = C.marker("circle", 7, color); C.line(s, color, width=19050)
-        ch.series.append(s)
-    ch.x_axis.scaling.min, ch.x_axis.scaling.max, ch.x_axis.majorUnit = 0.5, 4.5, 1
-    allf = [r["f"] for r in cv + bs + cc]
-    ch.y_axis.scaling.min = math.floor(min(allf)) - 1
-    ch.y_axis.scaling.max = math.ceil(max(allf)) + 1
-    ch.y_axis.majorUnit = 1
-    return C.native(ws, ch, "G2")
-
-
 # ================================================================ 文書
 STANDALONE = __name__ == "__main__"
 if STANDALONE:
@@ -388,9 +367,6 @@ eq(rf"\dfrac{{1}}{{f'}}=\dfrac{{1}}{{{r['a']:.3f}}}-\dfrac{{1}}{{{r['b']:.3f}}}=
    rf"\quad f'={r['f']:.2f}\ \mathrm{{cm}}", numbered=False, size=11)
 body(f"4回の平均は f′＝{f3:.2f} cm，標準偏差は{s3:.2f} cm であった．よって，凹レンズの焦点距離は "
      f"f′＝({f3:.1f}±{s3:.1f}) cm であり，公称値 {F_NOM:.1f} cm に対する相対誤差は{abs(err(f3)):.1f} %であった．")
-f_cmp = nxt("fig")
-body(f"3つの測定で得た各回の焦点距離を図{f_cmp}に示す．")
-C.chart_figure(chart_compare(), "各回の測定で得た焦点距離", f_cmp, 120)
 
 heading("(3)　凸レンズのガラスの屈折率", 2)
 t4 = nxt("tab")

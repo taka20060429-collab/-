@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Baby Dino Surprise Egg</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #f6eefa; overflow: hidden; }
+  body { display: grid; place-items: center; font-family: system-ui, sans-serif; }
+  canvas { display: block; aspect-ratio: 9 / 16; height: min(100vh, 177.78vw); width: auto; border-radius: 12px; }
+  #play { position: fixed; inset: 0; margin: auto; width: 120px; height: 120px; border-radius: 50%; border: 0;
+          background: #ff3b3b; color: #fff; font-size: 48px; cursor: pointer; box-shadow: 0 8px 24px #0003; }
+  body.render #play { display: none; }
+  body.render canvas { border-radius: 0; height: auto; }
+</style>
+<script type="importmap">{ "imports": { "three": "./vendor/three.module.min.js" } }</script>
+</head>
+<body>
+<canvas id="c"></canvas>
+<button id="play" aria-label="Play">▶</button>
+<audio id="music" src="soundtrack.wav" loop preload="auto"></audio>
+<script type="module">
+import { createScene, DURATION } from './scene.js';
+const params = new URLSearchParams(location.search);
+const canvas = document.getElementById('c');
+
+if (params.has('render')) {
+  // Headless render mode: render.mjs calls window.renderAt(t) for each frame.
+  document.body.classList.add('render');
+  const w = +params.get('w') || 1080, h = +params.get('h') || 1920;
+  const app = createScene(canvas, w, h);
+  window.renderAt = t => { app.render(t); return canvas.toDataURL('image/png'); };
+  window.ready = true;
+} else {
+  const app = createScene(canvas, 1080, 1920);
+  const audio = document.getElementById('music');
+  let start = null;
+  document.getElementById('play').onclick = e => {
+    e.target.remove();
+    audio.play().catch(() => {});
+    start = performance.now();
+  };
+  (function loop() {
+    // Follow the soundtrack clock when it's playing so picture and sound stay in sync.
+    const t = start === null ? 0 : (!audio.paused ? audio.currentTime : (performance.now() - start) / 1000) % DURATION;
+    app.render(t);
+    requestAnimationFrame(loop);
+  })();
+}
+</script>
+</body>
+</html>

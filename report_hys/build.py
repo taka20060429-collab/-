@@ -44,7 +44,9 @@ wb_in = openpyxl.load_workbook(os.path.join(HERE, "data", "hysteresis.xlsx"), da
 ws_in = wb_in.active
 AIR = [(ws_in[f"A{r}"].value, ws_in[f"B{r}"].value) for r in range(3, 57)]
 ALN = [(ws_in[f"E{r}"].value, ws_in[f"F{r}"].value) for r in range(3, 72)]
-IRON = [(ws_in[f"C{r}"].value, ws_in[f"D{r}"].value) for r in range(3, 57)]
+# 純鉄は自分たちの班では測定していないため，同じ実験をしたもう一方の班の測定値（other_group.xlsx）を用いる
+ws_o = openpyxl.load_workbook(os.path.join(HERE, "data", "other_group.xlsx"), data_only=True).active
+IRON = [(ws_o[f"F{r}"].value, ws_o[f"G{r}"].value) for r in range(7, 61)]
 IRON_OK = all(b is not None for _, b in IRON)
 
 SEG_NAMES = ["(ⅰ) N：0 A から増加（初期磁化）", "(ⅱ) N：最大から 0 A へ減少", "(ⅲ) S：0 A から増加",
@@ -89,6 +91,10 @@ def cross(seg):
 
 
 Br_p, Br_n = seg_aln[1][-1][1], seg_aln[3][-1][1]
+Fe_Br_p, Fe_Br_n = seg_iron[1][-1][1], seg_iron[3][-1][1]
+Fe_Ic_n, Fe_Ic_p = cross(seg_iron[2]), cross(seg_iron[4])
+Fe_Bmax = max(b for _, b in IRON)
+Fe_Bmin = min(b for _, b in IRON)
 Ic_n, Ic_p = cross(seg_aln[2]), cross(seg_aln[4])
 Bs_p = max(b for _, b in ALN)
 Bs_n = min(b for _, b in ALN)
@@ -501,8 +507,21 @@ heading("4.2　純鉄", 2)
 if IRON_OK:
     ti = seg_table("純鉄の励磁電流と磁束密度", seg_iron)
     fi_ = nxt("fig")
-    body(f"測定結果を表{ti}と図{fi_}に示す．")
+    body(f"本実験は2つの班に分かれて行い，純鉄の測定はもう一方の班が担当した．そのため，純鉄の結果には"
+         f"その班の測定値を用いた．測定結果を表{ti}と図{fi_}に示す．")
     C.chart_figure(chart_loop(seg_iron), "純鉄の磁化特性", fi_, 140)
+    b5 = dict(seg_iron[0])[5.0]
+    b5a = dict(seg_air[0])[5.0]
+    body(f"純鉄では，わずか 0.2 A で磁束密度が{dict(seg_iron[0])[0.2]:.2f} T まで急に大きくなり，その後は"
+         f"増え方がしだいに小さくなって，5 A で{b5:.2f} T に達した．同じ 5 A での空芯の磁束密度"
+         f"（{b5a:.3f} T）の約{b5 / b5a:.0f}倍であり，純鉄はわずかな磁界で大きく磁化することがわかる．"
+         f"電流を増やすときと減らすときのグラフはほぼ重なり，ループの幅は非常に狭かった．"
+         f"電流を0 A に戻したときの磁束密度（残留磁束密度）は{Fe_Br_p:.2f} T と{Fe_Br_n:.2f} T で，"
+         f"最大値の数%しか残らず，磁束密度が0になる電流も{Fe_Ic_p:.2f} A と{Fe_Ic_n:.2f} A とごく小さかった．")
+    body(f"アルニコと比べると，純鉄は磁束密度が2倍以上大きいのに，残留磁束密度と保磁力（0 になる電流）は"
+         f"はるかに小さい．このように，磁化しやすく，磁界を取り去ると磁化がほとんど残らないことから，"
+         f"純鉄は変圧器やモーター，電磁石の鉄心に適した軟磁性材料であることがわかる．なお，5 A 付近でも"
+         f"磁束密度はわずかに増え続けており，完全な飽和には達していなかった．")
 else:
     C.todo("【要データ】純鉄の磁束密度の測定値が Excel に入っていないため，表とグラフは未作成．")
 
@@ -611,7 +630,9 @@ body(f"励磁コイルの中に試料を入れて，電流と磁束密度の関�
      f"その傾きから電流と磁界の関係 H≒{CH:.0f}I［A/m］を求めた．アルニコでははっきりしたヒステリシスループが"
      f"現れ，保磁力は約{abs(Hc_n):.2g} A/m，残留磁束密度は約{abs(Br_p):.2f}〜{abs(Br_n):.2f} T であった．"
      f"初透磁率は{MU_I:.2e} H/m（比透磁率{MU_I / MU0:.1f}），比透磁率は弱い磁界で約{REL_MEAN:.1f}と小さく，"
-     f"アルニコが磁化しにくく磁化が残りやすい硬磁性材料であることを確かめた．".replace("e-06", "×10⁻⁶"))
+     f"アルニコが磁化しにくく磁化が残りやすい硬磁性材料であることを確かめた．一方，純鉄（もう一方の班の測定値）は"
+     f"5 A で約{Fe_Bmax:.1f} T と大きく磁化するのに残留磁束密度は{abs(Fe_Br_n):.2f} T 以下で，ループの幅がほとんどない"
+     f"軟磁性材料であった．".replace("e-06", "×10⁻⁶"))
 body("課題として，アルニコは最大電流でも飽和しておらず，正負のループが対称にならなかった．より大きな磁界まで"
      "かけることや，測定の前に十分に消磁を行い，磁束計の0点を確認しながら測定することで，より正確な保磁力や"
      "残留磁束密度が得られると考えられる．")

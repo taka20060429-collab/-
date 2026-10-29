@@ -1,0 +1,427 @@
+<title>物理学2 後期中間 攻略ノート</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<style>
+/* Layout: one reading column; exam-sheet framing for mock questions, hot/cold reservoir accents as in the companion notes */
+:root {
+  --bg: #f5f7f8;
+  --paper: #ffffff;
+  --ink: #18212b;
+  --muted: #5b6672;
+  --rule: #d9dfe4;
+  --hot: #b9471b;
+  --hot-soft: #fbeee7;
+  --cold: #1f5aa8;
+  --cold-soft: #e8f0fa;
+  --font-display: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12171d; --paper: #19212a; --ink: #e4e9ee; --muted: #9aa6b2; --rule: #2c3743;
+    --hot: #f08a5d; --hot-soft: #3a241b; --cold: #7fb0f0; --cold-soft: #1a2a40;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12171d; --paper: #19212a; --ink: #e4e9ee; --muted: #9aa6b2; --rule: #2c3743;
+  --hot: #f08a5d; --hot-soft: #3a241b; --cold: #7fb0f0; --cold-soft: #1a2a40;
+  color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.85;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap { max-width: 860px; margin: 0 auto; }
+header.top { padding-block: 40px 20px; border-bottom: 2px solid var(--ink); }
+.eyebrow { font-size: 12px; letter-spacing: .14em; color: var(--muted); font-weight: 700; }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 6vw, 42px); line-height: 1.3; margin: 6px 0 10px; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 62ch; margin: 0; }
+nav.idx {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--bg); border-bottom: 1px solid var(--rule);
+  display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; font-size: 13px;
+}
+nav.idx a { flex: none; text-decoration: none; color: var(--ink); border: 1px solid var(--rule); border-radius: 999px; padding: 2px 12px; background: var(--paper); }
+nav.idx a:hover, nav.idx a:focus-visible { border-color: var(--hot); color: var(--hot); outline: none; }
+section { padding-block: 36px 8px; scroll-margin-top: 60px; }
+h2 { font-family: var(--font-display); font-weight: 800; font-size: 26px; line-height: 1.4; margin: 0 0 8px; text-wrap: balance; }
+h2 .wk { font-family: var(--font-mono); font-size: 14px; color: var(--hot); display: block; letter-spacing: .08em; }
+h3 { font-size: 17px; margin: 26px 0 6px; font-weight: 700; }
+h4 { margin: 0 0 6px; font-size: 15px; }
+p { margin: 8px 0; }
+ul, ol { padding-left: 1.3em; margin: 8px 0; }
+li { margin: 4px 0; }
+.box { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 16px 18px; margin: 14px 0; min-width: 0; }
+.box.hot { border-color: var(--hot); }
+.box.hot h4 { color: var(--hot); }
+.box.cold { border-color: var(--cold); }
+.box.cold h4 { color: var(--cold); }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.grid2 > * { min-width: 0; }
+.tbl { overflow-x: auto; margin: 12px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; background: var(--paper); }
+th, td { border: 1px solid var(--rule); padding: 6px 10px; text-align: left; vertical-align: top; }
+th { background: var(--bg); font-weight: 700; white-space: nowrap; }
+td.n { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-block: 4px; }
+/* exam sheet */
+.sheet { background: var(--paper); border: 1px solid var(--ink); padding: 18px 20px; margin: 16px 0 10px; }
+.sheet .stem { border: 1px solid var(--ink); padding: 8px 12px; margin-bottom: 10px; font-size: 15px; }
+.sheet ol { list-style: none; padding-left: 0; }
+.sheet li { padding-left: 2.4em; text-indent: -2.4em; }
+.sheet .no { font-family: var(--font-mono); font-weight: 600; display: inline-block; width: 2.4em; text-indent: 0; }
+.ans { border-left: 3px solid var(--hot); padding-left: 14px; margin: 10px 0 18px; min-width: 0; }
+.ans .lbl { font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--hot); }
+.say { background: var(--hot-soft); padding: 1px 6px; border-radius: 3px; }
+.time { display: flex; height: 34px; border-radius: 4px; overflow: hidden; font-size: 12px; margin: 10px 0 4px; }
+.time > div { display: flex; align-items: center; justify-content: center; color: var(--paper); white-space: nowrap; overflow: hidden; padding-inline: 4px; }
+.legend { font-size: 13px; color: var(--muted); }
+small.note { color: var(--muted); font-size: 13px; }
+.plan { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; }
+.plan dt { font-family: var(--font-mono); font-weight: 600; color: var(--hot); }
+.plan dd { margin: 0; }
+.check { padding-left: 1.6em; }
+.check li { list-style: none; position: relative; }
+.check li::before { content: "□"; position: absolute; left: -1.4em; color: var(--hot); }
+footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 13px; }
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">物理学2（E科）後期中間試験・60分・持ち込み不可</div>
+  <h1>後期中間 攻略ノート</h1>
+  <p class="lede">網羅版ノートとは別に、この試験の形式だけに絞った作戦をまとめました。昨年の問題の形に合わせた予想問題4題と、その模範答案が中心です。</p>
+</header>
+
+<nav class="idx" aria-label="目次">
+  <a href="#format">試験の型</a>
+  <a href="#time">時間配分</a>
+  <a href="#write">答案の書き方</a>
+  <a href="#mockA">予想A カルノー</a>
+  <a href="#mockB">予想B エントロピー</a>
+  <a href="#mockC">予想C 断熱変化</a>
+  <a href="#mockD">予想D 第二法則</a>
+  <a href="#extra">講義だけの用語</a>
+  <a href="#memo">暗記カード</a>
+  <a href="#plan">勉強プラン</a>
+</nav>
+
+<!-- ===== 型 ===== -->
+<section id="format">
+  <h2><span class="wk">01 · FORMAT</span>この試験の型</h2>
+  <p>昨年（令和7年11月7日）の問題から読み取れる構造です。今年も同じ先生なら、まずこの型で来ると考えて準備します。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>小問</th><th>昨年の中身</th><th>問われ方</th><th>求められていること</th></tr></thead>
+    <tbody>
+      <tr><td>前置き</td><td>\(H=U+PV\) の定義</td><td>テーマの宣言</td><td>テーマを見て、使う道具を思い出す</td></tr>
+      <tr><td>(1)</td><td>ジュール・トムソンの実験とメリット</td><td>講義内容の解説</td><td>実験・現象を言葉と図で説明</td></tr>
+      <tr><td>(2)</td><td>比熱 \(d'Q/dT\) の意味</td><td>定義の解説</td><td>定義を正確に＋なぜそう定義するか</td></tr>
+      <tr><td>(3)</td><td>\(C_P=(\partial H/\partial T)_P\)</td><td>導出（演習そのまま）</td><td>第一法則から数行で導く</td></tr>
+      <tr><td>(4)</td><td>\(C_P-C_V\) の一般式</td><td>おまけ（発展導出）</td><td>全微分を使った導出</td></tr>
+    </tbody>
+  </table></div>
+  <div class="box hot">
+    <h4>ここから決める作戦</h4>
+    <ul>
+      <li><b>(3) は確実に取る</b>：演習の導出問題そのものなので、演習の導出を全部「何も見ずに書ける」状態にする。</li>
+      <li><b>(1)(2) は文章で稼ぐ</b>：完璧な正解が1つあるタイプではない。定義・理由・具体例・図を書けば部分点が積み上がる。</li>
+      <li><b>(4) は書けるところまで</b>：「目標」と「方針」を書くだけでも、言葉で説明せよという指示に沿っている。白紙にしない。</li>
+      <li><b>数値計算の暗記はほぼ不要</b>：持ち込み不可・電卓なしなので、数値より導出と説明に時間を使う。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 時間 ===== -->
+<section id="time">
+  <h2><span class="wk">02 · TIME</span>60分の時間配分</h2>
+  <div class="time" role="img" aria-label="時間配分：読む5分、(1)(2)で20分、(3)で12分、(4)で15分、見直し8分">
+    <div style="flex:5;background:var(--muted)">読 5</div>
+    <div style="flex:20;background:var(--hot)">(1)(2) 20分</div>
+    <div style="flex:12;background:var(--cold)">(3) 12</div>
+    <div style="flex:15;background:var(--ink)">(4) 15</div>
+    <div style="flex:8;background:var(--muted)">見直 8</div>
+  </div>
+  <p class="legend">単位：分。合計60分。</p>
+  <ol>
+    <li><b>最初の5分</b>：全小問を読んで、テーマと「使う式」を答案用紙の余白にメモ（第一法則、状態方程式、定義式など）。</li>
+    <li><b>(3)から解いてもよい</b>：一番確実な導出を先に片付けると落ち着く。解答用紙に小問番号さえ書けば順番は自由。</li>
+    <li><b>(1)(2)は1問10分で切る</b>：書きすぎない。要点を箇条書きにしてから文章にする。</li>
+    <li><b>残り8分で見直し</b>：添字（\(V\) と \(P\)、\(T_1\) と \(T_2\)）、符号、「理想気体なら〜」の確認を書いたか。</li>
+  </ol>
+</section>
+
+<!-- ===== 書き方 ===== -->
+<section id="write">
+  <h2><span class="wk">03 · HOW TO WRITE</span>「解説」答案の書き方</h2>
+  <p>問題文に「何を目標にしており、どういう計算をするかを言葉で説明すること」とあります。式と式の間に必ず日本語を挟みます。</p>
+  <div class="grid2">
+    <div class="box">
+      <h4>導出問題の5ステップ</h4>
+      <ol>
+        <li><span class="say">目標</span>：何を示すか、どの式を使うか</li>
+        <li><span class="say">出発点</span>：第一法則・定義式を書いて番号を付ける</li>
+        <li><span class="say">条件</span>：「圧力一定なので \(dP=0\)」</li>
+        <li><span class="say">操作</span>：「(a)に代入し、両辺を \(dT\) で割る」</li>
+        <li><span class="say">意味と確認</span>：何を表すか、理想気体ならどうなるか</li>
+      </ol>
+    </div>
+    <div class="box">
+      <h4>説明問題の4点セット</h4>
+      <ol>
+        <li><span class="say">定義</span>：一文で言い切る</li>
+        <li><span class="say">理由・仕組み</span>：なぜそうなるか</li>
+        <li><span class="say">図</span>：P–V 図や装置の略図</li>
+        <li><span class="say">具体例・応用</span>：エアコン、冷蔵庫、液化など</li>
+      </ol>
+    </div>
+  </div>
+  <div class="box cold">
+    <h4>そのまま使える決まり文句</h4>
+    <ul>
+      <li>「〜を示すことが目標である。そのために、熱力学第一法則と〜の定義を用いる。」</li>
+      <li>「〜は状態量であるから、始状態と終状態だけで決まり、途中の経路によらない。」</li>
+      <li>「\(d'Q\) は全微分ではない（\(Q\) は状態量でない）ので、条件を指定する必要がある。」</li>
+      <li>「この過程は準静的（可逆）であるとする。」</li>
+      <li>「対偶を示す。すなわち、〜が破れると仮定すると〜も破れることを示す。」</li>
+      <li>「特に理想気体の場合は〜となり、既知の結果（マイヤーの関係など）と一致する。」</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 予想A ===== -->
+<section id="mockA">
+  <h2><span class="wk">04 · MOCK A · 本命</span>予想問題A：カルノーサイクル</h2>
+  <div class="sheet">
+    <div class="stem">カルノーサイクルに関して、講義を参考に以下の問いに対する解説をしよう。計算についても、それぞれの式で、何を目標にしており、どういう計算をするかを言葉で説明すること。</div>
+    <p>\(n\) モルの理想気体を作業物質とし、温度 \(T_2\) の高温熱源と \(T_1\) の低温熱源（\(T_2\gt T_1\)）の間で働くカルノーサイクルを考える。</p>
+    <ol>
+      <li><span class="no">(1)</span>カルノーサイクルを構成する4つの過程を P–V 図とともに解説しよう。</li>
+      <li><span class="no">(2)</span>熱機関の効率の定義を解説しよう。</li>
+      <li><span class="no">(3)</span>このサイクルの効率が \(\eta=1-T_1/T_2\) となることを示そう。</li>
+      <li><span class="no">(4)</span>（おまけ）同じ2熱源の間で働く熱機関の効率は、可逆機関のとき最大であること（カルノーの定理）を示そう。</li>
+    </ol>
+  </div>
+
+  <div class="ans">
+    <div class="lbl">(1) 模範答案</div>
+    <p>カルノーサイクルは、2つの等温過程と2つの断熱過程を、すべて準静的に行うサイクルである。状態を A→B→C→D→A と回る。</p>
+    <ul>
+      <li><b>A→B 等温膨張</b>（温度 \(T_2\)）：高温熱源に接して膨張。\(\Delta U=0\) なので、吸収した熱 \(Q_2\) は全部外への仕事になる。</li>
+      <li><b>B→C 断熱膨張</b>：熱源から離して膨張。熱の出入りはなく、内部エネルギーを使って仕事をするので温度が \(T_2\to T_1\) に下がる。</li>
+      <li><b>C→D 等温圧縮</b>（温度 \(T_1\)）：低温熱源に接して圧縮。受けた仕事の分だけ熱 \(Q_1\) を低温熱源に捨てる。</li>
+      <li><b>D→A 断熱圧縮</b>：圧縮される仕事で温度が \(T_1\to T_2\) に戻る。</li>
+    </ul>
+    <p>P–V 図では、等温線より断熱線のほうが急な曲線で、時計回りの閉曲線になる。囲まれた面積が1サイクルの正味の仕事 \(W\)。（図を描く）</p>
+
+    <div class="lbl">(2) 模範答案</div>
+    <p>効率は「1サイクル中に高温熱源から吸収した熱量 \(Q_2\) のうち、どれだけを外部への仕事 \(W\) に変えられたか」の割合で \(\eta=W/Q_2\)。1サイクルで元の状態に戻るので \(\Delta U=0\)、第一法則より \(W=Q_2-Q_1\)。よって \(\eta=1-Q_1/Q_2\)。捨てる熱 \(Q_1\) が0にならない限り \(\eta\lt1\)。</p>
+
+    <div class="lbl">(3) 模範答案</div>
+    <p><b>目標</b>：\(Q_1/Q_2=T_1/T_2\) を示せば (2) の式から結論が出る。等温過程で熱を、断熱過程で体積比の関係を求める。</p>
+    <p>等温過程では \(\Delta U=0\) なので熱＝仕事：</p>
+    \[Q_2=nRT_2\log\frac{V_B}{V_A},\qquad Q_1=nRT_1\log\frac{V_C}{V_D}\]
+    <p>断熱過程では \(TV^{\gamma-1}\) が一定なので</p>
+    \[T_2V_B^{\gamma-1}=T_1V_C^{\gamma-1},\qquad T_2V_A^{\gamma-1}=T_1V_D^{\gamma-1}\]
+    <p>辺々割ると \(V_B/V_A=V_C/V_D\)。よって対数の部分が消えて \(Q_1/Q_2=T_1/T_2\)、</p>
+    \[\eta=1-\frac{Q_1}{Q_2}=1-\frac{T_1}{T_2}\]
+    <p>効率は熱源の温度だけで決まり、作業物質の量 \(n\) や \(\gamma\) によらない。</p>
+
+    <div class="lbl">(4) 模範答案</div>
+    <p><b>目標</b>：背理法。可逆機関より効率の高い機関があると仮定し、トムソンの原理に矛盾することを示す。</p>
+    <p>任意の機関 X（効率 \(\eta_X\)）と可逆機関 C（効率 \(\eta_C\)）を同じ2熱源の間で動かす。\(\eta_X\gt\eta_C\) と仮定する。X は高温から \(Q_2\) を取り \(W_X=\eta_XQ_2\) の仕事をする。C は可逆なので逆回しでき、仕事 \(W_C=\eta_CQ_2\) を与えると高温熱源に \(Q_2\) を戻す。X の仕事の一部で C を動かすと、高温熱源は差し引き変化なし。外部には \(W_X-W_C\gt0\) の仕事が残り、その熱は低温熱源だけから来たことになる。これは「1つの熱源から熱を取り、全部を仕事に変えるサイクル」で、トムソンの原理に反する。よって \(\eta_X\le\eta_C\)。X も可逆なら X と C を入れ替えて \(\eta_C\le\eta_X\) なので、可逆機関の効率はすべて等しく \(1-T_1/T_2\)。</p>
+  </div>
+</section>
+
+<!-- ===== 予想B ===== -->
+<section id="mockB">
+  <h2><span class="wk">05 · MOCK B · 本命</span>予想問題B：エントロピー</h2>
+  <div class="sheet">
+    <div class="stem">エントロピーに関して、講義を参考に以下の問いに対する解説をしよう。（以下、昨年と同じ注意書き）</div>
+    <p>\(n\) モルの理想気体（定積モル比熱 \(C_V\)、比熱比 \(\gamma\)）を考え、変化はすべて可逆過程とする。</p>
+    <ol>
+      <li><span class="no">(1)</span>エントロピーの定義と、「乱雑さ」との関係を解説しよう。</li>
+      <li><span class="no">(2)</span>エントロピーが \(S=nC_V\log T+nR\log V+S_0\) と表されることを示そう。</li>
+      <li><span class="no">(3)</span>等温・等積・等圧・断熱変化それぞれのエントロピー変化を求め、その意味を解説しよう。</li>
+      <li><span class="no">(4)</span>（おまけ）カルノーサイクルを T–S 図に描き、囲まれた面積の意味を解説しよう。</li>
+    </ol>
+  </div>
+
+  <div class="ans">
+    <div class="lbl">(1) 模範答案</div>
+    <p>可逆過程で系が温度 \(T\) のときに熱 \(d'Q\) を受け取るとき、エントロピーの変化を \(dS=d'Q/T\) と定義する。\(d'Q\) 自体は経路によるが、\(T\) で割った \(dS\) は全微分になり、\(S\) は状態量になる。分子の立場では、エントロピーは乱雑さ（分子のとりうる状態の場合の数）の尺度である。体積が広がれば分子の位置の選び方が増え、温度が上がれば速さの分布が広がるので、どちらもエントロピーを増やす。断熱された系の不可逆変化ではエントロピーは必ず増える（エントロピー増大の法則）。</p>
+
+    <div class="lbl">(2) 模範答案</div>
+    <p><b>目標</b>：\(dS=d'Q/T\) に第一法則と状態方程式を入れ、\(T\) と \(V\) で積分する。</p>
+    \[dS=\frac{d'Q}{T}=\frac{nC_VdT+PdV}{T}=nC_V\frac{dT}{T}+nR\frac{dV}{V}\qquad\left(P=\frac{nRT}{V}\right)\]
+    <p>\(C_V\) は定数なので積分して \(S=nC_V\log T+nR\log V+S_0\)（\(S_0\) は積分定数）。</p>
+
+    <div class="lbl">(3) 模範答案</div>
+    <div class="tbl"><table>
+      <thead><tr><th>過程</th><th>\(\Delta S\)</th><th>意味</th></tr></thead>
+      <tbody>
+        <tr><td>等温</td><td>\(nR\log\frac{V_b}{V_a}\)</td><td>膨張で位置の乱雑さが増える</td></tr>
+        <tr><td>等積</td><td>\(nC_V\log\frac{T_b}{T_a}\)</td><td>加熱で速さの乱雑さが増える</td></tr>
+        <tr><td>等圧</td><td>\(nC_P\log\frac{T_b}{T_a}\)</td><td>\(V\propto T\) なので両方が増える</td></tr>
+        <tr><td>断熱</td><td>0</td><td>膨張による増加と冷却による減少が打ち消す</td></tr>
+      </tbody>
+    </table></div>
+    <p>断熱は \(TV^{\gamma-1}=\) 一定から \(C_V\log T+R\log V=C_V\log(TV^{\gamma-1})=\) 一定、と示す。等圧は \(V_b/V_a=T_b/T_a\) を代入し \(C_V+R=C_P\) を使う。</p>
+
+    <div class="lbl">(4) 模範答案</div>
+    <p>等温過程は \(T\) 一定なので水平線、可逆断熱過程は \(\Delta S=0\) なので垂直線。よって長方形になる（上辺 \(T_2\) で吸熱、下辺 \(T_1\) で放熱）。面積は \(\oint T\,dS=\oint d'Q=Q_2-Q_1\)。1サイクルで \(\Delta U=0\) なので、これは外部にした仕事 \(W\) に等しく、P–V 図の面積 \(\oint PdV\) と同じ量を熱の側から見たもの。\(Q_2=T_2\Delta S,\ Q_1=T_1\Delta S\) から \(\eta=1-T_1/T_2\) も図から読める。</p>
+  </div>
+</section>
+
+<!-- ===== 予想C ===== -->
+<section id="mockC">
+  <h2><span class="wk">06 · MOCK C · 対抗</span>予想問題C：断熱変化</h2>
+  <div class="sheet">
+    <div class="stem">断熱変化に関して、講義を参考に以下の問いに対する解説をしよう。</div>
+    <p>1 モルの理想気体（定積モル比熱 \(C_V\)、比熱比 \(\gamma\)）が準静的に断熱変化をする。</p>
+    <ol>
+      <li><span class="no">(1)</span>断熱変化とは何かを解説し、断熱膨張で気体の温度が下がる理由を解説しよう。</li>
+      <li><span class="no">(2)</span>\(\Delta T=-\dfrac{RT}{C_VV}\Delta V\) が成り立つことを示そう。</li>
+      <li><span class="no">(3)</span>\(PV^\gamma=\) 一定 を示そう。</li>
+      <li><span class="no">(4)</span>（おまけ）P–V 図で断熱線の傾きが等温線の \(\gamma\) 倍であることを示し、2本の断熱線が交わらないことを解説しよう。</li>
+    </ol>
+  </div>
+  <div class="ans">
+    <div class="lbl">(1)</div>
+    <p>外部との熱のやり取りがない（\(d'Q=0\)）状態変化。第一法則 \(dU=-PdV\) より、膨張して外に仕事をすると、その分の内部エネルギーが減る。理想気体の内部エネルギーは温度だけで決まる（\(dU=C_VdT\)）ので温度が下がる。分子で言えば、遠ざかる壁（ピストン）に当たって跳ね返った分子は速さが落ちる。</p>
+    <div class="lbl">(2)</div>
+    <p><b>目標</b>：第一法則で \(d'Q=0\) とおき、\(P\) を状態方程式で消す。\(0=C_VdT+PdV=C_VdT+\dfrac{RT}{V}dV\) より \(\Delta T=-\dfrac{RT}{C_VV}\Delta V\)。</p>
+    <div class="lbl">(3)</div>
+    <p><b>目標</b>：(2) を変数分離して積分。\(R=C_P-C_V=(\gamma-1)C_V\) を使う。</p>
+    \[\frac{dT}{T}=-(\gamma-1)\frac{dV}{V}\;\Rightarrow\;TV^{\gamma-1}=\text{一定}\;\xrightarrow{\;T=PV/R\;}\;PV^\gamma=\text{一定}\]
+    <div class="lbl">(4)</div>
+    <p>等温：\(PV=\) 一定を微分して \((\partial P/\partial V)_T=-P/V\)。断熱：\(PV^\gamma=\) 一定を微分して \(V^\gamma dP+\gamma PV^{\gamma-1}dV=0\)、\((\partial P/\partial V)_{ad}=-\gamma P/V\)。よって \(\gamma\) 倍で、\(\gamma\gt1\) なので断熱線のほうが急。</p>
+    <p>2本の断熱線が交わるとすると、それらと1本の等温線で閉じたサイクルが作れる。このサイクルで熱を受け取るのは等温過程（1つの熱源）だけで、囲む面積の仕事 \(W=Q\gt0\) を外にする。これは1つの熱源の熱を全部仕事に変えることになりトムソンの原理に反する。よって断熱線は交わらない。</p>
+  </div>
+</section>
+
+<!-- ===== 予想D ===== -->
+<section id="mockD">
+  <h2><span class="wk">07 · MOCK D · 対抗</span>予想問題D：熱力学第二法則</h2>
+  <div class="sheet">
+    <div class="stem">熱力学第二法則に関して、講義を参考に以下の問いに対する解説をしよう。</div>
+    <ol>
+      <li><span class="no">(1)</span>不可逆変化とは何かを、例を挙げて解説しよう。</li>
+      <li><span class="no">(2)</span>クラウジウスの原理とトムソンの原理を述べ、第二種永久機関が作れないことを解説しよう。</li>
+      <li><span class="no">(3)</span>クラウジウスの原理とトムソンの原理が同値であることを示そう。</li>
+      <li><span class="no">(4)</span>（おまけ）トムソンの原理からカラテオドリーの原理を導こう。</li>
+    </ol>
+  </div>
+  <div class="ans">
+    <div class="lbl">(1)</div>
+    <p>変化が起きたあと、外界に何の変化も残さずに系を元の状態に戻すことができない変化。例：摩擦による発熱、高温から低温への熱伝導、気体の真空中への自由膨張、2種類の気体の混合。逆向きに戻すことはできても、外界に仕事の消費や熱の移動などの痕跡が必ず残る。</p>
+    <div class="lbl">(2)</div>
+    <p><b>クラウジウスの原理</b>：他に何の変化も残さずに、熱を低温物体から高温物体へ移すことはできない。<b>トムソンの原理</b>：1つの熱源から熱を受け取り、それを全部仕事に変えて、他に何の変化も残さないサイクルは存在しない。第二種永久機関は、海水や大気など1つの熱源の熱を取り出して仕事に変え続ける機関で、エネルギー保存には反しない（第一種との違い）。しかしトムソンの原理がまさにこれを禁止している（オストヴァルトの原理）。</p>
+    <div class="lbl">(3)</div>
+    <p><b>方針</b>：対偶で両方向を示す。</p>
+    <ul>
+      <li><b>トムソンが破れる ⇒ クラウジウスが破れる</b>：高温熱源の熱 \(Q\) を全部仕事 \(W=Q\) にする機関があるとする。この \(W\) で逆回しのカルノー機関を動かし、低温から \(Q_1\) を汲んで高温に \(Q_1+W\) を送る。差し引きで、低温から高温へ \(Q_1\) が移っただけで他に変化なし。クラウジウスに反する。</li>
+      <li><b>クラウジウスが破れる ⇒ トムソンが破れる</b>：低温から高温へ \(Q_1\) を勝手に移す装置があるとする。カルノー機関が高温から \(Q_2\) を取り、仕事 \(W\) をして低温に \(Q_1\) を捨てる。その \(Q_1\) を装置で高温に戻すと、低温熱源は変化なし。高温熱源から取った \(Q_2-Q_1\) を全部仕事 \(W\) にしたことになり、トムソンに反する。</li>
+    </ul>
+    <p>（2つの機関を箱で描き、熱と仕事を矢印で書いた図を添える）</p>
+    <div class="lbl">(4)</div>
+    <p><b>方針</b>：対偶。「ある状態 A の近傍の全ての状態に断熱変化で行ける」と仮定する。A から1つの熱源に接して等温で熱 \(Q\gt0\) を吸収し、近傍の状態 B へ移す。仮定より B から A へ断熱変化で戻れる。1サイクルで \(\Delta U=0\)、熱は1つの熱源からの \(Q\) だけなので、外への仕事は \(W=Q\gt0\)。トムソンの原理に反する。よって任意の状態の任意の近傍に、断熱変化では行けない状態が存在する。</p>
+  </div>
+</section>
+
+<!-- ===== 講義用語 ===== -->
+<section id="extra">
+  <h2><span class="wk">08 · LECTURE ONLY</span>演習にない講義内容への備え</h2>
+  <p>昨年の(1)「ジュール・トムソンの実験」は演習に無い講義内容でした。同じ枠で出そうな用語を、一文で説明できるようにしておきます。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>用語</th><th>一文で説明</th></tr></thead>
+    <tbody>
+      <tr><td>準静的過程</td><td>常に熱平衡状態を保ちながら、無限にゆっくり進む変化。P–V 図に線として描け、逆向きにたどれる（可逆）。</td></tr>
+      <tr><td>状態量</td><td>状態だけで決まり経路によらない量（\(P,V,T,U,H,S\)）。熱 \(Q\) と仕事 \(W\) は状態量ではない。</td></tr>
+      <tr><td>ジュールの実験（自由膨張）</td><td>断熱容器で気体を真空中へ膨張させても温度が変わらない → 理想気体の \(U\) は \(T\) だけの関数（\((\partial U/\partial V)_T=0\)）。仕事も熱も0の不可逆変化。</td></tr>
+      <tr><td>ジュール・トムソン実験</td><td>細孔栓を通して高圧→低圧に流す断熱過程で \(H\) が一定。実在気体は温度が変わり、液化に使う。（過去問）</td></tr>
+      <tr><td>マイヤーの関係</td><td>理想気体で \(C_P-C_V=R\)。定圧では膨張の仕事 \(R\,\Delta T\) の分だけ余計に熱が要る。</td></tr>
+      <tr><td>熱の仕事当量</td><td>1 cal = 4.184 J。ジュールが羽根車の実験で、熱と仕事が同じエネルギーであることを示した。</td></tr>
+      <tr><td>示量変数・示強変数</td><td>系を2倍にすると2倍になる量（\(V,U,S,n\)）と変わらない量（\(T,P\)）。</td></tr>
+      <tr><td>熱平衡・第0法則</td><td>A と C、B と C が熱平衡なら A と B も熱平衡。温度計が使える根拠。</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ===== 暗記 ===== -->
+<section id="memo">
+  <h2><span class="wk">09 · MEMORIZE</span>暗記カード（これだけは覚える）</h2>
+  <p>導出の出発点になる式だけです。他はここから全部作れます。</p>
+  <div class="grid2">
+    <div class="box">
+      <h4>出発点の3本</h4>
+      \[d'Q=dU+PdV\]
+      \[PV=nRT\]
+      \[dS=\frac{d'Q}{T}\]
+    </div>
+    <div class="box">
+      <h4>理想気体の性質</h4>
+      \[dU=nC_VdT,\quad C_P-C_V=R\]
+      \[\gamma=\frac{C_P}{C_V},\quad C_V=\frac{R}{\gamma-1}\]
+    </div>
+    <div class="box">
+      <h4>定義</h4>
+      \[H=U+PV,\quad \eta=\frac{W}{Q_2}\]
+      \[C_V=\left(\frac{\partial U}{\partial T}\right)_V,\quad C_P=\left(\frac{\partial H}{\partial T}\right)_P\]
+    </div>
+    <div class="box">
+      <h4>結果（導出できるが即答用）</h4>
+      \[PV^\gamma=\text{一定},\quad \eta=1-\frac{T_1}{T_2}\]
+      \[P=\frac23n\varepsilon,\quad \varepsilon=\frac32kT\]
+    </div>
+  </div>
+  <div class="box hot">
+    <h4>原理は一字一句近くまで覚える</h4>
+    <ul>
+      <li><b>クラウジウス</b>：他に何の変化も残さずに、熱を低温物体から高温物体へ移すことはできない。</li>
+      <li><b>トムソン</b>：1つの熱源から熱を受け取り、それを全部仕事に変えて、他に何の変化も残さないサイクルは存在しない。</li>
+      <li><b>カラテオドリー</b>：任意の状態の任意の近傍に、断熱変化では到達できない状態が存在する。</li>
+      <li><b>プランク</b>：摩擦などで仕事が熱に変わる現象は不可逆である。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== プラン ===== -->
+<section id="plan">
+  <h2><span class="wk">10 · PLAN</span>試験までの勉強プラン</h2>
+  <p>昨年は11月7日（金）だったので、今年も11月上旬なら残り約1週間です。1日60〜90分の想定です。</p>
+  <dl class="plan">
+    <dt>1日目</dt><dd>過去問(1)〜(4)を見ずに書く → 網羅版ノートの解説と照合。「決まり文句」を答案に入れる練習。</dd>
+    <dt>2日目</dt><dd>予想C（断熱変化）を60分で解く。3週 問6・4週 問1・6週 問2 の導出を固める。</dd>
+    <dt>3日目</dt><dd>予想A（カルノー）を60分で解く。効率の導出と P–V 図を何も見ずに描けるように。</dd>
+    <dt>4日目</dt><dd>予想D（第二法則）。クラウジウス⇔トムソンの2つの図を、箱と矢印で描けるまで繰り返す。</dd>
+    <dt>5日目</dt><dd>予想B（エントロピー）。\(S\) の式と4過程の \(\Delta S\)、T–S 図。</dd>
+    <dt>6日目</dt><dd>「講義だけの用語」を一文で言えるか確認。2週（分子運動論 \(P=\tfrac23n\varepsilon\)）の導出も1回書く。</dd>
+    <dt>前日</dt><dd>暗記カードと下のチェックリストだけ。新しいことはやらない。</dd>
+  </dl>
+
+  <h3>当日の最終チェック</h3>
+  <ul class="check">
+    <li>第一法則・状態方程式・\(dS=d'Q/T\) を最初に余白へ書いた</li>
+    <li>各導出の最初に「目標」を一文書いた</li>
+    <li>式と式の間に「〜を代入」「両辺を〜で割る」と書いた</li>
+    <li>最後に「理想気体なら〜」で確認した</li>
+    <li>(4) が分からなくても方針だけは書いた（白紙にしない）</li>
+    <li>図（P–V 図、T–S 図、機関の箱図）を描ける問題では描いた</li>
+  </ul>
+  <footer>令和7年度 後期中間試験の問題と演習1〜8週をもとに作成。予想問題と模範答案は筆者によるもので、実際の出題を保証するものではありません。網羅版の解答は「後期中間試験 対策ノート」を参照。</footer>
+</section>
+</div>

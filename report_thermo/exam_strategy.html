@@ -97,6 +97,21 @@ small.note { color: var(--muted); font-size: 13px; }
 .check { padding-left: 1.6em; }
 .check li { list-style: none; position: relative; }
 .check li::before { content: "□"; position: absolute; left: -1.4em; color: var(--hot); }
+.steps { counter-reset: s; list-style: none; padding-left: 0; margin: 10px 0; }
+.steps > li { counter-increment: s; display: grid; grid-template-columns: 2em 1fr; gap: 0 8px; padding: 6px 0; border-bottom: 1px dashed var(--rule); margin: 0; }
+.steps > li::before { content: counter(s); font-family: var(--font-mono); font-weight: 600; color: var(--hot); padding-top: 2px; }
+.steps > li > div { min-width: 0; }
+.why { display: block; font-size: 13px; color: var(--cold); line-height: 1.6; }
+.idea { background: var(--cold-soft); padding: 8px 12px; border-radius: 4px; margin: 8px 0; }
+.idea b { color: var(--cold); }
+.tech { display: grid; gap: 12px; }
+.tech .box { margin: 0; }
+.tech .box h4 { display: flex; gap: 8px; align-items: baseline; }
+.tno { font-family: var(--font-mono); font-size: 13px; color: var(--paper); background: var(--hot); padding: 0 7px; border-radius: 3px; }
+.ng { color: var(--hot); font-weight: 700; }
+.okk { color: var(--cold); font-weight: 700; }
+td.c { text-align: center; font-family: var(--font-mono); white-space: nowrap; }
+tr.sum td { font-weight: 700; border-top: 2px solid var(--ink); }
 footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 13px; }
 </style>
 
@@ -104,13 +119,17 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
 <header class="top">
   <div class="eyebrow">物理学2（E科）後期中間試験・60分・持ち込み不可</div>
   <h1>後期中間 攻略ノート</h1>
-  <p class="lede">網羅版ノートとは別に、この試験の形式だけに絞った作戦をまとめました。昨年の問題の形に合わせた予想問題4題と、その模範答案が中心です。</p>
+  <p class="lede">この試験の形式だけに絞った作戦ノートです。飛躍のない導出の技、主要な導出の「行間ゼロ」版、演習の類題対策、昨年の形式に合わせた予想問題4題と模範答案をまとめています。</p>
 </header>
 
 <nav class="idx" aria-label="目次">
   <a href="#format">試験の型</a>
   <a href="#time">時間配分</a>
   <a href="#write">答案の書き方</a>
+  <a href="#tech">導出の技</a>
+  <a href="#steps">行間ゼロ導出</a>
+  <a href="#variants">類題対策</a>
+  <a href="#traps">減点ポイント</a>
   <a href="#mockA">予想A カルノー</a>
   <a href="#mockB">予想B エントロピー</a>
   <a href="#mockC">予想C 断熱変化</a>
@@ -200,6 +219,357 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
       <li>「特に理想気体の場合は〜となり、既知の結果（マイヤーの関係など）と一致する。」</li>
     </ul>
   </div>
+</section>
+
+<!-- ===== 導出の技 ===== -->
+<section id="tech">
+  <h2><span class="wk">03+ · TECHNIQUES</span>飛躍しない導出の技 12</h2>
+  <p>導出で減点されるのは、たいてい「途中で何をしたか書いていない」ところです。熱力学の導出は、ほぼ全部が下の12個の技の組み合わせです。各ステップで「いまどの技を使ったか」を一言書けば、それだけで飛躍のない答案になります。</p>
+
+  <div class="tech">
+    <div class="box">
+      <h4><span class="tno">T1</span>出発点は3本だけ。最初に宣言する</h4>
+      <p>熱力学の導出は、ほぼ全部が次のどれかから始まります。1行目に書いて番号を振ります。</p>
+      \[d'Q=dU+PdV\ \text{(第一法則)},\qquad PV=nRT\ \text{(状態方程式)},\qquad dS=\frac{d'Q}{T}\ \text{(エントロピーの定義)}\]
+      <p>迷ったら「とりあえず第一法則を書く」。昨年の(3)(4)も両方とも第一法則がスタートです。</p>
+    </div>
+
+    <div class="box">
+      <h4><span class="tno">T2</span>条件を式に翻訳する（辞書）</h4>
+      <p>問題文の日本語の条件を、必ず式に直してから使います。翻訳した式を答案に書くことが「飛躍しない」の中心です。</p>
+      <div class="tbl"><table>
+        <thead><tr><th>問題文の言葉</th><th>式に翻訳</th><th>結果として言えること</th></tr></thead>
+        <tbody>
+          <tr><td>等温</td><td>\(dT=0\)</td><td>理想気体なら \(dU=0\) なので \(d'Q=PdV\)</td></tr>
+          <tr><td>断熱</td><td>\(d'Q=0\)</td><td>\(dU=-PdV\)（仕事の分だけ \(U\) が減る）</td></tr>
+          <tr><td>等圧（定圧）</td><td>\(dP=0\)</td><td>\(W=P(V_2-V_1)\)、\(d'Q=dH\)</td></tr>
+          <tr><td>等積（定積）</td><td>\(dV=0\)</td><td>\(W=0\)、\(d'Q=dU\)</td></tr>
+          <tr><td>1サイクル</td><td>\(\Delta U=0\)（\(\Delta S=0\)）</td><td>\(W=Q_{\text{吸}}-Q_{\text{放}}\)</td></tr>
+          <tr><td>可逆（準静的）</td><td>\(dS=d'Q/T\)、P–V 図に線で描ける</td><td>\(W=\int PdV\) が使える</td></tr>
+          <tr><td>理想気体</td><td>\(U=U(T)\)、\(dU=nC_VdT\)</td><td>\((\partial U/\partial V)_T=0\)</td></tr>
+          <tr><td>「理想気体とは限らない」</td><td>\(U=U(T,V)\)</td><td>理想気体の性質は<b>使ってはいけない</b></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="box">
+      <h4><span class="tno">T3</span>変数を2つに減らす</h4>
+      <p>\(P,V,T\) のうち独立なのは2つだけ。「どの2つで書くか」を決めて、残りを状態方程式で消します。</p>
+      <ul>
+        <li>\(T\) と \(V\) で書きたい → \(P=\dfrac{nRT}{V}\) を代入</li>
+        <li>\(T\) と \(P\) で書きたい → \(V=\dfrac{nRT}{P}\) を代入</li>
+        <li>\(P\) と \(V\) で書きたい → \(T=\dfrac{PV}{nR}\) を代入</li>
+      </ul>
+      <p>答案には「状態方程式 \(P=nRT/V\) を用いて \(P\) を消去すると」と書きます。</p>
+    </div>
+
+    <div class="box">
+      <h4><span class="tno">T4</span>変数分離 → 積分 → log をまとめる</h4>
+      <p>微分の式が出たら、\(T\) の項と \(V\) の項を左右（または各項）に分けて積分します。</p>
+      \[\frac{dT}{T}+(\gamma-1)\frac{dV}{V}=0\ \xrightarrow{\text{積分}}\ \log T+(\gamma-1)\log V=\text{const}\ \xrightarrow{\ a\log x=\log x^a\ }\ \log\left(TV^{\gamma-1}\right)=\text{const}\]
+      <p>使う公式は \(\int\frac{dx}{x}=\log x\)、\(a\log x=\log x^a\)、\(\log x+\log y=\log xy\) の3つだけ。積分の前に「\(C_V\) は定数なので」と書くのを忘れない。</p>
+    </div>
+
+    <div class="box">
+      <h4><span class="tno">T5</span>全微分を書いて、条件で割る</h4>
+      <p>「〜を \(T,V\) の関数とみなすと」と宣言して全微分を書きます。</p>
+      \[dU=\left(\frac{\partial U}{\partial T}\right)_VdT+\left(\frac{\partial U}{\partial V}\right)_TdV\]
+      <p>そのあと「圧力一定のもとで両辺を \(dT\) で割る」。このとき \(\dfrac{dV}{dT}\to\left(\dfrac{\partial V}{\partial T}\right)_P\) と<b>添字が付く</b>ことを一言書きます。昨年の(4)はこれだけで解けます。</p>
+    </div>
+
+    <div class="box">
+      <h4><span class="tno">T6</span>比熱の言い換えセット</h4>
+      <p>\(R\) と \(C_V,C_P,\gamma\) は自由に行き来できます。どれを使ったか書きます。</p>
+      \[C_P-C_V=R,\quad \gamma=\frac{C_P}{C_V}\ \Rightarrow\ \frac{R}{C_V}=\gamma-1,\quad C_V=\frac{R}{\gamma-1},\quad C_P=\frac{\gamma R}{\gamma-1}\]
+    </div>
+
+    <div class="box">
+      <h4><span class="tno">T7</span>2つの式を「辺々割る」と邪魔なものが消える</h4>
+      <p>カルノー効率の \(V_B/V_A=V_C/V_D\) やオットーサイクルで使います。同じ温度の組み合わせの式を2本並べて割ると、温度が消えて体積の関係だけが残ります。</p>
+      \[\frac{T_2V_B^{\gamma-1}}{T_2V_A^{\gamma-1}}=\frac{T_1V_C^{\gamma-1}}{T_1V_D^{\gamma-1}}\ \Rightarrow\ \left(\frac{V_B}{V_A}\right)^{\gamma-1}=\left(\frac{V_C}{V_D}\right)^{\gamma-1}\ \Rightarrow\ \frac{V_B}{V_A}=\frac{V_C}{V_D}\]
+    </div>
+
+    <div class="box">
+      <h4><span class="tno">T8</span>状態量なら、計算しやすい経路を選んでよい</h4>
+      <p>\(U,H,S\) は状態量なので、始めと終わりが同じなら<b>どんな経路で計算しても同じ</b>。不可逆変化（自由膨張・混合・熱伝導）の \(\Delta S\) は、同じ始状態と終状態を結ぶ<b>可逆な経路</b>を自分で作って計算します。7週 問5 の図1〜5 はまさにこの技です。</p>
+    </div>
+
+    <div class="box">
+      <h4><span class="tno">T9</span>第二法則の証明は「背理法の4段階」</h4>
+      <ol>
+        <li><b>仮定</b>：「〜が破れる機関（装置）があると仮定する」</li>
+        <li><b>組み合わせ</b>：「これとカルノー機関（の逆回し）を組み合わせる」</li>
+        <li><b>収支</b>：熱源ごと・仕事の収支表を書いて、差し引きを計算する（T10）</li>
+        <li><b>矛盾</b>：「差し引きの結果は〜となり、〇〇の原理に反する。よって〜」</li>
+      </ol>
+      <p>クラウジウス⇔トムソン、カルノーの定理、カラテオドリー、プランク、熱伝導の不可逆性、断熱線が交わらないこと。これらは全部この型です。</p>
+    </div>
+
+    <div class="box">
+      <h4><span class="tno">T10</span>収支表で「差し引き」を見せる</h4>
+      <p>機関を組み合わせる証明は、文章だけだと必ず飛躍します。熱源と仕事の出入りを表にして、最後の行で合計を出します（例は行間ゼロ導出 D6）。符号は「熱源が受け取ったら＋」のように最初に決めておきます。</p>
+    </div>
+
+    <div class="box">
+      <h4><span class="tno">T11</span>符号のルールを最初に宣言する</h4>
+      <p>「\(Q\) は系が受け取る熱、\(W\) は系が外部にする仕事とする」と1行書きます。カルノーでは「低温熱源に放出する熱を \(Q_1\ (\gt0)\) とする」と宣言。宣言があれば、符号のミスがあっても読み手が追えます。</p>
+    </div>
+
+    <div class="box">
+      <h4><span class="tno">T12</span>最後に検算を1行書く</h4>
+      <ul>
+        <li><b>特殊な場合</b>：理想気体なら？ \(\gamma=1\) なら？ 例：一般式の \(C_P-C_V\) が理想気体で \(R\) になる</li>
+        <li><b>極限</b>：\(T_1\to T_2\) で \(\eta\to0\)（温度差がなければ仕事は取り出せない）</li>
+        <li><b>符号</b>：膨張なら \(W\gt0\)、加熱なら \(\Delta S\gt0\)、効率は \(0\lt\eta\lt1\)</li>
+        <li><b>単位</b>：\(\log\) の中は無次元か、両辺の単位はそろっているか</li>
+      </ul>
+      <p>「理想気体の場合は〜となり、既知の結果と一致する」と書くと、答えへの自信を採点者に見せられます。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 行間ゼロ導出 ===== -->
+<section id="steps">
+  <h2><span class="wk">03++ · ZERO-GAP DERIVATIONS</span>行間ゼロ導出集</h2>
+  <p>演習・過去問の主要な導出を、1ステップずつ「何をしたか」付きで書いたものです。青字の注釈まで含めて答案に書けば満点の形になります。各導出の最初の囲みは「ひとことで言うと」です。</p>
+
+  <h3>D1　\(C_P=(\partial H/\partial T)_P\)（過去問(3)・演習3週 問3）</h3>
+  <div class="idea"><b>ひとこと</b>：第一法則を \(dU\) ではなく \(dH\) で書き直すと、定圧の熱がそのまま \(dH\) になる。</div>
+  <ol class="steps">
+    <li><div>\(d'Q=dU+PdV\quad\cdots(a)\)<span class="why">T1：第一法則から出発</span></div></li>
+    <li><div>\(dH=dU+PdV+VdP\quad\cdots(b)\)<span class="why">定義 \(H=U+PV\) を微分。\(PV\) は積の微分 \(d(PV)=PdV+VdP\)</span></div></li>
+    <li><div>\(d'Q=dH-VdP\quad\cdots(c)\)<span class="why">(b) から \(dU+PdV=dH-VdP\)。これを (a) の右辺に入れる</span></div></li>
+    <li><div>\(d'Q=dH\)<span class="why">T2：圧力一定なので \(dP=0\)</span></div></li>
+    <li><div>\(\left(\dfrac{d'Q}{dT}\right)_P=\left(\dfrac{\partial H}{\partial T}\right)_P\)<span class="why">T5：圧力一定のもとで両辺を \(dT\) で割る</span></div></li>
+    <li><div>\(C_P=\left(\dfrac{\partial H}{\partial T}\right)_P\)<span class="why">左辺は定圧モル比熱の定義そのもの</span></div></li>
+  </ol>
+
+  <h3>D2　\(C_P=C_V+\{P+(\partial U/\partial V)_T\}(\partial V/\partial T)_P\)（過去問(4)）</h3>
+  <div class="idea"><b>ひとこと</b>：\(U\) を \(T,V\) で全微分して第一法則に入れ、圧力一定で \(dT\) で割るだけ。</div>
+  <ol class="steps">
+    <li><div>\(dU=\left(\dfrac{\partial U}{\partial T}\right)_VdT+\left(\dfrac{\partial U}{\partial V}\right)_TdV\)<span class="why">T5：\(U\) を \(T,V\) の関数とみなして全微分（理想気体とは限らないので \(V\) 依存も残す）</span></div></li>
+    <li><div>\(dU=C_VdT+\left(\dfrac{\partial U}{\partial V}\right)_TdV\)<span class="why">式(3) \(C_V=(\partial U/\partial T)_V\) を使う</span></div></li>
+    <li><div>\(d'Q=C_VdT+\left\{P+\left(\dfrac{\partial U}{\partial V}\right)_T\right\}dV\)<span class="why">第一法則 \(d'Q=dU+PdV\) に代入し、\(dV\) でまとめる</span></div></li>
+    <li><div>\(\left(\dfrac{d'Q}{dT}\right)_P=C_V+\left\{P+\left(\dfrac{\partial U}{\partial V}\right)_T\right\}\left(\dfrac{\partial V}{\partial T}\right)_P\)<span class="why">T5：圧力一定のもとで両辺を \(dT\) で割る。\(dT/dT=1\)、\(dV/dT\to(\partial V/\partial T)_P\)</span></div></li>
+    <li><div>左辺 \(=C_P\) なので式(4)が成り立つ。<span class="why">比熱の定義</span></div></li>
+    <li><div>理想気体：\((\partial U/\partial V)_T=0\)、\((\partial V/\partial T)_P=R/P\) より \(C_P-C_V=R\)<span class="why">T12：検算。マイヤーの関係と一致</span></div></li>
+  </ol>
+
+  <h3>D3　断熱変化 \(PV^\gamma=\) 一定（演習3週 問6・4週 問1）</h3>
+  <div class="idea"><b>ひとこと</b>：熱が入らないので、外にした仕事の分だけ温度が下がる。それを式にして積分する。</div>
+  <ol class="steps">
+    <li><div>\(0=dU+PdV\)<span class="why">T1＋T2：第一法則で断熱 \(d'Q=0\)</span></div></li>
+    <li><div>\(0=C_VdT+PdV\)<span class="why">T2：理想気体 1 mol なので \(dU=C_VdT\)</span></div></li>
+    <li><div>\(0=C_VdT+\dfrac{RT}{V}dV\)<span class="why">T3：状態方程式 \(P=RT/V\) で \(P\) を消去（ここで3週 問6 の \(\Delta T=-\frac{RT}{C_VV}\Delta V\) が出る）</span></div></li>
+    <li><div>\(\dfrac{dT}{T}+\dfrac{R}{C_V}\dfrac{dV}{V}=0\)<span class="why">T4：両辺を \(C_VT\) で割って変数分離</span></div></li>
+    <li><div>\(\dfrac{dT}{T}+(\gamma-1)\dfrac{dV}{V}=0\)<span class="why">T6：\(R/C_V=(C_P-C_V)/C_V=\gamma-1\)</span></div></li>
+    <li><div>\(\log T+(\gamma-1)\log V=\text{const}\)<span class="why">T4：\(\gamma\) は定数なので積分</span></div></li>
+    <li><div>\(TV^{\gamma-1}=\text{const}\)<span class="why">T4：log をまとめて、両辺の指数をとる</span></div></li>
+    <li><div>\(\dfrac{PV}{R}V^{\gamma-1}=\text{const}\Rightarrow PV^\gamma=\text{const}\)<span class="why">T3：\(T=PV/R\) を代入。\(R\) は定数なので右辺に含める</span></div></li>
+    <li><div>\(T\left(\dfrac{RT}{P}\right)^{\gamma-1}=\text{const}\Rightarrow T^\gamma P^{1-\gamma}=\text{const}\Rightarrow \dfrac{T}{P^{(\gamma-1)/\gamma}}=\text{const}\)<span class="why">T3：\(V=RT/P\) を代入し、最後に全体を \(1/\gamma\) 乗</span></div></li>
+  </ol>
+
+  <h3>D4　カルノー効率 \(\eta=1-T_1/T_2\)（演習5週 問2）</h3>
+  <div class="idea"><b>ひとこと</b>：熱は等温過程でしか出入りしない。断熱過程は「体積比をそろえる」役。</div>
+  <ol class="steps">
+    <li><div>A→B 等温膨張（\(T_2\)）、B→C 断熱膨張、C→D 等温圧縮（\(T_1\)）、D→A 断熱圧縮。吸収熱 \(Q_2\)、放出熱 \(Q_1\)（どちらも正）とする。<span class="why">T11：過程と符号の宣言</span></div></li>
+    <li><div>\(\eta=\dfrac{W}{Q_2}=\dfrac{Q_2-Q_1}{Q_2}=1-\dfrac{Q_1}{Q_2}\)<span class="why">T2：1サイクルで \(\Delta U=0\)、第一法則より \(W=Q_2-Q_1\)</span></div></li>
+    <li><div>\(Q_2=\displaystyle\int_{V_A}^{V_B}PdV=nRT_2\log\frac{V_B}{V_A}\)<span class="why">T2：理想気体の等温なので \(\Delta U=0\)、熱＝仕事。T3：\(P=nRT_2/V\) を積分</span></div></li>
+    <li><div>\(Q_1=nRT_1\log\dfrac{V_C}{V_D}\)<span class="why">同様。圧縮なので受け取る熱は負、放出熱 \(Q_1\) は正になるよう \(V_C/V_D\ (\gt1)\) の向きで書く</span></div></li>
+    <li><div>\(T_2V_B^{\gamma-1}=T_1V_C^{\gamma-1},\quad T_2V_A^{\gamma-1}=T_1V_D^{\gamma-1}\)<span class="why">D3：断熱過程 B→C、D→A で \(TV^{\gamma-1}\) 一定</span></div></li>
+    <li><div>\(\dfrac{V_B}{V_A}=\dfrac{V_C}{V_D}\)<span class="why">T7：辺々割る</span></div></li>
+    <li><div>\(\dfrac{Q_1}{Q_2}=\dfrac{T_1}{T_2}\)<span class="why">3, 4 の比をとると log の部分が 6 により等しく消える</span></div></li>
+    <li><div>\(\eta=1-\dfrac{T_1}{T_2}\)<span class="why">2 に代入。T12：\(T_1\to T_2\) で \(\eta\to0\)、\(0\lt\eta\lt1\)</span></div></li>
+  </ol>
+  <p><small class="note">類題：逆回しなら \(\eta_c=\dfrac{Q_1}{W}=\dfrac{Q_1}{Q_2-Q_1}=\dfrac{T_1}{T_2-T_1}\)、\(\eta_h=\dfrac{Q_2}{Q_2-Q_1}=\dfrac{T_2}{T_2-T_1}\)。7 の \(Q_1/Q_2=T_1/T_2\) さえ出せば全部同じ手順。</small></p>
+
+  <h3>D5　エントロピーの式と各過程の \(\Delta S\)（演習7週 問1〜3）</h3>
+  <div class="idea"><b>ひとこと</b>：\(dS=d'Q/T\) に第一法則を入れると \(T\) の項と \(V\) の項にきれいに分かれる。</div>
+  <ol class="steps">
+    <li><div>\(dS=\dfrac{d'Q}{T}\)<span class="why">T1：可逆過程でのエントロピーの定義</span></div></li>
+    <li><div>\(dS=\dfrac{nC_VdT+PdV}{T}\)<span class="why">T1＋T2：第一法則、理想気体 \(dU=nC_VdT\)</span></div></li>
+    <li><div>\(dS=nC_V\dfrac{dT}{T}+nR\dfrac{dV}{V}\)<span class="why">T3：\(P/T=nR/V\)</span></div></li>
+    <li><div>\(S=nC_V\log T+nR\log V+S_0\)<span class="why">T4：\(C_V\) は定数なので積分。\(S_0\) は積分定数</span></div></li>
+    <li><div>\(\Delta S=nC_V\log\dfrac{T_b}{T_a}+nR\log\dfrac{V_b}{V_a}\)<span class="why">状態 b と a の差。\(S_0\) は消える。<b>これが全過程の親の式</b></span></div></li>
+    <li><div>等温 \(T_b=T_a\)：\(nR\log\frac{V_b}{V_a}\)／等積 \(V_b=V_a\)：\(nC_V\log\frac{T_b}{T_a}\)<span class="why">T2：親の式で片方の log が \(\log1=0\) になる</span></div></li>
+    <li><div>等圧：\(\frac{V_b}{V_a}=\frac{T_b}{T_a}\) より \(n(C_V+R)\log\frac{T_b}{T_a}=nC_P\log\frac{T_b}{T_a}\)<span class="why">T3：状態方程式で圧力一定なら \(V\propto T\)。T6：\(C_V+R=C_P\)</span></div></li>
+    <li><div>断熱：\(nC_V\log\frac{T_b}{T_a}+nR\log\frac{V_b}{V_a}=nC_V\log\dfrac{T_bV_b^{\gamma-1}}{T_aV_a^{\gamma-1}}=nC_V\log1=0\)<span class="why">T6：\(R=(\gamma-1)C_V\)。D3：\(TV^{\gamma-1}\) 一定</span></div></li>
+  </ol>
+
+  <h3>D6　クラウジウス⇔トムソン（演習5週 問4）</h3>
+  <div class="idea"><b>ひとこと</b>：片方を破る機関があれば、カルノー機関とつないで、もう片方も破れることを収支表で見せる。</div>
+  <p><b>(i) トムソンが破れる ⇒ クラウジウスが破れる</b>（T9：仮定 → 組み合わせ → 収支 → 矛盾）</p>
+  <ol class="steps">
+    <li><div>高温熱源から熱 \(Q\) を受け取り、全部を仕事 \(W=Q\) に変える機関 X があると仮定する。<span class="why">仮定</span></div></li>
+    <li><div>X の仕事 \(W\) で、逆回しのカルノー機関 C を動かす。C は低温熱源から \(Q_1\) を汲み上げ、高温熱源に \(Q_1+W\) を渡す。<span class="why">組み合わせ（C の \(\Delta U=0\) から放出は \(Q_1+W\)）</span></div></li>
+    <li><div>収支表（熱源が受け取る量を＋、外部が受け取る仕事を＋）：
+      <div class="tbl"><table>
+        <thead><tr><th></th><th>高温熱源</th><th>低温熱源</th><th>外部への仕事</th></tr></thead>
+        <tbody>
+          <tr><td>機関 X</td><td class="c">−Q</td><td class="c">0</td><td class="c">+W</td></tr>
+          <tr><td>逆カルノー C</td><td class="c">+(Q₁+W)</td><td class="c">−Q₁</td><td class="c">−W</td></tr>
+          <tr class="sum"><td>合計（W=Q）</td><td class="c">+Q₁</td><td class="c">−Q₁</td><td class="c">0</td></tr>
+        </tbody>
+      </table></div>
+      <span class="why">T10：差し引き</span></div></li>
+    <li><div>低温熱源から高温熱源へ \(Q_1\) が移っただけで、他に何の変化もない。これはクラウジウスの原理に反する。<span class="why">矛盾</span></div></li>
+  </ol>
+  <p><b>(ii) クラウジウスが破れる ⇒ トムソンが破れる</b></p>
+  <ol class="steps">
+    <li><div>低温熱源から高温熱源へ、他に変化を残さず熱 \(Q_1\) を移す装置 Y があると仮定する。<span class="why">仮定</span></div></li>
+    <li><div>カルノー機関 C を順方向に回す。高温から \(Q_2\) を受け取り、仕事 \(W=Q_2-Q_1\) をし、低温に \(Q_1\) を捨てる。<span class="why">組み合わせ</span></div></li>
+    <li><div>収支表：
+      <div class="tbl"><table>
+        <thead><tr><th></th><th>高温熱源</th><th>低温熱源</th><th>外部への仕事</th></tr></thead>
+        <tbody>
+          <tr><td>カルノー C</td><td class="c">−Q₂</td><td class="c">+Q₁</td><td class="c">+(Q₂−Q₁)</td></tr>
+          <tr><td>装置 Y</td><td class="c">+Q₁</td><td class="c">−Q₁</td><td class="c">0</td></tr>
+          <tr class="sum"><td>合計</td><td class="c">−(Q₂−Q₁)</td><td class="c">0</td><td class="c">+(Q₂−Q₁)</td></tr>
+        </tbody>
+      </table></div>
+      <span class="why">T10：差し引き</span></div></li>
+    <li><div>低温熱源は変化なし。高温熱源1つから \(Q_2-Q_1\) を受け取り、全部を仕事に変えた。これはトムソンの原理に反する。<span class="why">矛盾</span></div></li>
+    <li><div>(i)(ii) の対偶により、2つの原理は同値である。<span class="why">結論を必ず書く</span></div></li>
+  </ol>
+
+  <h3>D7　カルノーの定理（演習6週 問1）</h3>
+  <div class="idea"><b>ひとこと</b>：カルノー機関より効率のいい機関があったら、それでカルノー機関を逆回しすると、ただで仕事が出てくる。</div>
+  <ol class="steps">
+    <li><div>同じ2熱源の間で働く任意の機関 X（効率 \(\eta_X\)）と可逆機関 C（効率 \(\eta_C\)）を考え、\(\eta_X\gt\eta_C\) と仮定する。<span class="why">T9：仮定</span></div></li>
+    <li><div>X は高温から \(Q_2\) を受け取り、仕事 \(W_X=\eta_XQ_2\) をする。C は可逆なので逆回しでき、仕事 \(W_C=\eta_CQ_2\) を与えると高温へ \(Q_2\) を戻す。<span class="why">組み合わせ。「可逆だから逆回しできる」がカギ</span></div></li>
+    <li><div>収支表：
+      <div class="tbl"><table>
+        <thead><tr><th></th><th>高温熱源</th><th>低温熱源</th><th>外部への仕事</th></tr></thead>
+        <tbody>
+          <tr><td>機関 X</td><td class="c">−Q₂</td><td class="c">+(Q₂−W_X)</td><td class="c">+W_X</td></tr>
+          <tr><td>逆回しの C</td><td class="c">+Q₂</td><td class="c">−(Q₂−W_C)</td><td class="c">−W_C</td></tr>
+          <tr class="sum"><td>合計</td><td class="c">0</td><td class="c">−(W_X−W_C)</td><td class="c">+(W_X−W_C)</td></tr>
+        </tbody>
+      </table></div>
+      <span class="why">T10</span></div></li>
+    <li><div>仮定より \(W_X-W_C=(\eta_X-\eta_C)Q_2\gt0\)。低温熱源1つから受け取った熱を全部仕事に変えたことになり、トムソンの原理に反する。よって \(\eta_X\le\eta_C\)。<span class="why">矛盾 → 結論</span></div></li>
+    <li><div>X も可逆なら、X と C の役割を入れ替えて \(\eta_C\le\eta_X\)。よって可逆機関の効率はすべて等しく、D4 から \(1-T_1/T_2\)。<span class="why">後半を忘れない</span></div></li>
+  </ol>
+
+  <h3>D8　循環関係と \((\partial P/\partial T)_V=\beta/\kappa\)（演習4週 問3）</h3>
+  <div class="idea"><b>ひとこと</b>：2本の全微分を代入し合い、「独立な \(dy,dz\) の係数を比べる」。</div>
+  <ol class="steps">
+    <li><div>\(dz=\left(\frac{\partial z}{\partial x}\right)_ydx+\left(\frac{\partial z}{\partial y}\right)_xdy\cdots(\text{i})\)、\(dx=\left(\frac{\partial x}{\partial y}\right)_zdy+\left(\frac{\partial x}{\partial z}\right)_ydz\cdots(\text{ii})\)<span class="why">T5：\(z(x,y)\) と \(x(y,z)\) の全微分</span></div></li>
+    <li><div>(ii) を (i) に代入：\(dz=\left(\frac{\partial z}{\partial x}\right)_y\!\left(\frac{\partial x}{\partial z}\right)_y\!dz+\left[\left(\frac{\partial z}{\partial x}\right)_y\!\left(\frac{\partial x}{\partial y}\right)_z+\left(\frac{\partial z}{\partial y}\right)_x\right]\!dy\)<span class="why">\(dx\) を消して \(dy,dz\) だけの式にする</span></div></li>
+    <li><div>\(dy,dz\) は独立なので、両辺の係数を比べる：\(dz\) の係数 \(=1\)、\(dy\) の係数 \(=0\)<span class="why">ここが核心。「独立なので」と必ず書く</span></div></li>
+    <li><div>\(\left(\frac{\partial z}{\partial x}\right)_y\left(\frac{\partial x}{\partial z}\right)_y=1\Rightarrow\left(\frac{\partial z}{\partial x}\right)_y=\dfrac{1}{(\partial x/\partial z)_y}\)<span class="why">逆数の関係（文字を入れ替えれば問題の形）</span></div></li>
+    <li><div>\(\left(\frac{\partial z}{\partial x}\right)_y\left(\frac{\partial x}{\partial y}\right)_z=-\left(\frac{\partial z}{\partial y}\right)_x\)。両辺に \((\partial y/\partial z)_x\) を掛け、4 の逆数の関係で右辺を \(-1\) にすると \(\left(\frac{\partial x}{\partial y}\right)_z\left(\frac{\partial y}{\partial z}\right)_x\left(\frac{\partial z}{\partial x}\right)_y=-1\)<span class="why">循環関係</span></div></li>
+    <li><div>\((x,y,z)=(P,T,V)\) とすると \(\left(\frac{\partial P}{\partial T}\right)_V\left(\frac{\partial T}{\partial V}\right)_P\left(\frac{\partial V}{\partial P}\right)_T=-1\)<span class="why">文字を当てはめる</span></div></li>
+    <li><div>\(\left(\frac{\partial P}{\partial T}\right)_V=-\dfrac{(\partial V/\partial T)_P}{(\partial V/\partial P)_T}=-\dfrac{V\beta}{-V\kappa}=\dfrac{\beta}{\kappa}\)<span class="why">逆数の関係で \((\partial T/\partial V)_P=1/(\partial V/\partial T)_P\)。定義より \((\partial V/\partial T)_P=V\beta\)、\((\partial V/\partial P)_T=-V\kappa\)</span></div></li>
+    <li><div>理想気体：\(\beta=1/T,\ \kappa=1/P\) より \(\beta/\kappa=P/T\)。直接 \((\partial P/\partial T)_V=R/V=P/T\) と一致。<span class="why">T12：検算</span></div></li>
+  </ol>
+
+  <h3>D9　\(P=\frac23n\varepsilon\)（演習2週 問1）</h3>
+  <div class="idea"><b>ひとこと</b>：圧力＝1秒あたり・単位面積あたりに分子が壁に渡す運動量。</div>
+  <ol class="steps">
+    <li><div>壁（面積 \(A\)、\(x\) 軸に垂直）に、\(x\) 成分 \(v_x\) の分子が弾性衝突すると、壁が受け取る運動量は \(2mv_x\)<span class="why">弾性衝突なので \(v_x\to-v_x\)、変化量 \(mv_x-(-mv_x)\)</span></div></li>
+    <li><div>時間 \(\Delta t\) に壁に届くのは、底面 \(A\)、高さ \(v_x\Delta t\) の柱の中の分子。数は \(nAv_x\Delta t\)<span class="why">\(n\)：単位体積あたりの数（この速度をもつ分子について考える）</span></div></li>
+    <li><div>力積 \(=2mv_x\times nAv_x\Delta t=2nmv_x^2A\Delta t\)<span class="why">1個あたり × 個数</span></div></li>
+    <li><div>\(v_x\gt0\) の分子は全体の半分なので、平均をとって力積 \(=nm\overline{v_x^2}A\Delta t\)<span class="why">\(\frac12\times2=1\)</span></div></li>
+    <li><div>\(P=\dfrac{\text{力積}}{A\Delta t}=nm\overline{v_x^2}\)<span class="why">力 = 力積/時間、圧力 = 力/面積</span></div></li>
+    <li><div>\(\overline{v^2}=\overline{v_x^2}+\overline{v_y^2}+\overline{v_z^2}=3\overline{v_x^2}\)<span class="why">方向に偏りがない（等方的）</span></div></li>
+    <li><div>\(P=\frac13nm\overline{v^2}=\frac23n\left(\frac12m\overline{v^2}\right)=\frac23n\varepsilon\)<span class="why">運動エネルギーの形に直す</span></div></li>
+  </ol>
+
+  <h3>D10　\(u(T)\propto T^4\)（演習6週 問5）</h3>
+  <div class="idea"><b>ひとこと</b>：与えられた式に \(U=uV\) と \(P=u/3\) を入れると、\(u\) の微分方程式になる。</div>
+  <ol class="steps">
+    <li><div>\(U=u(T)\,V\) より \(\left(\frac{\partial U}{\partial V}\right)_T=u\)<span class="why">\(u\) は \(T\) だけの関数なので、\(T\) 一定なら定数扱い</span></div></li>
+    <li><div>\(P=\frac13u(T)\) より \(\left(\frac{\partial P}{\partial T}\right)_V=\frac13\frac{du}{dT}\)<span class="why">\(P\) も \(T\) だけの関数</span></div></li>
+    <li><div>\(u=\frac T3\frac{du}{dT}-\frac u3\)<span class="why">式(2) に代入</span></div></li>
+    <li><div>\(4u=T\frac{du}{dT}\Rightarrow\frac{du}{u}=4\frac{dT}{T}\)<span class="why">T4：両辺に3を掛けて整理し変数分離</span></div></li>
+    <li><div>\(\log u=4\log T+c\Rightarrow u=aT^4\)<span class="why">T4：積分して log をまとめる（\(a=e^c\)）</span></div></li>
+  </ol>
+</section>
+
+<!-- ===== 類題 ===== -->
+<section id="variants">
+  <h2><span class="wk">03+++ · VARIANTS</span>演習の類題対策</h2>
+  <p>演習と「似た問題」は、条件を少し変えたものになるはずです。下の表で、演習ごとに予想される変化と対処をまとめました。そのあとに、特に出そうな類題を解いておきます。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>元の演習</th><th>予想される変化</th><th>対処</th></tr></thead>
+    <tbody>
+      <tr><td>3週 問3／過去問</td><td>定積なら \(Q=\Delta U\)、\(C_V=(\partial U/\partial T)_V\)</td><td>D1 の \(dP=0\) を \(dV=0\) に変える</td></tr>
+      <tr><td>3週 問6・4週 問1</td><td>\(n\) mol 版、\(T\)–\(P\) の関係、断熱の仕事</td><td>D3 で \(R\to nR\)、\(C_V\to nC_V\)。類題 V1</td></tr>
+      <tr><td>4週 問2</td><td>過程の組み合わせ・別の向き（圧縮）</td><td>公式表＋符号の宣言（T11）</td></tr>
+      <tr><td>4週 問4</td><td>別のサイクル（オットー、長方形）</td><td>類題 V2。「吸熱する過程はどれか」を最初に判定</td></tr>
+      <tr><td>5週 問2</td><td>温度を変えた数値、冷凍機</td><td>類題 V3。\(\eta_h=\eta_c+1\) で検算</td></tr>
+      <tr><td>5週 問4〜6・6週 問1, 3, 4</td><td>どの原理から何を導くかの組み合わせ替え</td><td>T9 の4段階＋収支表。D6, D7</td></tr>
+      <tr><td>6週 問2</td><td>断熱の傾きから \(\gamma\) を求める、等温線同士</td><td>\(PV=\) 一定と \(PV^\gamma=\) 一定を微分するだけ</td></tr>
+      <tr><td>6週 問5</td><td>\(P=u/3\) の係数が変わる</td><td>類題 V4</td></tr>
+      <tr><td>7週 問1〜3</td><td>\(T,P\) で表したエントロピー、不可逆変化の \(\Delta S\)</td><td>類題 V5, V6。T8（可逆経路を作る）</td></tr>
+      <tr><td>7週 問4</td><td>カルノーの \(\Delta S\) 合計、他のサイクルの T–S 図</td><td>類題 V7</td></tr>
+      <tr><td>7週 問5</td><td>\(n_1=n_2\) など具体的な場合</td><td>\(\Delta S=2nR\log2\)（同量・同体積の場合）</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>V1　断熱変化の仕事 \(W=\dfrac{P_1V_1-P_2V_2}{\gamma-1}\)</h3>
+  <ol class="steps">
+    <li><div>\(W=-\Delta U\)<span class="why">T2：断熱 \(Q=0\) を第一法則に入れる</span></div></li>
+    <li><div>\(W=-nC_V(T_2-T_1)=nC_V(T_1-T_2)\)<span class="why">理想気体 \(\Delta U=nC_V\Delta T\)</span></div></li>
+    <li><div>\(W=\dfrac{nR}{\gamma-1}(T_1-T_2)=\dfrac{P_1V_1-P_2V_2}{\gamma-1}\)<span class="why">T6：\(C_V=R/(\gamma-1)\)、T3：\(nRT=PV\)</span></div></li>
+  </ol>
+  <p><small class="note">別解：\(P=KV^{-\gamma}\)（\(K=P_1V_1^\gamma\)）として \(\int PdV\) を直接計算しても同じ。積分の練習として両方書けると強い。</small></p>
+
+  <h3>V2　オットーサイクル（断熱2本＋等積2本）の効率</h3>
+  <div class="idea"><b>ひとこと</b>：熱は等積過程でだけ出入りする。D4 と同じく、断熱の式2本を使って温度差を体積比に直す。</div>
+  <ol class="steps">
+    <li><div>A→B 断熱圧縮（\(V_2\to V_1\)、\(V_2\gt V_1\)）、B→C 等積加熱（吸熱）、C→D 断熱膨張（\(V_1\to V_2\)）、D→A 等積冷却（放熱）<span class="why">T11：過程の宣言。吸熱・放熱の判定</span></div></li>
+    <li><div>\(Q_{\text{吸}}=nC_V(T_C-T_B)\)、\(Q_{\text{放}}=nC_V(T_D-T_A)\)<span class="why">T2：等積なので \(Q=\Delta U\)</span></div></li>
+    <li><div>\(\eta=1-\dfrac{Q_{\text{放}}}{Q_{\text{吸}}}=1-\dfrac{T_D-T_A}{T_C-T_B}\)<span class="why">D4 の 2 と同じ</span></div></li>
+    <li><div>\(T_AV_2^{\gamma-1}=T_BV_1^{\gamma-1}\)、\(T_DV_2^{\gamma-1}=T_CV_1^{\gamma-1}\)<span class="why">D3：断熱 A→B、C→D</span></div></li>
+    <li><div>\((T_D-T_A)V_2^{\gamma-1}=(T_C-T_B)V_1^{\gamma-1}\)<span class="why">2本の式を辺々引く</span></div></li>
+    <li><div>\(\eta=1-\left(\dfrac{V_1}{V_2}\right)^{\gamma-1}\)<span class="why">5 を 3 に代入。圧縮比 \(V_2/V_1\) が大きいほど効率が高い</span></div></li>
+  </ol>
+
+  <h3>V3　冷凍機・ヒートポンプの数値</h3>
+  <p>例：冷凍庫 \(T_1=263\) K（−10 ℃）、室温 \(T_2=303\) K のカルノー冷凍機。</p>
+  <p>\(\eta_c=\dfrac{263}{303-263}=\dfrac{263}{40}\approx6.6\)、\(\eta_h=\dfrac{303}{40}\approx7.6\)。検算：\(\eta_h=\eta_c+1\)（\(Q_2=Q_1+W\) を \(W\) で割ったもの）。温度差が小さいほど係数は大きい。<b>温度は必ず K に直してから</b>代入する。</p>
+
+  <h3>V4　\(P=\dfrac1k u(T)\) なら？</h3>
+  <p>D10 と同じ手順で \(u=\frac Tk u'-\frac uk\)、よって \((k+1)u=Tu'\)、\(u\propto T^{k+1}\)。\(k=3\)（光・3次元）なら \(T^4\)。係数が変わっても<b>手順は全く同じ</b>なので、手順で覚える。</p>
+
+  <h3>V5　エントロピーを \(T\) と \(P\) で表す</h3>
+  <ol class="steps">
+    <li><div>\(S=nC_V\log T+nR\log V+S_0\)<span class="why">D5 の結果から出発</span></div></li>
+    <li><div>\(S=nC_V\log T+nR\log\dfrac{nRT}{P}+S_0\)<span class="why">T3：\(V=nRT/P\) を代入</span></div></li>
+    <li><div>\(S=n(C_V+R)\log T-nR\log P+S_0'=nC_P\log T-nR\log P+S_0'\)<span class="why">T4：log を分解（\(\log nR\) は定数なので \(S_0'\) に含める）。T6：\(C_V+R=C_P\)</span></div></li>
+  </ol>
+  <p>等圧なら第2項が消えて \(\Delta S=nC_P\log(T_b/T_a)\)、D5 と一致。</p>
+
+  <h3>V6　不可逆変化の \(\Delta S\)（自由膨張・熱伝導）</h3>
+  <p><b>自由膨張</b>（断熱容器で真空中へ \(V_1\to V_2\)）：\(Q=0,\ W=0\) なので \(\Delta U=0\)、理想気体なので温度一定。でも \(d'Q/T=0\) から「\(\Delta S=0\)」としては<b>いけない</b>（不可逆なので \(dS=d'Q/T\) が使えない）。T8 より、同じ始状態と終状態を結ぶ可逆な等温膨張で計算して \(\Delta S=nR\log(V_2/V_1)\gt0\)。</p>
+  <p><b>熱伝導</b>（高温熱源 \(T_2\) から低温熱源 \(T_1\) へ熱 \(Q\)）：\(\Delta S=-\dfrac{Q}{T_2}+\dfrac{Q}{T_1}=Q\dfrac{T_2-T_1}{T_1T_2}\gt0\)。どちらも<b>不可逆変化ではエントロピーが増える</b>ことの例。</p>
+
+  <h3>V7　カルノーサイクル1周のエントロピー変化</h3>
+  <p>気体の \(\Delta S\)：等温膨張で \(+Q_2/T_2\)、等温圧縮で \(-Q_1/T_1\)、断熱は0。合計 \(\frac{Q_2}{T_2}-\frac{Q_1}{T_1}\)。D4 の \(Q_1/Q_2=T_1/T_2\) より<b>ちょうど0</b>（クラウジウスの等式）。状態量なので1周で0になるのは当然、と説明できる。T–S 図の長方形の左右の辺の位置が同じ \(S\) に戻ることと対応。</p>
+</section>
+
+<!-- ===== 減点ポイント ===== -->
+<section id="traps">
+  <h2><span class="wk">03++++ · TRAPS</span>減点されやすいポイントと直し方</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>減点される書き方</th><th>満点の書き方</th></tr></thead>
+    <tbody>
+      <tr><td><span class="ng">✕</span> 等温なので \(\Delta U=0\)</td><td><span class="okk">○</span> 理想気体の内部エネルギーは温度だけの関数なので、等温なら \(\Delta U=0\)</td></tr>
+      <tr><td><span class="ng">✕</span>（理想気体と限らない問題で）\(dU=C_VdT\)</td><td><span class="okk">○</span> \(U(T,V)\) の全微分を書く（過去問の罠）</td></tr>
+      <tr><td><span class="ng">✕</span> いきなり積分して log</td><td><span class="okk">○</span> 「\(C_V\) は定数なので両辺を積分すると」</td></tr>
+      <tr><td><span class="ng">✕</span> \(dT\) で割って偏微分に</td><td><span class="okk">○</span> 「圧力一定のもとで両辺を \(dT\) で割ると」と条件を書き、添字 \(_P\) を付ける</td></tr>
+      <tr><td><span class="ng">✕</span> \(Q_1\) の符号があいまい</td><td><span class="okk">○</span> 「低温熱源に放出する熱を \(Q_1\ (\gt0)\) とする」と宣言</td></tr>
+      <tr><td><span class="ng">✕</span> 効率の分母に全部の熱</td><td><span class="okk">○</span> 分母は<b>吸収した熱だけ</b></td></tr>
+      <tr><td><span class="ng">✕</span> \(V_B/V_A=V_C/V_D\) をいきなり使う</td><td><span class="okk">○</span> 断熱の式2本を書いて「辺々割ると」</td></tr>
+      <tr><td><span class="ng">✕</span> 原理を「熱は低温から高温に移らない」</td><td><span class="okk">○</span> 「<b>他に何の変化も残さずに</b>」を必ず入れる（冷蔵庫は移している）</td></tr>
+      <tr><td><span class="ng">✕</span> 背理法で矛盾を言って終わり</td><td><span class="okk">○</span> 「よって〜が成り立つ」と結論を書く。同値なら両方向</td></tr>
+      <tr><td><span class="ng">✕</span> 不可逆変化で \(\Delta S=\int d'Q/T\)</td><td><span class="okk">○</span> 可逆な経路を作って計算（T8）</td></tr>
+      <tr><td><span class="ng">✕</span> 説明問題が式だけ</td><td><span class="okk">○</span> 定義・理由・図・具体例の4点セット</td></tr>
+      <tr><td><span class="ng">✕</span> ℃ のまま代入</td><td><span class="okk">○</span> 必ず K に直す（\(+273\)）</td></tr>
+    </tbody>
+  </table></div>
 </section>
 
 <!-- ===== 予想A ===== -->
@@ -404,12 +774,12 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
   <h2><span class="wk">10 · PLAN</span>試験までの勉強プラン</h2>
   <p>昨年は11月7日（金）だったので、今年も11月上旬なら残り約1週間です。1日60〜90分の想定です。</p>
   <dl class="plan">
-    <dt>1日目</dt><dd>過去問(1)〜(4)を見ずに書く → 網羅版ノートの解説と照合。「決まり文句」を答案に入れる練習。</dd>
-    <dt>2日目</dt><dd>予想C（断熱変化）を60分で解く。3週 問6・4週 問1・6週 問2 の導出を固める。</dd>
-    <dt>3日目</dt><dd>予想A（カルノー）を60分で解く。効率の導出と P–V 図を何も見ずに描けるように。</dd>
-    <dt>4日目</dt><dd>予想D（第二法則）。クラウジウス⇔トムソンの2つの図を、箱と矢印で描けるまで繰り返す。</dd>
-    <dt>5日目</dt><dd>予想B（エントロピー）。\(S\) の式と4過程の \(\Delta S\)、T–S 図。</dd>
-    <dt>6日目</dt><dd>「講義だけの用語」を一文で言えるか確認。2週（分子運動論 \(P=\tfrac23n\varepsilon\)）の導出も1回書く。</dd>
+    <dt>1日目</dt><dd>「導出の技 12」を読む → D1, D2（過去問）を青字の注釈ごと見ずに書く。書けなかったステップに印を付ける。</dd>
+    <dt>2日目</dt><dd>D3（断熱）→ 類題 V1。そのあと予想C を60分で解く。</dd>
+    <dt>3日目</dt><dd>D4（カルノー効率）→ 類題 V2, V3。そのあと予想A を60分で解く。</dd>
+    <dt>4日目</dt><dd>D6, D7 の収支表を白紙から作れるまで繰り返す。そのあと予想D を60分で解く。</dd>
+    <dt>5日目</dt><dd>D5 → 類題 V5〜V7。そのあと予想B を60分で解く。</dd>
+    <dt>6日目</dt><dd>D8〜D10 と「講義だけの用語」。最後に「減点ポイント」の表で自分の答案を採点し直す。</dd>
     <dt>前日</dt><dd>暗記カードと下のチェックリストだけ。新しいことはやらない。</dd>
   </dl>
 

@@ -1,0 +1,607 @@
+<title>物理学2 後期中間 対策ノート</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<style>
+/* Layout: single reading column with a sticky week index; "hot/cold reservoir" pair as the only accents */
+:root {
+  --bg: #f5f7f8;
+  --paper: #ffffff;
+  --ink: #18212b;
+  --muted: #5b6672;
+  --rule: #d9dfe4;
+  --hot: #b9471b;
+  --hot-soft: #fbeee7;
+  --cold: #1f5aa8;
+  --cold-soft: #e8f0fa;
+  --ok: #2f7a4a;
+  --font-display: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12171d; --paper: #19212a; --ink: #e4e9ee; --muted: #9aa6b2; --rule: #2c3743;
+    --hot: #f08a5d; --hot-soft: #3a241b; --cold: #7fb0f0; --cold-soft: #1a2a40; --ok: #6cc28f;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12171d; --paper: #19212a; --ink: #e4e9ee; --muted: #9aa6b2; --rule: #2c3743;
+  --hot: #f08a5d; --hot-soft: #3a241b; --cold: #7fb0f0; --cold-soft: #1a2a40; --ok: #6cc28f;
+  color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.85;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap { max-width: 860px; margin: 0 auto; }
+header.top { padding-block: 40px 20px; border-bottom: 2px solid var(--ink); }
+.eyebrow { font-size: 12px; letter-spacing: .14em; color: var(--muted); font-weight: 700; }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 6vw, 42px); line-height: 1.3; margin: 6px 0 10px; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 62ch; margin: 0; }
+nav.idx {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--bg); border-bottom: 1px solid var(--rule);
+  display: flex; gap: 6px; overflow-x: auto; padding-block: 10px;
+  font-size: 13px; scrollbar-width: thin;
+}
+nav.idx a { flex: none; text-decoration: none; color: var(--ink); border: 1px solid var(--rule); border-radius: 999px; padding: 2px 12px; background: var(--paper); }
+nav.idx a:hover, nav.idx a:focus-visible { border-color: var(--hot); color: var(--hot); outline: none; }
+nav.idx a.key { border-color: var(--hot); color: var(--hot); font-weight: 700; }
+section { padding-block: 36px 8px; scroll-margin-top: 60px; }
+h2 { font-family: var(--font-display); font-weight: 800; font-size: 26px; line-height: 1.4; margin: 0 0 4px; text-wrap: balance; }
+h2 .wk { font-family: var(--font-mono); font-size: 14px; color: var(--hot); display: block; letter-spacing: .08em; }
+h3 { font-size: 17px; margin: 28px 0 6px; font-weight: 700; display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+h3 .q { font-family: var(--font-mono); font-size: 13px; color: var(--paper); background: var(--ink); padding: 0 8px; border-radius: 3px; }
+p { margin: 8px 0; }
+.prompt { color: var(--muted); font-size: 14px; margin: 0 0 6px; }
+.ans { border-left: 3px solid var(--rule); padding-left: 14px; min-width: 0; }
+.tag { font-size: 11px; font-weight: 700; letter-spacing: .08em; padding: 1px 8px; border-radius: 3px; white-space: nowrap; }
+.t-a { background: var(--hot-soft); color: var(--hot); }
+.t-b { background: var(--cold-soft); color: var(--cold); }
+.t-c { background: transparent; color: var(--muted); border: 1px solid var(--rule); }
+.box { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 16px 18px; margin: 14px 0; min-width: 0; }
+.box.hot { border-color: var(--hot); }
+.box.cold { border-color: var(--cold); }
+.box h4 { margin: 0 0 6px; font-size: 15px; }
+.box.hot h4 { color: var(--hot); }
+.box.cold h4 { color: var(--cold); }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 600; color: var(--hot); }
+.tbl { overflow-x: auto; margin: 12px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; background: var(--paper); }
+th, td { border: 1px solid var(--rule); padding: 6px 10px; text-align: left; vertical-align: top; }
+th { background: var(--bg); font-weight: 700; white-space: nowrap; }
+td.n { font-family: var(--font-mono); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-block: 4px; }
+ul, ol { padding-left: 1.3em; margin: 8px 0; }
+li { margin: 4px 0; }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.grid2 > * { min-width: 0; }
+figure { margin: 14px 0; }
+figure svg { width: 100%; max-width: 420px; height: auto; display: block; }
+figcaption { font-size: 13px; color: var(--muted); }
+.check li { list-style: none; position: relative; }
+.check { padding-left: 1.6em; }
+.check li::before { content: "□"; position: absolute; left: -1.4em; color: var(--hot); }
+small.note { color: var(--muted); font-size: 13px; }
+footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 13px; }
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">物理学2（E科）・熱力学 ／ 演習 1〜8週 ＋ 令和7年度 過去問</div>
+  <h1>後期中間試験 対策ノート</h1>
+  <p class="lede">配布された演習問題（1〜8週）と昨年の過去問を分析し、出題傾向・必須公式・全問の解答・予想問題をまとめました。試験は60分・「解説せよ」形式が中心です。</p>
+</header>
+
+<nav class="idx" aria-label="目次">
+  <a href="#analysis" class="key">傾向分析</a>
+  <a href="#past" class="key">過去問解答</a>
+  <a href="#predict" class="key">予想問題</a>
+  <a href="#formula">公式</a>
+  <a href="#w1">1週</a><a href="#w2">2週</a><a href="#w3">3週</a><a href="#w4">4週</a>
+  <a href="#w5">5週</a><a href="#w6">6週</a><a href="#w7">7週</a><a href="#w8">8週</a>
+  <a href="#check">直前チェック</a>
+</nav>
+
+<!-- ============ 分析 ============ -->
+<section id="analysis">
+  <h2><span class="wk">ANALYSIS</span>出題傾向の分析</h2>
+
+  <div class="box hot">
+    <h4>昨年（R7.11.7）の過去問から分かること</h4>
+    <ul>
+      <li><b>大問1つ・テーマ1つ</b>（昨年は「エンタルピー」）を、小問(1)〜(4)で掘り下げる構成。</li>
+      <li>問い方は「<b>解説しよう</b>」。計算も「何を目標にして、どういう計算をするか」を<b>言葉で説明</b>することが求められる。式だけの答案は減点されると考えるべき。</li>
+      <li>演習3週の問題3（\(Q=H_2-H_1\)）がほぼそのまま (3) に出ている。<b>演習問題の証明・導出がベース</b>。</li>
+      <li>ジュール・トムソン実験のように<b>演習に無い講義内容</b>も出る（「講義を参考に」）。</li>
+      <li>(4) は「おまけ」＝発展問題。偏微分（全微分）を使った導出ができると差がつく。</li>
+      <li>持ち込み不可・電卓なし前提 → <b>数値計算より導出と説明</b>が主役。</li>
+    </ul>
+  </div>
+
+  <p>演習問題を「問われ方」で分類すると次のとおりです。</p>
+  <div class="tbl">
+  <table>
+    <thead><tr><th>週</th><th>テーマ</th><th>導出・証明</th><th>説明・論述</th><th>計算</th><th>重要度</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>温度・ボイル・シャルル</td><td>状態方程式, \(\beta\approx3\alpha\)</td><td>線膨張率の定義</td><td>華氏, サーミスタ</td><td><span class="tag t-c">C</span></td></tr>
+      <tr><td>2</td><td>気体分子運動論</td><td>\(P=\tfrac23 n\varepsilon\), ドルトン</td><td>第0法則, 弾性衝突</td><td>分子1個の体積・エネルギー</td><td><span class="tag t-b">B</span></td></tr>
+      <tr><td>3</td><td>第一法則・エンタルピー</td><td>\(Q=\Delta H\), 断熱の微小関係</td><td>第1種永久機関</td><td>換算表, 部屋の加熱</td><td><span class="tag t-a">A（昨年出題）</span></td></tr>
+      <tr><td>4</td><td>状態変化・サイクル</td><td>\(PV^\gamma\)一定, 偏微分の関係式</td><td>—</td><td>各過程の \(Q,W\), 効率</td><td><span class="tag t-a">A</span></td></tr>
+      <tr><td>5</td><td>カルノーサイクル・第二法則</td><td>効率・成績係数</td><td>クラウジウス⇔トムソン, 永久機関, プランク</td><td>\(\eta,\eta_c,\eta_h\)</td><td><span class="tag t-a">A</span></td></tr>
+      <tr><td>6</td><td>カルノーの定理</td><td>カルノーの定理, 断熱の傾き, \(u\propto T^4\)</td><td>熱伝導の不可逆性, カラテオドリー</td><td>—</td><td><span class="tag t-a">A</span></td></tr>
+      <tr><td>7</td><td>エントロピー</td><td>\(S\) の式, 各過程の \(\Delta S\)</td><td>乱雑さ, T–S図</td><td>混合エントロピー</td><td><span class="tag t-a">A</span></td></tr>
+      <tr><td>8</td><td>前期量子論（追加）</td><td>シュテファン・ボルツマン</td><td>黒体放射, 光電効果, 結合則</td><td>—</td><td><span class="tag t-c">C</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p><small class="note">重要度は「昨年の形式（1テーマを導出＋解説）に乗りやすいか」で付けた筆者の見立てです。8週は「追加コンテンツ」なので範囲外の可能性があります。範囲は授業で必ず確認してください。</small></p>
+
+  <div class="box">
+    <h4>答案の書き方（解説形式のテンプレ）</h4>
+    <ol>
+      <li><b>目標を書く</b>：「〜を示すために、第一法則と〜の定義を組み合わせる」</li>
+      <li><b>出発点の式に名前を付ける</b>：「第一法則 \(d'Q=dU+PdV\) …(a)」</li>
+      <li><b>操作を言葉で</b>：「圧力一定なので \(dP=0\)。(a)に代入し両辺を \(dT\) で割る」</li>
+      <li><b>結果の物理的意味</b>：「つまり定圧で加えた熱は全てエンタルピーの増加になる」</li>
+      <li><b>特別な場合の確認</b>：「理想気体なら〜となり、既知の結果と一致する」</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 過去問 ============ -->
+<section id="past">
+  <h2><span class="wk">PAST EXAM · R7</span>昨年の過去問（エンタルピー）の模範解説</h2>
+  <p class="prompt">1 mol の気体（理想気体とは限らない）。\(H=U+PV\)。</p>
+
+  <h3><span class="q">(1)</span>ジュール・トムソンの細孔栓の実験とエンタルピーのメリット</h3>
+  <div class="ans">
+    <p><b>実験</b>：断熱された管の途中に綿や多孔質の栓（細孔栓）を置き、左側を高圧 \(P_1\)、右側を低圧 \(P_2\) に保って気体をゆっくり押し通す。通過前後の温度を測ると、実在気体では温度が変化する（多くの気体は常温で冷える）。</p>
+    <p><b>目標</b>：この過程で一定に保たれる量を見つける。体積 \(V_1\) の気体が栓を通過して体積 \(V_2\) になったとする。</p>
+    <ul>
+      <li>左のピストンが気体にする仕事：\(+P_1V_1\)</li>
+      <li>気体が右のピストンにする仕事：\(P_2V_2\)</li>
+      <li>断熱なので \(Q=0\)。第一法則より</li>
+    </ul>
+    \[U_2-U_1=P_1V_1-P_2V_2 \;\Longrightarrow\; U_1+P_1V_1=U_2+P_2V_2 \;\Longrightarrow\; H_1=H_2\]
+    <p>つまり<b>ジュール・トムソン過程は等エンタルピー過程</b>。温度変化の割合はジュール・トムソン係数 \(\mu=(\partial T/\partial P)_H\) で表す。理想気体では \(H\) が \(T\) だけの関数なので \(\Delta T=0\)。温度が変わるのは分子間力など理想気体からのずれによるもので、気体の液化（冷却）に使われる。</p>
+    <p><b>エンタルピーを定義するメリット</b></p>
+    <ul>
+      <li>気体を押し込む・押し出す仕事（\(PV\)、流れの仕事）が初めから含まれているので、<b>流れのある過程や定圧過程</b>のエネルギー収支が1つの状態量で書ける。</li>
+      <li>定圧なら \(Q=\Delta H\)（演習3週 問3）。化学反応熱・相転移熱など、大気圧下（定圧）で測る熱がそのまま \(\Delta H\) になる。</li>
+      <li>\(H\) は状態量なので、途中の経路によらず始状態と終状態だけで決まる。</li>
+    </ul>
+  </div>
+
+  <h3><span class="q">(2)</span>比熱の定義 \(d'Q/dT\) の意味</h3>
+  <div class="ans">
+    <p>モル比熱は「1 mol の物質の温度を 1 K 上げるのに必要な熱量」で、\(C=d'Q/dT\)。</p>
+    <p>\(d'\) と書くのは、\(Q\) が<b>状態量ではなく</b>、経路によって値が変わるから（\(d'Q\) は全微分ではない）。同じ \(dT\) でも、体積を一定に保つか圧力を一定に保つかで必要な熱が違う。だから条件を指定して</p>
+    \[C_V=\left(\frac{d'Q}{dT}\right)_V,\qquad C_P=\left(\frac{d'Q}{dT}\right)_P\]
+    <p>と区別する。定圧では膨張して外に仕事をする分だけ余計に熱が要るので \(C_P\gt C_V\)。</p>
+  </div>
+
+  <h3><span class="q">(3)</span>\(C_P=(\partial H/\partial T)_P\) を示す</h3>
+  <div class="ans">
+    <p><b>目標</b>：第一法則を \(dH\) で書き直し、圧力一定の条件を入れる。</p>
+    <p>第一法則：\(d'Q=dU+PdV\)。定義 \(H=U+PV\) を微分すると \(dH=dU+PdV+VdP\)。よって</p>
+    \[d'Q=dH-VdP\]
+    <p>圧力一定なら \(dP=0\) なので \(d'Q=dH\)。両辺を \(dT\) で割って</p>
+    \[C_P=\left(\frac{d'Q}{dT}\right)_P=\left(\frac{\partial H}{\partial T}\right)_P\]
+    <p>同様に体積一定なら \(d'Q=dU\) で \(C_V=(\partial U/\partial T)_V\)。「定積なら \(U\)、定圧なら \(H\)」という対応がエンタルピーの便利さ。</p>
+  </div>
+
+  <h3><span class="q">(4)</span>\(C_P=C_V+\{P+(\partial U/\partial V)_T\}(\partial V/\partial T)_P\) を示す</h3>
+  <div class="ans">
+    <p><b>目標</b>：\(U\) を \(T,V\) の関数と見て全微分し、第一法則に入れてから圧力一定で \(dT\) で割る。</p>
+    \[dU=\left(\frac{\partial U}{\partial T}\right)_V dT+\left(\frac{\partial U}{\partial V}\right)_T dV = C_V\,dT+\left(\frac{\partial U}{\partial V}\right)_T dV\]
+    <p>これを \(d'Q=dU+PdV\) に代入：</p>
+    \[d'Q=C_V\,dT+\left\{P+\left(\frac{\partial U}{\partial V}\right)_T\right\}dV\]
+    <p>圧力一定で両辺を \(dT\) で割ると、左辺は \(C_P\)、\(dV/dT\) は \((\partial V/\partial T)_P\) になるので式(4)が得られる。</p>
+    <p><b>意味</b>：\(P(\partial V/\partial T)_P\) は膨張で外部にする仕事、\((\partial U/\partial V)_T(\partial V/\partial T)_P\) は分子間力に逆らってする内部の仕事。</p>
+    <p><b>確認</b>：理想気体では \((\partial U/\partial V)_T=0\)（\(U\) は \(T\) のみの関数）、\((\partial V/\partial T)_P=R/P\) なので \(C_P-C_V=R\)（マイヤーの関係）。</p>
+    <p><small class="note">発展：6週 問5 の \((\partial U/\partial V)_T=T(\partial P/\partial T)_V-P\) を使うと \(C_P-C_V=T(\partial P/\partial T)_V(\partial V/\partial T)_P=TV\beta^2/\kappa\)（4週 問3 の \(\beta/\kappa\) とつながる）。</small></p>
+  </div>
+</section>
+
+<!-- ============ 予想 ============ -->
+<section id="predict">
+  <h2><span class="wk">FORECAST</span>今年の予想テーマ</h2>
+  <p>昨年と同じ「1テーマ・解説形式」なら、演習に導出と論述が両方そろっている次のテーマが有力です（上ほど優先）。</p>
+  <div class="grid2">
+    <div class="box hot"><h4>① カルノーサイクルと第二法則</h4>効率 \(1-T_1/T_2\) の導出 → 成績係数 → クラウジウス⇔トムソン → カルノーの定理。5・6週。</div>
+    <div class="box hot"><h4>② エントロピー</h4>\(S=nC_V\log T+nR\log V+S_0\) → 各過程の \(\Delta S\) → T–S図 → 混合。7週。</div>
+    <div class="box cold"><h4>③ 断熱変化</h4>\(\Delta T=-\frac{RT}{C_VV}\Delta V\) → \(PV^\gamma\) 一定 → 傾きが \(\gamma\) 倍 → 断熱線は交わらない。3・4・6週。</div>
+    <div class="box cold"><h4>④ 分子運動論</h4>\(P=\tfrac23 n\varepsilon\) → \(\varepsilon=\tfrac32kT\) → 第0法則・ドルトン。2週。</div>
+  </div>
+  <p>どのテーマでも「説明しなさい」型の小問（不可逆変化とは？永久機関とは？）が混ざると考え、各週の論述問題も文章で書けるようにしておきましょう。</p>
+</section>
+
+<!-- ============ 公式 ============ -->
+<section id="formula">
+  <h2><span class="wk">FORMULA SHEET</span>必須公式（\(n\) mol 理想気体）</h2>
+  <div class="tbl">
+  <table>
+    <thead><tr><th>過程</th><th>仕事 \(W\)（外へ）</th><th>熱 \(Q\)（得る）</th><th>\(\Delta U\)</th><th>\(\Delta S\)</th></tr></thead>
+    <tbody>
+      <tr><td>等温</td><td>\(nRT\log\frac{V_2}{V_1}\)</td><td>\(=W\)</td><td>0</td><td>\(nR\log\frac{V_2}{V_1}\)</td></tr>
+      <tr><td>断熱</td><td>\(nC_V(T_1-T_2)\)</td><td>0</td><td>\(nC_V(T_2-T_1)\)</td><td>0</td></tr>
+      <tr><td>等圧</td><td>\(P(V_2-V_1)=nR(T_2-T_1)\)</td><td>\(nC_P(T_2-T_1)\)</td><td>\(nC_V(T_2-T_1)\)</td><td>\(nC_P\log\frac{T_2}{T_1}\)</td></tr>
+      <tr><td>等積</td><td>0</td><td>\(nC_V(T_2-T_1)\)</td><td>\(nC_V(T_2-T_1)\)</td><td>\(nC_V\log\frac{T_2}{T_1}\)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="grid2">
+    <div class="box">
+      <h4>基本</h4>
+      \[PV=nRT,\quad d'Q=dU+PdV\]
+      \[C_P-C_V=R,\quad \gamma=\frac{C_P}{C_V},\quad C_V=\frac{R}{\gamma-1}\]
+      \[H=U+PV,\quad dS=\frac{d'Q}{T}\]
+    </div>
+    <div class="box">
+      <h4>断熱・カルノー</h4>
+      \[PV^\gamma,\; TV^{\gamma-1},\; TP^{-(\gamma-1)/\gamma}\;=\text{一定}\]
+      \[\eta=1-\frac{T_1}{T_2},\quad \eta_c=\frac{T_1}{T_2-T_1},\quad \eta_h=\frac{T_2}{T_2-T_1}\]
+    </div>
+    <div class="box">
+      <h4>分子運動論</h4>
+      \[P=\tfrac13 nm\overline{v^2}=\tfrac23 n\varepsilon,\quad \varepsilon=\tfrac32 kT\]
+    </div>
+    <div class="box">
+      <h4>偏微分</h4>
+      \[\left(\frac{\partial x}{\partial y}\right)_z\left(\frac{\partial y}{\partial z}\right)_x\left(\frac{\partial z}{\partial x}\right)_y=-1\]
+      \[\left(\frac{\partial P}{\partial T}\right)_V=\frac{\beta}{\kappa}\]
+    </div>
+  </div>
+</section>
+
+<!-- ============ 1週 ============ -->
+<section id="w1">
+  <h2><span class="wk">WEEK 1</span>導入 … 温度計, ボイル, シャルル</h2>
+
+  <h3><span class="q">問1</span>摂氏→華氏</h3>
+  <div class="ans">0→32、100→212 の一次関数なので傾き \(180/100=9/5\)：\[t_F=\frac95 t_C+32\]</div>
+
+  <h3><span class="q">問2</span>線膨張率と \(\beta\approx3\alpha\)</h3>
+  <div class="ans">
+    <p>(1) 線膨張率は「温度が 1 ℃ 上がったときの、0 ℃ での長さに対する長さの変化の割合」。</p>
+    <p>(2) <b>球</b>：\(V=\tfrac43\pi r^3\)、\(r=r_0(1+\alpha t)\) より \(V=V_0(1+\alpha t)^3=V_0(1+3\alpha t+3\alpha^2t^2+\alpha^3t^3)\)。\(\alpha t\ll1\) なので2次以上を無視して \(V\approx V_0(1+3\alpha t)\)、よって \(\beta\approx3\alpha\)。<b>立方体</b>：\(V=a^3\) で全く同じ計算。形によらず、長さの3乗で体積が決まることが本質。</p>
+  </div>
+
+  <h3><span class="q">問3</span>サーミスタ</h3>
+  <div class="ans">
+    \[\frac{312}{T}=\log\frac{200}{98.3}=\log 2.035\approx0.710\quad\Rightarrow\quad T\approx\frac{312}{0.710}\approx\]
+    <p><span class="num">T ≈ 439 K</span>（約 166 ℃）</p>
+  </div>
+
+  <h3><span class="q">問4</span>状態方程式</h3>
+  <div class="ans">
+    <p>(1) シャルルの法則は \(T=t+273.15\)、\(T_0=273.15\) として \(V=V_0T/T_0\)（圧力一定で \(V\propto T\)）。ボイルの法則（温度一定で \(PV\) 一定）と合わせると \(PV/T\) が一定。標準状態の値で \(R=P_0V_0/T_0\) とおけば \(PV=RT\)。</p>
+    <p>(2) 体積一定で \(P\propto T\)：\(373.15/273.15\approx\) <span class="num">1.37 倍</span>（\(R\) の値は不要）。</p>
+  </div>
+
+  <h3><span class="q">問5</span>熱平衡と第0法則</h3>
+  <div class="ans">
+    <p>式(9)を整理すると \(p_AV_A=\left(p_B+\dfrac{a}{V_B^2}\right)(V_B-b)\)。式(10)を整理すると \(p_C(V_C-b)=\left(p_B+\dfrac{a}{V_B^2}\right)(V_B-b)\)。</p>
+    <p>(1) A–B、B–C がそれぞれ熱平衡なので、第0法則より A–C も熱平衡で \[p_AV_A=p_C(V_C-b)\]</p>
+    <p>(2) A が理想気体なら \(p_AV_A=RT\)。よって B は \(\left(p_B+\dfrac{a}{V_B^2}\right)(V_B-b)=RT\)（ファン・デル・ワールスの状態方程式）、C は \(p_C(V_C-b)=RT\)。</p>
+  </div>
+</section>
+
+<!-- ============ 2週 ============ -->
+<section id="w2">
+  <h2><span class="wk">WEEK 2</span>気体の分子運動論</h2>
+
+  <h3><span class="q">問1</span>\(P=\tfrac23 n\varepsilon\)</h3>
+  <div class="ans">
+    <p><b>目標</b>：分子が壁に与える力積を数え上げる。</p>
+    <ol>
+      <li>質量 \(m\)、速度の \(x\) 成分 \(v_x\) の分子が壁（面積 \(A\)）に弾性衝突すると運動量変化 \(2mv_x\)。</li>
+      <li>時間 \(\Delta t\) に壁に当たるのは、底面 \(A\)・高さ \(v_x\Delta t\) の柱の中で \(+x\) 向きの分子：\(\tfrac12 nAv_x\Delta t\) 個。</li>
+      <li>力積の合計 \(\tfrac12 nAv_x\Delta t\cdot2mv_x=nmv_x^2A\Delta t\)。平均をとって \(P=nm\overline{v_x^2}\)。</li>
+      <li>等方性より \(\overline{v_x^2}=\overline{v_y^2}=\overline{v_z^2}=\tfrac13\overline{v^2}\)。</li>
+    </ol>
+    \[P=\frac13nm\overline{v^2}=\frac23n\cdot\frac12m\overline{v^2}=\frac23n\varepsilon\]
+  </div>
+
+  <h3><span class="q">問2</span>ドルトンの分圧の法則</h3>
+  <div class="ans">理想気体の分子どうしは相互作用せず、壁への力積は分子ごとに独立に足し合わされる。成分1, 2 の数密度を \(n_1,n_2\) とすると \(P=\tfrac23n_1\varepsilon_1+\tfrac23n_2\varepsilon_2=P_1+P_2\)。\(P_i\) はその成分だけが体積 \(V\) を占めたときの圧力そのもの。</div>
+
+  <h3><span class="q">問3</span>第0法則の分子論的説明</h3>
+  <div class="ans">2つの物体を接触させると、境界で分子が衝突してエネルギーをやり取りし、分子1個あたりの平均運動エネルギーが等しくなったところで正味のやり取りが止まる（熱平衡）。温度はこの平均運動エネルギーの尺度（\(\varepsilon=\tfrac32kT\)）。A と C、B と C が平衡なら \(\varepsilon_A=\varepsilon_C=\varepsilon_B\) なので A と B も平衡。これが第0法則。</div>
+
+  <h3><span class="q">問4</span>弾性衝突と見なせる理由</h3>
+  <div class="ans">非弾性衝突なら跳ね返りの速さが小さく、壁に与える運動量 \(2mv_x\) が減って圧力が下がる。さらに気体のエネルギーが壁に吸われ続け、気体は冷え続けるはず。しかし気体と壁が熱平衡（同じ温度）なら、壁の分子も熱運動していて、平均すると気体が壁に渡すエネルギーと壁から受け取るエネルギーは等しい。したがって個々の衝突は弾性でなくても、<b>平均として</b>弾性衝突と見なしてよい。</div>
+
+  <h3><span class="q">問5</span>0 ℃, 1 atm の理想気体</h3>
+  <div class="ans">
+    <p>(1) \(\dfrac{V}{N}=\dfrac{kT}{P}=\dfrac{1.38\times10^{-23}\times273}{1.013\times10^5}\approx\) <span class="num">3.7×10⁻²⁶ m³</span>（\(22.4\,\text{L}/N_A\) でも同じ。一辺約 3.3 nm の立方体）</p>
+    <p>(2) \(\varepsilon=\tfrac32kT=1.5\times1.38\times10^{-23}\times273\approx\) <span class="num">5.7×10⁻²¹ J</span>（約 0.035 eV）</p>
+  </div>
+</section>
+
+<!-- ============ 3週 ============ -->
+<section id="w3">
+  <h2><span class="wk">WEEK 3</span>熱力学の第一法則</h2>
+
+  <h3><span class="q">問1</span>第1種永久機関が不可能な理由</h3>
+  <div class="ans">第一法則 \(\Delta U=Q-W\)。機関は1サイクルで元の状態に戻るので \(\Delta U=0\)、よって \(W=Q\)。外部から熱（エネルギー）を受け取らずに（\(Q=0\)）仕事をする（\(W\gt0\)）ことはできない。第1種永久機関＝エネルギー保存則に反する機関。</div>
+
+  <h3><span class="q">問2</span>エネルギー換算表</h3>
+  <div class="ans">
+    <p>考え方：1 J/mol は分子1個あたり \(1/N_A\) J。K へは \(E=kT\)、eV へは \(e\)、Hz へは \(E=h\nu\) で割る。</p>
+    <div class="tbl"><table>
+      <thead><tr><th>1 単位 →</th><th>J/mol</th><th>cal/mol</th><th>K</th><th>eV</th><th>Hz</th></tr></thead>
+      <tbody>
+        <tr><th>1 J/mol</th><td class="n">1</td><td class="n">2.390×10⁻¹</td><td class="n">1.203×10⁻¹</td><td class="n">1.036×10⁻⁵</td><td class="n">2.506×10⁹</td></tr>
+        <tr><th>1 cal/mol</th><td class="n">4.184</td><td class="n">1</td><td class="n">5.033×10⁻¹</td><td class="n">4.336×10⁻⁵</td><td class="n">1.049×10¹⁰</td></tr>
+        <tr><th>1 K</th><td class="n">8.316</td><td class="n">1.988</td><td class="n">1</td><td class="n">8.620×10⁻⁵</td><td class="n">2.084×10¹⁰</td></tr>
+        <tr><th>1 eV</th><td class="n">9.647×10⁴</td><td class="n">2.306×10⁴</td><td class="n">1.160×10⁴</td><td class="n">1</td><td class="n">2.418×10¹⁴</td></tr>
+        <tr><th>1 Hz</th><td class="n">3.990×10⁻¹⁰</td><td class="n">9.537×10⁻¹¹</td><td class="n">4.798×10⁻¹¹</td><td class="n">4.136×10⁻¹⁵</td><td class="n">1</td></tr>
+      </tbody>
+    </table></div>
+    <p>(2) 表と同じ \(E=kT\) で：\(T=4.1\times10^{-21}/1.381\times10^{-23}\approx\) <span class="num">297 K</span>（約 24 ℃、室温）。<small class="note">\(\tfrac32kT\) で換算すると約 198 K。授業の換算ルール（表の備考）に合わせて答えること。</small></p>
+  </div>
+
+  <h3><span class="q">問3</span>定圧で \(Q=H_2-H_1\)</h3>
+  <div class="ans">第一法則 \(Q=(U_2-U_1)+P(V_2-V_1)\)（定圧なので仕事は \(P\Delta V\)）。\(P\) が共通なので \(Q=(U_2+PV_2)-(U_1+PV_1)=H_2-H_1\)。<b>過去問(3)の元ネタ</b>。</div>
+
+  <h3><span class="q">問4</span>理想気体の \(\alpha_P,\beta,\kappa\)</h3>
+  <div class="ans">\(P=RT/V\)、\(V=RT/P\) を偏微分：\[\alpha_P=\frac1P\cdot\frac RV=\frac1T,\qquad \beta=\frac1V\cdot\frac RP=\frac1T,\qquad \kappa=-\frac1V\cdot\left(-\frac{RT}{P^2}\right)=\frac1P\]</div>
+
+  <h3><span class="q">問5</span>6畳間の空気を 0→20 ℃</h3>
+  <div class="ans">
+    <p>質量 \(m=27.00\times1.293=34.91\) kg、\(c_V=1006\)、\(c_P=\gamma c_V=1411\) J/(kg·K)。</p>
+    <p>(1) 定積：\(Q=mc_V\Delta T=34.91\times1006\times20\approx\) <span class="num">7.02×10⁵ J</span></p>
+    <p>(2) 定圧：\(Q=mc_P\Delta T=\gamma\times\)(1) \(\approx\) <span class="num">9.85×10⁵ J</span></p>
+    <p>(3) 体積・圧力一定で空気が漏れる：室内の質量が \(m(T)=m_0T_0/T\) と減っていく。各瞬間に室内の空気を定圧で \(dT\) 温める：</p>
+    \[Q=\int_{T_0}^{T}c_P\,\frac{m_0T_0}{T'}\,dT'=c_Pm_0T_0\log\frac{T}{T_0}=1411\times34.91\times273.15\times\log\frac{293.15}{273.15}\]
+    <p><span class="num">≈ 9.51×10⁵ J</span>（(1) と (2) の間。漏れた分は温めなくてよいので (2) より少ない）</p>
+  </div>
+
+  <h3><span class="q">問6</span>断熱変化の微小関係</h3>
+  <div class="ans">断熱なので \(d'Q=0\)：\(0=C_VdT+PdV\)。\(P=RT/V\) を代入して \(C_V\,\Delta T=-\dfrac{RT}{V}\Delta V\)、すなわち \(\Delta T=-\dfrac{RT}{C_VV}\Delta V\)。（理想気体は \(dU=C_VdT\)）</div>
+</section>
+
+<!-- ============ 4週 ============ -->
+<section id="w4">
+  <h2><span class="wk">WEEK 4</span>状態変化とカルノーサイクル</h2>
+
+  <h3><span class="q">問1</span>断熱変化の3つの関係式</h3>
+  <div class="ans">
+    <p>3週 問6 の式を変形し、\(R=C_P-C_V=(\gamma-1)C_V\) を使う：</p>
+    \[\frac{dT}{T}=-(\gamma-1)\frac{dV}{V}\;\Rightarrow\;\log T+(\gamma-1)\log V=\text{一定}\;\Rightarrow\;TV^{\gamma-1}=\text{一定}\]
+    <p>\(T=PV/R\) を代入すると \(PV^\gamma=\) 一定。\(V=RT/P\) を代入すると \(T^\gamma P^{1-\gamma}=\) 一定、つまり \(T/P^{(\gamma-1)/\gamma}=\) 一定。</p>
+  </div>
+
+  <h3><span class="q">問2</span>各過程の \(Q\) と \(W\)（1 mol, \(V_1\lt V_2\)）</h3>
+  <div class="ans">
+    <p>基本は \(W=\int_{V_1}^{V_2}P\,dV\)、\(Q=C_V(T_2-T_1)+W\)。</p>
+    <div class="tbl"><table>
+      <thead><tr><th>過程</th><th>\(W\)</th><th>\(Q\)</th><th>温度の図（略図の形）</th></tr></thead>
+      <tbody>
+        <tr><td>(1) 等温</td><td>\(RT_1\log\frac{V_2}{V_1}\)</td><td>\(=W\)</td><td>\(T\)–\(V\) で水平線</td></tr>
+        <tr><td>(2) 断熱</td><td>\(C_V(T_1-T_2)\)</td><td>0</td><td>\(T=T_1(V_1/V)^{\gamma-1}\)：右下がり・下に凸</td></tr>
+        <tr><td>(3) 等圧</td><td>\(R(T_2-T_1)\)</td><td>\(C_P(T_2-T_1)=\gamma C_V(T_2-T_1)\)</td><td>原点を通る直線 \(T\propto V\)</td></tr>
+        <tr><td>(4) 等積</td><td>0</td><td>\(C_V(T_2-T_1)\)</td><td>\(T\)–\(P\) で原点を通る直線</td></tr>
+      </tbody>
+    </table></div>
+    <p>(5) <b>一次関数的変化</b>（P–V 図で直線）：仕事は台形の面積</p>
+    \[W=\frac{(P_1+P_2)(V_2-V_1)}{2}=\frac R2\left(\frac{T_1}{V_1}+\frac{T_2}{V_2}\right)(V_2-V_1),\qquad Q=C_V(T_2-T_1)+W\]
+    <p>\(P=aV+b\) なので \(T=PV/R=(aV^2+bV)/R\)：\(T\)–\(V\) 図は放物線（\(a\lt0\) なら上に凸）。</p>
+    <p>(6) <b>下に凸の二次関数</b>：3点 \((V_1,P_1),(V_3,P_3),(V_2,P_2)\) を通る放物線の面積。\(V_3\) が中点ならシンプソンの公式で厳密に</p>
+    \[W=\frac{V_2-V_1}{6}\left(P_1+4P_3+P_2\right),\quad P_i=\frac{RT_i}{V_i},\qquad Q=C_V(T_2-T_1)+W\]
+    <p><small class="note">中点でない一般の場合は、\(h=V_2-V_1,\ s=V_3-V_1\) として \(W=\frac{h(3s-h)}{6s}P_1+\frac{h^3}{6s(h-s)}P_3+\frac{h(2h-3s)}{6(h-s)}P_2\)。\(T=PV/R\) は \(V\) の3次式。</small></p>
+  </div>
+
+  <h3><span class="q">問3</span>偏微分の関係式</h3>
+  <div class="ans">
+    <p>(1) \(z(x,y)\) と \(x(y,z)\) の全微分：</p>
+    \[dz=\left(\frac{\partial z}{\partial x}\right)_ydx+\left(\frac{\partial z}{\partial y}\right)_xdy,\qquad dx=\left(\frac{\partial x}{\partial y}\right)_zdy+\left(\frac{\partial x}{\partial z}\right)_ydz\]
+    <p>\(dx\) を \(dz\) の式に代入すると</p>
+    \[dz=\left(\frac{\partial z}{\partial x}\right)_y\left(\frac{\partial x}{\partial z}\right)_ydz+\left[\left(\frac{\partial z}{\partial x}\right)_y\left(\frac{\partial x}{\partial y}\right)_z+\left(\frac{\partial z}{\partial y}\right)_x\right]dy\]
+    <p>\(dy,dz\) は独立なので係数を比べる。\(dz\) の係数＝1 より \((\partial z/\partial x)_y=1/(\partial x/\partial z)_y\)（逆数の関係）。\(dy\) の係数＝0 より \((\partial z/\partial x)_y(\partial x/\partial y)_z=-(\partial z/\partial y)_x\)。逆数の関係で右辺を書き換えると \((\partial x/\partial y)_z(\partial y/\partial z)_x(\partial z/\partial x)_y=-1\)（循環関係）。</p>
+    <p>(2) \((x,y,z)=(P,T,V)\) として循環関係から</p>
+    \[\left(\frac{\partial P}{\partial T}\right)_V=-\frac{(\partial V/\partial T)_P}{(\partial V/\partial P)_T}=-\frac{V\beta}{-V\kappa}=\frac{\beta}{\kappa}\]
+  </div>
+
+  <h3><span class="q">問4</span>サイクル A→B→C→A の仕事と効率</h3>
+  <div class="ans">
+    <p>A\((P_1,V_1)\)→B\((P_2,V_2)\) で膨張、B→C 定圧圧縮、C→A 定積加圧（時計回り）。\(W_{CA}=0\)、\(W_{BC}=-P_2(V_2-V_1)\)。C→A の吸熱 \(Q_{CA}=C_V(T_A-T_C)=\dfrac{V_1(P_1-P_2)}{\gamma-1}\)、B→C は放熱。</p>
+    <div class="grid2">
+      <div class="box">
+        <h4>(1) A→B 等温（\(P_1V_1=P_2V_2\)）</h4>
+        \[W=P_1V_1\log\frac{V_2}{V_1}-P_2(V_2-V_1)\]
+        \[Q_{\text{in}}=P_1V_1\log\frac{V_2}{V_1}+\frac{V_1(P_1-P_2)}{\gamma-1}\]
+        \[\eta=\frac{W}{Q_{\text{in}}}\]
+      </div>
+      <div class="box">
+        <h4>(2) A→B 断熱（\(P_1V_1^\gamma=P_2V_2^\gamma\)）</h4>
+        \[W=\frac{P_1V_1-P_2V_2}{\gamma-1}-P_2(V_2-V_1)\]
+        \[Q_{\text{in}}=\frac{V_1(P_1-P_2)}{\gamma-1}\]
+        \[\eta=1-\frac{\gamma P_2(V_2-V_1)}{V_1(P_1-P_2)}\]
+      </div>
+    </div>
+    <p><small class="note">効率の分母は「吸収した熱だけ」。放熱（B→C）を入れないこと。(2) は \(W=Q_{CA}-|Q_{BC}|\)、\(|Q_{BC}|=C_P(T_B-T_C)=\gamma P_2(V_2-V_1)/(\gamma-1)\) で検算できる。</small></p>
+  </div>
+</section>
+
+<!-- ============ 5週 ============ -->
+<section id="w5">
+  <h2><span class="wk">WEEK 5</span>カルノーサイクルと第二法則</h2>
+
+  <h3><span class="q">問1</span>ヒートポンプの原理</h3>
+  <div class="ans">カルノーサイクルを逆向き（P–V 図で反時計回り）に回す。断熱膨張で作業物質を低温 \(T_1\) より冷やし、等温膨張で低温熱源から熱 \(Q_1\) を吸収。断熱圧縮で \(T_2\) より熱くし、等温圧縮で高温熱源に \(Q_2\) を放出。外から仕事 \(W\) を加えることで、自然には起きない「低温→高温」の熱移動を実現する。\(Q_2=Q_1+W\) なので、加えた仕事より多くの熱を高温側に届けられる（エアコンの暖房）。</div>
+
+  <h3><span class="q">問2</span>効率と成績係数</h3>
+  <div class="ans">
+    <p>等温過程の熱：\(Q_2=nRT_2\log\frac{V_B}{V_A}\)、\(Q_1=nRT_1\log\frac{V_C}{V_D}\)。断熱過程の \(TV^{\gamma-1}\) 一定から \(V_B/V_A=V_C/V_D\)、よって \(Q_1/Q_2=T_1/T_2\)。</p>
+    \[\text{(a)}\ \eta=1-\frac{T_1}{T_2}\qquad \text{(b)}\ \eta_c=\frac{Q_1}{Q_2-Q_1}=\frac{T_1}{T_2-T_1}\qquad \text{(c)}\ \eta_h=\frac{Q_2}{Q_2-Q_1}=\frac{T_2}{T_2-T_1}\]
+    <p>(d) \(T_1=273,\ T_2=303\)：<span class="num">η = 30/303 ≈ 0.099</span>、<span class="num">η_c = 273/30 = 9.1</span>、<span class="num">η_h = 303/30 = 10.1</span>。\(\eta_h=\eta_c+1=1/\eta\) が成り立つ。</p>
+  </div>
+
+  <h3><span class="q">問3</span>不可逆変化とは</h3>
+  <div class="ans">ある変化が起きたあと、<b>外界に何の変化も残さずに</b>系を元の状態に戻すことができない変化。例：摩擦による発熱、熱伝導（高温→低温）、気体の自由膨張、拡散・混合。逆向きに戻すことはできても、必ずどこかに痕跡（仕事の消費や熱の移動）が残る。</div>
+
+  <h3><span class="q">問4</span>クラウジウスの原理 ⇔ トムソンの原理</h3>
+  <div class="ans">
+    <p><b>クラウジウス</b>：他に何の変化も残さず、熱を低温物体から高温物体へ移すことはできない。<br><b>トムソン</b>：1つの熱源から熱を受け取り、それを全部仕事に変える（他に変化を残さない）サイクルは存在しない。</p>
+    <p>同値は<b>対偶</b>で示す（「片方が破れれば他方も破れる」）。</p>
+    <ul>
+      <li><b>トムソンが破れる ⇒ クラウジウスが破れる</b>：高温熱源から \(Q\) を取り、全部仕事 \(W=Q\) にする機関があるとする。この \(W\) で逆カルノー機関を動かし、低温から \(Q_1\) を汲み高温へ \(Q_1+W\) を送る。差し引きで高温熱源は \(Q_1\) だけ熱を得て、低温熱源は \(Q_1\) を失い、他に変化なし → クラウジウスに反する。</li>
+      <li><b>クラウジウスが破れる ⇒ トムソンが破れる</b>：低温→高温に \(Q_1\) を勝手に移す装置があるとする。カルノー機関が高温から \(Q_2\) を取り、仕事 \(W\) をして低温へ \(Q_1\) を捨てる。捨てた \(Q_1\) を装置で高温に戻すと、低温熱源は変化なし、高温熱源から \(Q_2-Q_1\) を取って全部 \(W\) にした → トムソンに反する。</li>
+    </ul>
+  </div>
+
+  <h3><span class="q">問5</span>第二種永久機関とオストヴァルトの原理</h3>
+  <div class="ans">第二種永久機関は、1つの熱源（海水や大気）から熱を取り出して全部を仕事に変え続ける機関。エネルギー保存（第一法則）には反しないが、第二法則に反する。第一種は「無からエネルギーを生む」＝第一法則違反、という点が違う。トムソンの原理は「1つの熱源の熱を全部仕事に変えるサイクルはない」と言っているので、第二種永久機関はそのまま否定される（オストヴァルトの原理：第二種永久機関は作れない）。</div>
+
+  <h3><span class="q">問6</span>クラウジウスの原理からプランクの原理</h3>
+  <div class="ans">
+    <p><b>プランクの原理</b>：摩擦などで仕事が熱に変わる現象は不可逆である（その熱を、他に変化を残さずに全部仕事に戻せない）。</p>
+    <p><b>説明（背理法）</b>：摩擦熱の発生が可逆だと仮定すると、低温物体から熱 \(Q\) を取り出して全部仕事 \(W=Q\) に戻せる。その仕事で高温物体を摩擦で温めれば、高温物体は \(Q\) を得る。結果として「低温から高温へ \(Q\) が移動し、他に変化なし」となりクラウジウスの原理に反する。よって摩擦熱の発生は不可逆。</p>
+  </div>
+</section>
+
+<!-- ============ 6週 ============ -->
+<section id="w6">
+  <h2><span class="wk">WEEK 6</span>カルノーの定理と第二法則</h2>
+
+  <h3><span class="q">問1</span>カルノーの定理の証明</h3>
+  <div class="ans">
+    <p><b>定理</b>：同じ2つの熱源 \(T_2\gt T_1\) の間で働く熱機関の効率は、可逆機関（カルノー機関）で最大で、可逆機関どうしは作業物質によらず等しい。</p>
+    <p><b>証明</b>：任意の機関 X（効率 \(\eta_X\)）と可逆機関 C（効率 \(\eta_C\)）を用意。\(\eta_X\gt\eta_C\) と仮定する。X が高温から \(Q_2\) を取り仕事 \(W_X=\eta_XQ_2\) をする。C は可逆なので逆回しでき、仕事 \(W_C=\eta_CQ_2\) を与えると高温へ \(Q_2\) を戻す。X の仕事の一部で C を回すと、高温熱源は差し引き変化なし、外部に \(W_X-W_C\gt0\) の仕事が残り、その分の熱は低温熱源だけから来ている → 1つの熱源から熱を全部仕事にした＝トムソンの原理に反する。よって \(\eta_X\le\eta_C\)。X も可逆なら役割を入れ替えて \(\eta_C\le\eta_X\)、ゆえに等号。</p>
+  </div>
+
+  <h3><span class="q">問2</span>等温1本＋断熱2本でサイクルは作れるか</h3>
+  <div class="ans">
+    <p><b>準備</b>：等温 \(PV=\) 一定より \((\partial P/\partial V)_T=-P/V\)。断熱 \(PV^\gamma=\) 一定より \((\partial P/\partial V)_{ad}=-\gamma P/V\)。よって \((\partial P/\partial V)_{ad}=\gamma(\partial P/\partial V)_T\)、\(\gamma\gt1\) なので<b>断熱線は等温線より常に急</b>。</p>
+    <p><b>考察</b>：作れない。もし2本の断熱線が交わって等温線と閉じた図形を作れたら、そのサイクルで熱のやり取りは等温過程の1つの熱源だけ。図形が囲む面積だけ仕事 \(W=Q\gt0\) をすることになり、トムソンの原理に反する。式で見ても、断熱線は \(PV^\gamma=K\) で定数 \(K\) が違えば平行移動したような曲線で、決して交わらない（傾きは同じ点で一意に決まるので、1点を通る断熱線は1本だけ）。</p>
+  </div>
+
+  <h3><span class="q">問3</span>熱伝導が不可逆であること</h3>
+  <div class="ans">高温物体から低温物体へ熱 \(Q\) が伝わったとする。これを、外界に何の変化も残さずに元に戻すには、低温物体から高温物体へ \(Q\) を他に変化なく移す必要がある。それはクラウジウスの原理で禁止されている。よって熱伝導は不可逆。</div>
+
+  <h3><span class="q">問4</span>トムソンの原理からカラテオドリーの原理</h3>
+  <div class="ans">
+    <p><b>対偶</b>を示す：「ある状態 A の近傍の全ての状態に断熱変化で到達できる」なら、トムソンの原理が破れる。</p>
+    <p>A から、1つの熱源（温度 \(T\)）と接触させて等温で熱 \(Q\gt0\) を吸収させ、近傍の状態 B に移す。仮定より B から A へ断熱変化で戻れる。この1サイクルで \(\Delta U=0\)、熱は1つの熱源からの \(Q\) だけなので、第一法則より外部にした仕事 \(W=Q\gt0\)。これは1つの熱源から熱を全部仕事に変えたことになり、トムソンの原理に反する。したがってトムソンの原理が正しければ、断熱変化では行けない状態が任意の近傍に必ず存在する。</p>
+  </div>
+
+  <h3><span class="q">問5</span>\(u(T)\) の関数形</h3>
+  <div class="ans">
+    <p>\(U=u(T)V\) なので \((\partial U/\partial V)_T=u\)。\(P=u/3\) より \((\partial P/\partial T)_V=u'/3\)。式(2)に代入：</p>
+    \[u=\frac T3u'-\frac u3\;\Rightarrow\;\frac{du}{u}=4\frac{dT}{T}\;\Rightarrow\;u=aT^4\]
+    <p><b>\(T\) の4乗に比例</b>（空洞放射＝シュテファン・ボルツマンの法則。8週につながる）。</p>
+  </div>
+</section>
+
+<!-- ============ 7週 ============ -->
+<section id="w7">
+  <h2><span class="wk">WEEK 7</span>エントロピー</h2>
+
+  <h3><span class="q">問1</span>\(S=nC_V\log T+nR\log V+S_0\)</h3>
+  <div class="ans">可逆過程で \(dS=d'Q/T\)、第一法則 \(d'Q=nC_VdT+PdV\)、\(P=nRT/V\)：\[dS=nC_V\frac{dT}{T}+nR\frac{dV}{V}\;\Rightarrow\;S=nC_V\log T+nR\log V+S_0\]</div>
+
+  <h3><span class="q">問2</span>等温過程</h3>
+  <div class="ans">\(S_{ab}=nR\log\dfrac{V_b}{V_a}\)。膨張（\(V_b\gt V_a\)）なら \(S_{ab}\gt0\)。分子が動き回れる空間が広がり、分子の配置の仕方（場合の数）が増える＝乱雑さが増える。エントロピーは乱雑さの尺度。</div>
+
+  <h3><span class="q">問3</span>その他の過程</h3>
+  <div class="ans">
+    <p>(1) 等圧：\(V\propto T\) なので \(S_{ab}=n(C_V+R)\log\frac{T_b}{T_a}=nC_P\log\frac{T_b}{T_a}\)。加熱すると体積も温度も増え、位置と速度の両方で乱雑さが増す。</p>
+    <p>(2) 等積：\(S_{ab}=nC_V\log\frac{T_b}{T_a}\)。温度が上がると分子の速さのばらつき（運動エネルギーの分布）が広がり乱雑さが増す。</p>
+    <p>(3) 断熱：\(TV^{\gamma-1}=\) 一定 より \(C_V\log T+R\log V=C_V\log(TV^{\gamma-1})=\) 一定、よって \(S_{ab}=0\)（等エントロピー過程）。膨張で位置の乱雑さが増える分を、温度低下で速度の乱雑さが減る分がちょうど打ち消す。</p>
+  </div>
+
+  <h3><span class="q">問4</span>カルノーサイクルの T–S 図</h3>
+  <div class="ans">
+    <figure>
+      <svg viewBox="0 0 360 240" role="img" aria-label="カルノーサイクルのT-S図。横軸S、縦軸Tの長方形">
+        <line x1="40" y1="210" x2="340" y2="210" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="40" y1="210" x2="40" y2="15" stroke="currentColor" stroke-width="1.5"/>
+        <text x="335" y="230" fill="currentColor" font-size="14" text-anchor="end">S</text>
+        <text x="28" y="24" fill="currentColor" font-size="14" text-anchor="middle">T</text>
+        <rect x="100" y="60" width="180" height="100" fill="var(--hot-soft)" stroke="none"/>
+        <line x1="100" y1="60" x2="280" y2="60" stroke="var(--hot)" stroke-width="3"/>
+        <line x1="280" y1="60" x2="280" y2="160" stroke="currentColor" stroke-width="2"/>
+        <line x1="280" y1="160" x2="100" y2="160" stroke="var(--cold)" stroke-width="3"/>
+        <line x1="100" y1="160" x2="100" y2="60" stroke="currentColor" stroke-width="2"/>
+        <text x="190" y="52" fill="var(--hot)" font-size="12" text-anchor="middle">等温膨張 T₂（吸熱 Q₂）→</text>
+        <text x="190" y="178" fill="var(--cold)" font-size="12" text-anchor="middle">← 等温圧縮 T₁（放熱 Q₁）</text>
+        <text x="288" y="114" fill="currentColor" font-size="12">断熱</text>
+        <text x="94" y="114" fill="currentColor" font-size="12" text-anchor="end">断熱</text>
+        <text x="190" y="115" fill="currentColor" font-size="13" text-anchor="middle">面積 = W</text>
+        <text x="34" y="64" fill="currentColor" font-size="11" text-anchor="end">T₂</text>
+        <text x="34" y="164" fill="currentColor" font-size="11" text-anchor="end">T₁</text>
+      </svg>
+      <figcaption>等温過程は水平線（\(T\) 一定）、可逆断熱過程は垂直線（\(\Delta S=0\)）なので長方形になる。</figcaption>
+    </figure>
+    <p><b>面積の意味</b>：\(\oint T\,dS=\oint d'Q=Q_2-Q_1\)。1サイクルで \(\Delta U=0\) なので、これは外部にした仕事 \(W\) と等しい。P–V 図の面積 \(\oint P\,dV=W\) と同じ量を「熱の側」から見たもの。さらに \(Q_2=T_2\Delta S\)、\(Q_1=T_1\Delta S\) から \(\eta=1-T_1/T_2\) が図からすぐ読める。</p>
+  </div>
+
+  <h3><span class="q">問5</span>気体の混合エントロピー</h3>
+  <div class="ans">
+    <p>(1) <b>図1→図3</b>：容器を分けるだけで、各気体の \(T,V,P\) は変わらない → 状態は変化しない（\(\Delta S=0\)）。<b>図4→図5→図2</b>：半透膜を使って混ぜるとき、各気体は終始体積 \(V_0\)・温度 \(T_0\) を占め、理想気体どうしは相互作用しないので、それぞれの気体の状態（分圧 \(P_1,P_2\)）は変わらない。熱も仕事も出入りしない → 状態は変化しない（\(\Delta S=0\)）。</p>
+    <p>(2) <b>図3→図4</b>：各気体を等温で \(V_i\to V_0\) に膨張：</p>
+    \[\Delta S=n_1R\log\frac{V_0}{V_1}+n_2R\log\frac{V_0}{V_2}\]
+    <p>(3) よって \(S_B-S_A\) は(2)と同じ。同温同圧なので \(V_i/V_0=n_i/n_0=x_i\)（モル分率）とおけば</p>
+    \[S_B-S_A=-n_0R\,(x_1\log x_1+x_2\log x_2)\gt0\]
+    <p>混合で必ずエントロピーが増える＝混合は不可逆。<small class="note">同じ種類の気体なら混ぜても状態は変わらず \(\Delta S=0\)（ギブスのパラドックス）。</small></p>
+  </div>
+</section>
+
+<!-- ============ 8週 ============ -->
+<section id="w8">
+  <h2><span class="wk">WEEK 8 · 追加</span>前期量子論</h2>
+  <p><small class="note">「動画で話している程度」は動画を見ていないため、標準的な内容でまとめています。動画の内容と照らし合わせてください。</small></p>
+
+  <h3><span class="q">問1</span>ウィーンの法則からシュテファン・ボルツマン</h3>
+  <div class="ans">
+    <p>ウィーンの放射法則 \(u(\nu,T)=a\nu^3e^{-b\nu/T}\)（より一般に \(\nu^3f(\nu/T)\) の形）。全エネルギー密度は \(x=\nu/T\) と置換して</p>
+    \[u(T)=\int_0^\infty a\nu^3e^{-b\nu/T}d\nu=aT^4\int_0^\infty x^3e^{-bx}dx=\frac{6a}{b^4}T^4\]
+    <p>放出エネルギー \(E=\frac c4u\propto T^4\)。プランクの式 \(u=\frac{8\pi h\nu^3}{c^3}\frac{1}{e^{h\nu/kT}-1}\) なら \(\int_0^\infty\frac{x^3}{e^x-1}dx=\frac{\pi^4}{15}\) を使って \(\sigma=\frac{2\pi^5k^4}{15c^2h^3}\approx5.67\times10^{-8}\)。</p>
+  </div>
+
+  <h3><span class="q">問2</span>黒体放射と量子論</h3>
+  <div class="ans">古典論（レイリー・ジーンズ）は短波長で放射エネルギーが無限大に発散（紫外破綻）。ウィーンの式は短波長でのみ合う。プランクは振動子のエネルギーが \(h\nu\) の整数倍 \(E=nh\nu\) しかとれないと仮定して、全波長で実験と一致する式を得た。これが<b>エネルギー量子</b>の始まり。</div>
+
+  <h3><span class="q">問3</span>光電効果と量子論</h3>
+  <div class="ans">金属に光を当てると電子が飛び出す。①ある振動数（限界振動数）以下ではどんなに強い光でも出ない、②飛び出す電子の運動エネルギーは振動数で決まり光の強さによらない、③強さは電子の数を増やす。波動説では説明できない。アインシュタインは光が \(h\nu\) のエネルギーをもつ粒子（光子）の集まりと考え \(\tfrac12mv^2_{\max}=h\nu-W\)（\(W\)：仕事関数）で説明した。</div>
+
+  <h3><span class="q">問4</span>スペクトル線の結合則と量子論</h3>
+  <div class="ans">水素原子のスペクトル線の振動数は \(\nu=R_c\left(\frac1{n^2}-\frac1{m^2}\right)\)（バルマー系列など）のように、2つの「項」の差で表される（リッツの結合則：既知の2本の線の和や差がまた線になる）。ボーアは、原子が飛び飛びのエネルギー準位 \(E_n=-13.6/n^2\) eV しかとれず、準位間を移るときに \(h\nu=E_m-E_n\) の光を出すと考え、項＝エネルギー準位 \(/h\) として結合則を説明した。</div>
+</section>
+
+<!-- ============ チェック ============ -->
+<section id="check">
+  <h2><span class="wk">LAST CHECK</span>直前チェックリスト</h2>
+  <ul class="check">
+    <li>過去問(1)〜(4)を何も見ずに、言葉付きで書ける</li>
+    <li>\(d'Q=dU+PdV\) と \(d'Q=dH-VdP\) から \(C_V,C_P\) を出せる</li>
+    <li>3週 問6 → 4週 問1（\(PV^\gamma\) 一定）を一続きで導出できる</li>
+    <li>断熱線の傾きが等温線の \(\gamma\) 倍、断熱線が交わらない理由を説明できる</li>
+    <li>カルノー効率 \(1-T_1/T_2\) を \(V_B/V_A=V_C/V_D\) から導出できる</li>
+    <li>クラウジウス⇔トムソンを対偶で両方向示せる（図を描いて）</li>
+    <li>カルノーの定理を「可逆機関を逆回し」で証明できる</li>
+    <li>エントロピーの式と、等温・等圧・等積・断熱の \(\Delta S\) を乱雑さで説明できる</li>
+    <li>T–S 図（長方形）を描き、面積＝仕事を説明できる</li>
+    <li>分子運動論 \(P=\tfrac23n\varepsilon\) を力積から導出できる</li>
+    <li>循環関係 \((\partial x/\partial y)_z(\partial y/\partial z)_x(\partial z/\partial x)_y=-1\) を全微分から示せる</li>
+    <li>不可逆変化・第1種／第2種永久機関を一文で定義できる</li>
+  </ul>
+  <footer>演習1〜8週（配布PDF）と令和7年度 後期中間試験の問題から作成。解答は筆者による模範例で、授業の板書・動画の表現と異なる場合があります。</footer>
+</section>
+</div>

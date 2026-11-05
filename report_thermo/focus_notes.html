@@ -1,4 +1,4 @@
-<title>カルノー・第二法則・エンタルピー 重点ノート</title>
+<title>熱力学 重点4テーマノート</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -122,16 +122,17 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
 <div class="wrap">
 <header class="top">
   <div class="eyebrow">物理学2（E科）後期中間・出題範囲を絞った版</div>
-  <h1>カルノー・第二法則・エンタルピー 重点ノート</h1>
-  <p class="lede">出題は「カルノーサイクル」「熱力学第二法則」「エンタルピー」のどこかと分かったので、この3テーマだけを深く固めるためのノートです。昨年と同じ「大問1つを解説」形式を想定し、出そうな小問すべてに答案の形で答えています。</p>
+  <h1>カルノー・第二法則・エンタルピー・エントロピー 重点ノート</h1>
+  <p class="lede">出題は「カルノーサイクル」「熱力学第二法則」「エンタルピー」「エントロピー」のどこかと分かったので、この4テーマだけを深く固めるためのノートです。昨年と同じ「大問1つを解説」形式を想定し、出そうな小問すべてに答案の形で答えています。</p>
 </header>
 
 <nav class="idx" aria-label="目次">
   <a href="#tonight">今夜の順番</a>
-  <a href="#map">3テーマの関係</a>
+  <a href="#map">4テーマの関係</a>
   <a href="#carnot" class="part">Ⅰ カルノー</a>
   <a href="#law2" class="part">Ⅱ 第二法則</a>
   <a href="#enthalpy" class="part">Ⅲ エンタルピー</a>
+  <a href="#entropy" class="part">Ⅳ エントロピー</a>
   <a href="#mock">予想大問</a>
   <a href="#cards">暗唱カード</a>
   <a href="#final">最終チェック</a>
@@ -146,7 +147,9 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
     <li><div><b>カルノー効率の導出を白紙に書く（20分）</b><br>P–V 図 → 4過程の表 → 効率。カルノーと第二法則の両方で使う。→ <a href="#c-eff">Ⅰ-3</a></div></li>
     <li><div><b>クラウジウス⇔トムソンの図と収支表を白紙に書く（20分）</b><br>第二法則の証明は全部この型。→ <a href="#l-eq">Ⅱ-4</a></div></li>
     <li><div><b>エンタルピーの3点セットを書く（20分）</b><br>\(Q=\Delta H\)、\(C_P=(\partial H/\partial T)_P\)、\(C_P-C_V\)。昨年の再現。→ <a href="#e-cp">Ⅲ-2〜4</a></div></li>
+    <li><div><b>エントロピーの式と4過程の ΔS、T–S 図を書く（20分）</b><br>導出は短く、表で覚えられる。→ <a href="#s-formula">Ⅳ-2〜4</a></div></li>
     <li><div><b>カルノーの定理（15分）</b>→ <a href="#c-thm">Ⅰ-5</a></div></li>
+    <li><div><b>混合エントロピーと不可逆変化の ΔS（15分）</b>→ <a href="#s-mix">Ⅳ-5, 6</a></div></li>
     <li><div><b>ジュール・トムソンと自由膨張の比較（10分）</b>→ <a href="#e-jt">Ⅲ-6</a></div></li>
     <li><div><b>余裕があれば</b>：熱力学的温度、クラウジウスの不等式、カラテオドリー、ジュール・トムソン係数。</div></li>
   </ol>
@@ -154,7 +157,7 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
 
 <!-- ===== 関係 ===== -->
 <section id="map">
-  <h2><span class="wk">01 · MAP</span>3テーマはつながっている</h2>
+  <h2><span class="wk">01 · MAP</span>4テーマはつながっている</h2>
   <p>別々に覚えるより、1本の流れで覚えるほうが楽です。どのテーマが出ても、隣のテーマの話を (4) の「おまけ」で使えます。</p>
   <div class="box">
     <ol>
@@ -163,7 +166,8 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
       <li>第一法則を理想気体の等温・断熱に使って、熱機関の模型を作ったのが <b>カルノーサイクル</b>。効率 \(1-T_1/T_2\)。</li>
       <li>「なぜ効率は1にならないのか」に答えるのが <b>第二法則</b>（クラウジウス・トムソン）。</li>
       <li>第二法則から <b>カルノーの定理</b>（可逆機関の効率が最大で、熱源の温度だけで決まる）。</li>
-      <li>カルノーの定理から <b>熱力学的温度</b> と <b>クラウジウスの不等式</b>、そして <b>エントロピー</b> へ。</li>
+      <li>カルノーの定理から <b>熱力学的温度</b> と <b>クラウジウスの不等式</b>、そして <b>エントロピー</b> へ。カルノーの \(Q_2/T_2=Q_1/T_1\) が「\(d'Q/T\) は状態量」の出発点。</li>
+      <li>エントロピーを使うと、第二法則は「断熱系ではエントロピーは減らない」と式で書ける。カルノーの効率も T–S 図の長方形から一瞬で出る。</li>
     </ol>
   </div>
 </section>
@@ -554,6 +558,132 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
   <p>大気圧下の化学反応で出入りする熱は定圧の熱なので、反応熱 \(=\Delta H\)（発熱反応は \(\Delta H\lt0\)）。\(H\) は状態量なので、反応を途中で何段階に分けても、全体の \(\Delta H\) は始めと終わりの状態だけで決まる。これがヘスの法則（総熱量保存の法則）。</p>
 </section>
 
+<!-- ================================================= -->
+<!-- ===== Ⅳ エントロピー ===== -->
+<!-- ================================================= -->
+<section id="entropy">
+  <div class="part-head"><div class="pno">PART Ⅳ</div><h2>エントロピー</h2></div>
+
+  <div class="core">
+    <h4>核心</h4>
+    <ol>
+      <li>可逆過程で \(dS=d'Q/T\)。\(d'Q\) は経路によるが、\(T\) で割ると状態量になる。</li>
+      <li>理想気体では \(S=nC_V\log T+nR\log V+S_0\)。体積が増えても、温度が上がっても増える。</li>
+      <li>エントロピーは乱雑さの尺度。断熱された系の不可逆変化では必ず増える（第二法則の式での表現）。</li>
+    </ol>
+  </div>
+
+  <h3 id="s-def"><span class="k">Ⅳ-1</span>定義と「状態量であること」</h3>
+  <div class="script">
+    <div class="lbl">答案例</div>
+    <p>系が温度 \(T\) で可逆的に熱 \(d'Q\) を受け取るとき、エントロピーの変化を \(dS=d'Q/T\) と定義する。熱 \(Q\) は状態量ではない（経路によって変わる）が、\(T\) で割った量の和は経路によらない。実際、カルノーサイクルでは \(\frac{Q_2}{T_2}-\frac{Q_1}{T_1}=0\) であり、任意の可逆サイクルは細かいカルノーサイクルの集まりと考えられるので \(\oint d'Q/T=0\)。1周の積分が0なら、2つの状態の間の積分は経路によらないので、\(S\) は状態量である。</p>
+  </div>
+  <p>（この流れは <a href="#l-ineq">Ⅱ-9</a> と同じ。第二法則の問題の (4) にも使える）</p>
+
+  <h3 id="s-formula"><span class="k">Ⅳ-2</span>\(S=nC_V\log T+nR\log V+S_0\) の導出（演習7週 問1）</h3>
+  <div class="idea"><b>ひとこと</b>：\(dS=d'Q/T\) に第一法則を入れると、\(T\) の項と \(V\) の項にきれいに分かれる。</div>
+  <ol class="steps">
+    <li><div>\(dS=\dfrac{d'Q}{T}\)<span class="why">可逆過程でのエントロピーの定義から出発</span></div></li>
+    <li><div>\(dS=\dfrac{dU+PdV}{T}\)<span class="why">第一法則 \(d'Q=dU+PdV\)</span></div></li>
+    <li><div>\(dS=\dfrac{nC_VdT+PdV}{T}\)<span class="why">理想気体なので \(dU=nC_VdT\)</span></div></li>
+    <li><div>\(dS=nC_V\dfrac{dT}{T}+nR\dfrac{dV}{V}\)<span class="why">状態方程式より \(P/T=nR/V\)</span></div></li>
+    <li><div>\(S=nC_V\log T+nR\log V+S_0\)<span class="why">\(C_V\) は定数なので積分。\(S_0\) は積分定数</span></div></li>
+    <li><div>\(\Delta S=S_b-S_a=nC_V\log\dfrac{T_b}{T_a}+nR\log\dfrac{V_b}{V_a}\)<span class="why">2状態の差をとると \(S_0\) は消える。<b>以下の全過程の親の式</b></span></div></li>
+  </ol>
+
+  <h3 id="s-proc"><span class="k">Ⅳ-3</span>各過程のエントロピー変化と「乱雑さ」（演習7週 問2・3）</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>過程</th><th>\(\Delta S\)</th><th>導き方</th><th>乱雑さでの説明</th></tr></thead>
+    <tbody>
+      <tr><td>等温</td><td>\(nR\log\frac{V_b}{V_a}\)</td><td>親の式で \(T_b=T_a\)、\(\log1=0\)</td><td>膨張すると分子が動ける空間が広がり、位置の選び方（場合の数）が増える</td></tr>
+      <tr><td>等積</td><td>\(nC_V\log\frac{T_b}{T_a}\)</td><td>親の式で \(V_b=V_a\)</td><td>温度が上がると分子の速さのばらつきが大きくなり、速度の乱雑さが増える</td></tr>
+      <tr><td>等圧</td><td>\(nC_P\log\frac{T_b}{T_a}\)</td><td>\(V_b/V_a=T_b/T_a\) を代入し \(C_V+R=C_P\)</td><td>加熱で体積も温度も増えるので、位置と速度の両方で乱雑さが増える</td></tr>
+      <tr><td>断熱（可逆）</td><td>0</td><td>\(R=(\gamma-1)C_V\) より \(nC_V\log\frac{T_bV_b^{\gamma-1}}{T_aV_a^{\gamma-1}}=nC_V\log1\)</td><td>膨張で位置の乱雑さが増える分を、冷却で速度の乱雑さが減る分がちょうど打ち消す</td></tr>
+    </tbody>
+  </table></div>
+  <p>膨張・加熱で \(\Delta S\gt0\)、圧縮・冷却で \(\Delta S\lt0\)。<b>可逆断熱は等エントロピー過程</b>。</p>
+  <div class="script">
+    <div class="lbl">答案例（等温膨張の議論）</div>
+    <p>等温で \(V_a\to V_b\ (V_b\gt V_a)\) と膨張すると \(\Delta S=nR\log(V_b/V_a)\gt0\) でエントロピーは増える。温度が一定なので分子の速さの分布は変わらないが、分子が動き回れる体積が広がり、分子の位置の取り方の場合の数が増える。つまり気体はより乱雑になっている。このように、エントロピーは分子の乱雑さ（とりうる状態の多さ）を表す量と解釈できる。</p>
+  </div>
+
+  <h3 id="s-ts"><span class="k">Ⅳ-4</span>カルノーサイクルの T–S 図（演習7週 問4）</h3>
+  <figure>
+    <svg viewBox="0 0 360 240" role="img" aria-label="カルノーサイクルのT-S図。横軸S、縦軸Tの長方形">
+      <defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+      <line x1="40" y1="210" x2="345" y2="210" stroke="currentColor" stroke-width="1.5" marker-end="url(#a3)"/>
+      <line x1="40" y1="210" x2="40" y2="15" stroke="currentColor" stroke-width="1.5" marker-end="url(#a3)"/>
+      <text x="340" y="230" fill="currentColor" font-size="14" text-anchor="end">S</text>
+      <text x="28" y="24" fill="currentColor" font-size="14" text-anchor="middle">T</text>
+      <rect x="100" y="60" width="180" height="100" fill="var(--hot-soft)"/>
+      <line x1="100" y1="60" x2="280" y2="60" stroke="var(--hot)" stroke-width="3"/>
+      <line x1="280" y1="60" x2="280" y2="160" stroke="currentColor" stroke-width="2"/>
+      <line x1="280" y1="160" x2="100" y2="160" stroke="var(--cold)" stroke-width="3"/>
+      <line x1="100" y1="160" x2="100" y2="60" stroke="currentColor" stroke-width="2"/>
+      <g fill="currentColor" font-size="13" font-weight="700"><text x="88" y="56">A</text><text x="284" y="56">B</text><text x="284" y="174">C</text><text x="88" y="174">D</text></g>
+      <text x="190" y="52" fill="var(--hot)" font-size="12" text-anchor="middle">等温膨張 T₂（吸熱 Q₂）</text>
+      <text x="190" y="178" fill="var(--cold)" font-size="12" text-anchor="middle">等温圧縮 T₁（放熱 Q₁）</text>
+      <text x="290" y="114" fill="currentColor" font-size="12">断熱</text>
+      <text x="92" y="114" fill="currentColor" font-size="12" text-anchor="end">断熱</text>
+      <text x="190" y="115" fill="currentColor" font-size="13" text-anchor="middle">面積 = W</text>
+      <text x="34" y="64" fill="currentColor" font-size="11" text-anchor="end">T₂</text>
+      <text x="34" y="164" fill="currentColor" font-size="11" text-anchor="end">T₁</text>
+      <text x="100" y="226" fill="currentColor" font-size="11" text-anchor="middle">S_A</text>
+      <text x="280" y="226" fill="currentColor" font-size="11" text-anchor="middle">S_B</text>
+    </svg>
+    <figcaption>A→B→C→D→A の時計回り。長方形になる。</figcaption>
+  </figure>
+  <ul>
+    <li><b>なぜ長方形か</b>：等温過程は \(T\) 一定なので水平線。可逆断熱過程は \(d'Q=0\) より \(dS=0\)（Ⅳ-3）なので垂直線。</li>
+    <li><b>熱が読める</b>：\(Q=\int T\,dS\) なので、線の下の面積が熱。上辺の下の面積 \(Q_2=T_2(S_B-S_A)\)、下辺の下の面積 \(Q_1=T_1(S_B-S_A)\)。</li>
+    <li><b>囲む面積</b>：\(\oint T\,dS=Q_2-Q_1\)。1サイクルで \(\Delta U=0\) なのでこれは仕事 \(W\)。P–V 図の面積 \(\oint P\,dV=W\) と同じ量を、熱の側から見たもの。</li>
+    <li><b>効率がすぐ出る</b>：\(\eta=\dfrac{Q_2-Q_1}{Q_2}=\dfrac{(T_2-T_1)\Delta S}{T_2\Delta S}=1-\dfrac{T_1}{T_2}\)。P–V 図より計算が圧倒的に楽。</li>
+  </ul>
+
+  <h3 id="s-mix"><span class="k">Ⅳ-5</span>気体の混合エントロピー（演習7週 問5）</h3>
+  <div class="idea"><b>ひとこと</b>：実際の混合は不可逆なので直接は計算できない。状態量なので、同じ始めと終わりを結ぶ<b>可逆な経路（図1→3→4→5→2）</b>を作って計算する。</div>
+  <p><b>(1) 状態が変化するか</b></p>
+  <ul>
+    <li><b>図1→図3</b>（容器を分離するだけ）：それぞれの気体の体積 \(V_i\)、温度 \(T_0\)、圧力 \(P_0\) は変わらない。熱も仕事も出入りしないので<b>熱力学的状態は変化しない</b>（\(\Delta S=0\)）。</li>
+    <li><b>図4→図5→図2</b>（半透膜で混ぜる）：気体1 は右の膜（気体2 だけ通す）を通れず、気体2 は左の膜を通れないので、各気体は終始体積 \(V_0\)、温度 \(T_0\) のまま。理想気体どうしは相互作用しないので、それぞれの気体は相手がいないときと同じ状態（分圧 \(P_1,P_2\)）のまま。熱も仕事も出入りせず、<b>熱力学的状態は変化しない</b>（\(\Delta S=0\)）。</li>
+  </ul>
+  <p><b>(2) 図3→図4</b>（それぞれを等温で \(V_0\) まで膨張）</p>
+  \[\Delta S=n_1R\log\frac{V_0}{V_1}+n_2R\log\frac{V_0}{V_2}\]
+  <p>等温可逆膨張なので Ⅳ-3 の等温の式を気体ごとに使い、足し合わせる（エントロピーは示量変数なので足せる）。</p>
+  <p><b>(3) 混合のエントロピー変化</b>：(1) で変化がないので \(S_B-S_A\) は (2) と同じ。圧力・温度が等しいので \(V_i/V_0=n_i/n_0=x_i\)（モル分率）とおくと</p>
+  \[S_B-S_A=-n_0R\,(x_1\log x_1+x_2\log x_2)\gt0\]
+  <p>\(0\lt x_i\lt1\) で \(\log x_i\lt0\) なので必ず正。例：\(n_1=n_2=n\)、\(V_1=V_2\) なら \(\Delta S=2nR\log2\)。</p>
+  <div class="script">
+    <div class="lbl">答案例（意味）</div>
+    <p>実際の混合では熱の出入りはない（\(Q=0\)）のにエントロピーは増える。これは混合が不可逆変化であり、不可逆変化では \(dS\gt d'Q/T\) となるためである。乱雑さで言えば、各気体の分子が \(V_i\) から \(V_0\) 全体に広がり、位置の取り方の場合の数が増えたことに対応する。なお、同じ種類の気体どうしを混ぜても状態は変わらず \(\Delta S=0\) である（ギブスのパラドックス）。</p>
+  </div>
+
+  <h3 id="s-irr"><span class="k">Ⅳ-6</span>不可逆変化のエントロピー（増大の法則）</h3>
+  <p>どれも「状態量なので可逆な経路を作って計算する」という同じ技です。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>不可逆変化</th><th>計算の仕方</th><th>\(\Delta S\)</th></tr></thead>
+    <tbody>
+      <tr><td>自由膨張（断熱容器で真空へ \(V_1\to V_2\)）</td><td>\(Q=W=0\) で \(\Delta U=0\)、理想気体なので温度一定。同じ始めと終わりを結ぶ<b>可逆な等温膨張</b>で計算</td><td>\(nR\log\frac{V_2}{V_1}\gt0\)</td></tr>
+      <tr><td>熱伝導（熱源 \(T_2\) から \(T_1\) へ熱 \(Q\)）</td><td>各熱源の \(\Delta S=\pm Q/T\) を足す</td><td>\(Q\left(\frac1{T_1}-\frac1{T_2}\right)\gt0\)</td></tr>
+      <tr><td>混合</td><td>Ⅳ-5</td><td>\(-n_0R\sum x_i\log x_i\gt0\)</td></tr>
+    </tbody>
+  </table></div>
+  <p><span class="ng" style="color:var(--hot);font-weight:700">注意</span>：自由膨張で「\(Q=0\) だから \(\Delta S=0\)」は<b>誤り</b>。\(dS=d'Q/T\) は可逆過程でしか使えない。不可逆なら \(dS\gt d'Q/T\)（クラウジウスの不等式、<a href="#l-ineq">Ⅱ-9</a>）。断熱系（\(d'Q=0\)）では \(dS\ge0\)：<b>エントロピーは減らない</b>。これがエントロピー増大の法則で、第二法則を式で表したもの。</p>
+
+  <h3 id="s-tp"><span class="k">Ⅳ-7</span>類題：\(T\) と \(P\) で表したエントロピー</h3>
+  <ol class="steps">
+    <li><div>\(S=nC_V\log T+nR\log V+S_0\)<span class="why">Ⅳ-2 の結果から出発</span></div></li>
+    <li><div>\(S=nC_V\log T+nR\log\dfrac{nRT}{P}+S_0\)<span class="why">状態方程式 \(V=nRT/P\) を代入</span></div></li>
+    <li><div>\(S=nC_P\log T-nR\log P+S_0'\)<span class="why">log を分けて \(\log T\) の項をまとめ（\(C_V+R=C_P\)）、定数 \(nR\log nR\) は \(S_0'\) に含める</span></div></li>
+  </ol>
+  <p>等圧なら第2項が消えて \(\Delta S=nC_P\log(T_b/T_a)\)、Ⅳ-3 と一致（検算）。</p>
+
+  <h3 id="s-boltz"><span class="k">Ⅳ-8</span>おまけ：ボルツマンの式で「乱雑さ」を確かめる</h3>
+  <p>統計力学ではエントロピーを \(S=k\log W\)（\(W\)：微視的状態の数）と表す。気体を \(V\to2V\) に等温膨張させると、分子 1 個の位置の選び方が 2 倍、\(N\) 個で \(2^N\) 倍になるので</p>
+  \[\Delta S=k\log2^N=Nk\log2=nR\log2\]
+  <p>熱力学の式 \(nR\log(V_b/V_a)=nR\log2\) と一致する（\(Nk=nR\)）。「エントロピー＝乱雑さ」という説明の裏付けとして書ける。</p>
+</section>
+
 <!-- ===== 予想大問 ===== -->
 <section id="mock">
   <h2><span class="wk">02 · MOCK</span>予想大問（昨年の形式で）</h2>
@@ -588,6 +718,15 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
       <li><span class="no">(4)</span>（おまけ）ジュール・トムソン実験で \(H\) が一定であることを示し、自由膨張と比較しよう。→ <a href="#e-jt">Ⅲ-6</a></li>
     </ol>
   </div>
+  <div class="sheet">
+    <div class="stem">予想4　エントロピーに関して、講義を参考に以下の問いに対する解説をしよう。</div>
+    <ol>
+      <li><span class="no">(1)</span>エントロピーの定義を述べ、状態量であることと「乱雑さ」との関係を解説しよう。→ <a href="#s-def">Ⅳ-1</a>, <a href="#s-proc">Ⅳ-3</a></li>
+      <li><span class="no">(2)</span>理想気体のエントロピーが \(S=nC_V\log T+nR\log V+S_0\) と表されることを示そう。→ <a href="#s-formula">Ⅳ-2</a></li>
+      <li><span class="no">(3)</span>等温・等積・等圧・断熱変化のエントロピー変化を求め、カルノーサイクルを T–S 図に描いて面積の意味を解説しよう。→ <a href="#s-proc">Ⅳ-3</a>, <a href="#s-ts">Ⅳ-4</a></li>
+      <li><span class="no">(4)</span>（おまけ）2種類の気体の混合によるエントロピー変化を求めよう。→ <a href="#s-mix">Ⅳ-5</a></li>
+    </ol>
+  </div>
   <p><small class="note">組み合わせ型（例：カルノーの (1)(2) と第二法則の (3)(4)）も十分ありえます。3テーマはつながっているので、<a href="#map">01 の流れ</a>で覚えておけば対応できます。</small></p>
 </section>
 
@@ -606,6 +745,8 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
     <div class="box"><h4>エンタルピー</h4>\(H=U+PV\)。圧力一定で受け取る熱が \(\Delta H\) になる状態量。</div>
     <div class="box"><h4>比熱</h4>1 mol を 1 K 上げるのに要る熱。\(Q\) は状態量でないので条件（定積・定圧）を指定する。</div>
     <div class="box"><h4>ジュール・トムソン</h4>細孔栓を通す断熱膨張で \(H\) が一定。理想気体は温度不変、実在気体は冷える。</div>
+    <div class="box hot"><h4>エントロピー</h4>可逆過程で \(dS=d'Q/T\)。状態量で、乱雑さ（とりうる状態の多さ）の尺度。</div>
+    <div class="box hot"><h4>エントロピー増大の法則</h4>断熱された系では、エントロピーは減らない。不可逆変化なら増える。</div>
   </div>
 </section>
 
@@ -623,8 +764,13 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule);
     <li>\(d'Q=dH-VdP\) から \(Q=\Delta H\)、\(C_P=(\partial H/\partial T)_P\) を出せる</li>
     <li>\(C_P-C_V\) の一般式を全微分から出し、理想気体で \(R\) になると確認できる</li>
     <li>ジュール・トムソンで \(H_1=H_2\) を示し、自由膨張と比べられる</li>
+    <li>\(dS=d'Q/T\) から \(S=nC_V\log T+nR\log V+S_0\) を導ける</li>
+    <li>4過程の \(\Delta S\) を親の式から出し、乱雑さで説明できる（断熱が0になる理由も）</li>
+    <li>T–S 図が長方形になる理由と、面積＝仕事を説明できる</li>
+    <li>混合エントロピーを図1→3→4→5→2 の経路で出せる</li>
+    <li>自由膨張で「\(Q=0\) だから \(\Delta S=0\)」が誤りである理由を言える</li>
     <li>どの導出でも、最初に「目標」、式の間に「何をしたか」を書いている</li>
   </ul>
-  <footer>演習5〜7週・3週と令和7年度 後期中間試験をもとに、出題範囲（カルノーサイクル・熱力学第二法則・エンタルピー）に絞って作成。予想問題と答案例は筆者によるもので、実際の出題を保証するものではありません。</footer>
+  <footer>演習3週・5〜7週と令和7年度 後期中間試験をもとに、出題範囲（カルノーサイクル・熱力学第二法則・エンタルピー・エントロピー）に絞って作成。予想問題と答案例は筆者によるもので、実際の出題を保証するものではありません。</footer>
 </section>
 </div>

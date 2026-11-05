@@ -1,0 +1,630 @@
+<title>カルノー・第二法則・エンタルピー 重点ノート</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<style>
+/* Layout: one reading column, three themed parts; hot/cold reservoir pair as the only accents (shared with the other two notes) */
+:root {
+  --bg: #f5f7f8;
+  --paper: #ffffff;
+  --ink: #18212b;
+  --muted: #5b6672;
+  --rule: #d9dfe4;
+  --hot: #b9471b;
+  --hot-soft: #fbeee7;
+  --cold: #1f5aa8;
+  --cold-soft: #e8f0fa;
+  --font-display: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  --font-body: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12171d; --paper: #19212a; --ink: #e4e9ee; --muted: #9aa6b2; --rule: #2c3743;
+    --hot: #f08a5d; --hot-soft: #3a241b; --cold: #7fb0f0; --cold-soft: #1a2a40;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12171d; --paper: #19212a; --ink: #e4e9ee; --muted: #9aa6b2; --rule: #2c3743;
+  --hot: #f08a5d; --hot-soft: #3a241b; --cold: #7fb0f0; --cold-soft: #1a2a40;
+  color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.85;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 64px;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.wrap { max-width: 860px; margin: 0 auto; }
+header.top { padding-block: 40px 20px; border-bottom: 2px solid var(--ink); }
+.eyebrow { font-size: 12px; letter-spacing: .14em; color: var(--muted); font-weight: 700; }
+h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(26px, 5.5vw, 40px); line-height: 1.35; margin: 6px 0 10px; text-wrap: balance; }
+.lede { color: var(--muted); max-width: 62ch; margin: 0; }
+nav.idx {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: var(--bg); border-bottom: 1px solid var(--rule);
+  display: flex; gap: 6px; overflow-x: auto; padding-block: 10px; font-size: 13px;
+}
+nav.idx a { flex: none; text-decoration: none; color: var(--ink); border: 1px solid var(--rule); border-radius: 999px; padding: 2px 12px; background: var(--paper); }
+nav.idx a:hover, nav.idx a:focus-visible { border-color: var(--hot); color: var(--hot); outline: none; }
+nav.idx a.part { border-color: var(--hot); color: var(--hot); font-weight: 700; }
+section { padding-block: 36px 8px; scroll-margin-top: 60px; }
+.part-head { margin-top: 28px; padding: 18px 0 6px; border-top: 2px solid var(--ink); }
+.part-head .pno { font-family: var(--font-mono); color: var(--hot); font-size: 14px; letter-spacing: .1em; }
+.part-head h2 { font-size: 30px; }
+h2 { font-family: var(--font-display); font-weight: 800; font-size: 26px; line-height: 1.4; margin: 0 0 8px; text-wrap: balance; }
+h2 .wk { font-family: var(--font-mono); font-size: 14px; color: var(--hot); display: block; letter-spacing: .08em; }
+h3 { font-size: 18px; margin: 30px 0 6px; font-weight: 700; scroll-margin-top: 60px; }
+h3 .k { font-family: var(--font-mono); font-size: 13px; color: var(--paper); background: var(--ink); padding: 0 8px; border-radius: 3px; margin-right: 8px; }
+h4 { margin: 0 0 6px; font-size: 15px; }
+p { margin: 8px 0; }
+ul, ol { padding-left: 1.3em; margin: 8px 0; }
+li { margin: 4px 0; }
+.box { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 16px 18px; margin: 14px 0; min-width: 0; }
+.box.hot { border-color: var(--hot); }
+.box.hot h4 { color: var(--hot); }
+.box.cold { border-color: var(--cold); }
+.box.cold h4 { color: var(--cold); }
+.core { background: var(--hot-soft); border-radius: 6px; padding: 14px 18px; margin: 12px 0; }
+.core h4 { color: var(--hot); }
+.core ol { margin: 0; }
+.idea { background: var(--cold-soft); padding: 8px 12px; border-radius: 4px; margin: 8px 0; }
+.idea b { color: var(--cold); }
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.grid2 > * { min-width: 0; }
+.tbl { overflow-x: auto; margin: 12px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14px; background: var(--paper); }
+th, td { border: 1px solid var(--rule); padding: 6px 10px; text-align: left; vertical-align: top; }
+th { background: var(--bg); font-weight: 700; white-space: nowrap; }
+td.c { text-align: center; font-family: var(--font-mono); white-space: nowrap; }
+tr.sum td { font-weight: 700; border-top: 2px solid var(--ink); }
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; padding-block: 4px; }
+.steps { counter-reset: s; list-style: none; padding-left: 0; margin: 10px 0; }
+.steps > li { counter-increment: s; display: grid; grid-template-columns: 2em 1fr; gap: 0 8px; padding: 6px 0; border-bottom: 1px dashed var(--rule); margin: 0; }
+.steps > li::before { content: counter(s); font-family: var(--font-mono); font-weight: 600; color: var(--hot); padding-top: 2px; }
+.steps > li > div { min-width: 0; }
+.why { display: block; font-size: 13px; color: var(--cold); line-height: 1.6; }
+.script { border-left: 3px solid var(--hot); padding: 4px 0 4px 14px; margin: 10px 0; }
+.script .lbl { font-family: var(--font-mono); font-size: 12px; color: var(--hot); font-weight: 600; letter-spacing: .06em; }
+figure { margin: 14px 0; }
+figure > svg { width: 100%; max-width: 440px; height: auto; display: block; }
+figcaption { font-size: 13px; color: var(--muted); }
+.figs { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.figs > * { min-width: 0; }
+.order { counter-reset: o; list-style: none; padding-left: 0; }
+.order > li { counter-increment: o; display: grid; grid-template-columns: 2.2em 1fr; gap: 0 8px; padding: 8px 0; border-bottom: 1px solid var(--rule); margin: 0; }
+.order > li::before { content: counter(o); font-family: var(--font-mono); font-weight: 600; font-size: 18px; color: var(--hot); }
+.order > li > div { min-width: 0; }
+.sheet { background: var(--paper); border: 1px solid var(--ink); padding: 16px 18px; margin: 14px 0; }
+.sheet .stem { border: 1px solid var(--ink); padding: 6px 10px; margin-bottom: 8px; font-size: 15px; }
+.sheet ol { list-style: none; padding-left: 0; margin: 0; }
+.sheet li { padding-left: 2.4em; text-indent: -2.4em; }
+.sheet .no { font-family: var(--font-mono); font-weight: 600; display: inline-block; width: 2.4em; text-indent: 0; }
+.sheet a { color: var(--cold); }
+.check { padding-left: 1.6em; }
+.check li { list-style: none; position: relative; }
+.check li::before { content: "□"; position: absolute; left: -1.4em; color: var(--hot); }
+small.note { color: var(--muted); font-size: 13px; }
+a { color: var(--cold); }
+footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 13px; }
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">物理学2（E科）後期中間・出題範囲を絞った版</div>
+  <h1>カルノー・第二法則・エンタルピー 重点ノート</h1>
+  <p class="lede">出題は「カルノーサイクル」「熱力学第二法則」「エンタルピー」のどこかと分かったので、この3テーマだけを深く固めるためのノートです。昨年と同じ「大問1つを解説」形式を想定し、出そうな小問すべてに答案の形で答えています。</p>
+</header>
+
+<nav class="idx" aria-label="目次">
+  <a href="#tonight">今夜の順番</a>
+  <a href="#map">3テーマの関係</a>
+  <a href="#carnot" class="part">Ⅰ カルノー</a>
+  <a href="#law2" class="part">Ⅱ 第二法則</a>
+  <a href="#enthalpy" class="part">Ⅲ エンタルピー</a>
+  <a href="#mock">予想大問</a>
+  <a href="#cards">暗唱カード</a>
+  <a href="#final">最終チェック</a>
+</nav>
+
+<!-- ===== 今夜 ===== -->
+<section id="tonight">
+  <h2><span class="wk">00 · TONIGHT</span>試験までにやる順番</h2>
+  <p>時間が少なくても点になる順に並べています。上から順に、できるところまで進めてください。</p>
+  <ol class="order">
+    <li><div><b>暗唱カードを声に出して読む（15分）</b><br>原理の文言・定義の文を正確に言えるようにする。説明問題の土台。→ <a href="#cards">暗唱カード</a></div></li>
+    <li><div><b>カルノー効率の導出を白紙に書く（20分）</b><br>P–V 図 → 4過程の表 → 効率。カルノーと第二法則の両方で使う。→ <a href="#c-eff">Ⅰ-3</a></div></li>
+    <li><div><b>クラウジウス⇔トムソンの図と収支表を白紙に書く（20分）</b><br>第二法則の証明は全部この型。→ <a href="#l-eq">Ⅱ-4</a></div></li>
+    <li><div><b>エンタルピーの3点セットを書く（20分）</b><br>\(Q=\Delta H\)、\(C_P=(\partial H/\partial T)_P\)、\(C_P-C_V\)。昨年の再現。→ <a href="#e-cp">Ⅲ-2〜4</a></div></li>
+    <li><div><b>カルノーの定理（15分）</b>→ <a href="#c-thm">Ⅰ-5</a></div></li>
+    <li><div><b>ジュール・トムソンと自由膨張の比較（10分）</b>→ <a href="#e-jt">Ⅲ-6</a></div></li>
+    <li><div><b>余裕があれば</b>：熱力学的温度、クラウジウスの不等式、カラテオドリー、ジュール・トムソン係数。</div></li>
+  </ol>
+</section>
+
+<!-- ===== 関係 ===== -->
+<section id="map">
+  <h2><span class="wk">01 · MAP</span>3テーマはつながっている</h2>
+  <p>別々に覚えるより、1本の流れで覚えるほうが楽です。どのテーマが出ても、隣のテーマの話を (4) の「おまけ」で使えます。</p>
+  <div class="box">
+    <ol>
+      <li><b>第一法則</b> \(d'Q=dU+PdV\) が全部の出発点。</li>
+      <li>圧力一定の熱を扱いやすくするために作った状態量が <b>エンタルピー</b> \(H=U+PV\)。定圧なら \(Q=\Delta H\)。</li>
+      <li>第一法則を理想気体の等温・断熱に使って、熱機関の模型を作ったのが <b>カルノーサイクル</b>。効率 \(1-T_1/T_2\)。</li>
+      <li>「なぜ効率は1にならないのか」に答えるのが <b>第二法則</b>（クラウジウス・トムソン）。</li>
+      <li>第二法則から <b>カルノーの定理</b>（可逆機関の効率が最大で、熱源の温度だけで決まる）。</li>
+      <li>カルノーの定理から <b>熱力学的温度</b> と <b>クラウジウスの不等式</b>、そして <b>エントロピー</b> へ。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================================================= -->
+<!-- ===== Ⅰ カルノー ===== -->
+<!-- ================================================= -->
+<section id="carnot">
+  <div class="part-head"><div class="pno">PART Ⅰ</div><h2>カルノーサイクル</h2></div>
+
+  <div class="core">
+    <h4>核心（これだけは言えるように）</h4>
+    <ol>
+      <li>等温2本と断熱2本を、すべて準静的（可逆）に行うサイクル。熱の出入りは等温過程だけ。</li>
+      <li>効率は \(\eta=1-T_1/T_2\)。熱源の温度だけで決まり、作業物質によらない。</li>
+      <li>可逆なので逆回しでき、冷凍機・ヒートポンプになる。同じ2熱源の間では、可逆機関の効率が最大（カルノーの定理）。</li>
+    </ol>
+  </div>
+
+  <h3 id="c-proc"><span class="k">Ⅰ-1</span>4つの過程と P–V 図</h3>
+  <figure>
+    <svg viewBox="0 0 420 250" role="img" aria-label="カルノーサイクルのP-V図。A→B等温膨張、B→C断熱膨張、C→D等温圧縮、D→A断熱圧縮の時計回りの閉曲線">
+      <defs>
+        <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+      </defs>
+      <polygon points="82.2,56.1 92.9,71.9 103.6,85.1 114.3,96.2 125.1,105.8 135.8,114.1 146.5,121.3 157.2,127.7 168.0,133.4 178.7,138.5 189.4,143.0 200.1,147.2 210.9,150.9 224.8,158.1 238.7,164.4 252.6,169.7 266.5,174.5 280.4,178.6 294.3,182.3 308.2,185.6 322.1,188.5 336.0,191.1 350.0,193.5 363.9,195.6 377.8,197.6 359.5,196.0 341.2,194.4 322.8,192.5 304.5,190.4 286.2,188.1 267.9,185.4 249.6,182.5 231.3,179.1 213.0,175.2 194.7,170.6 176.4,165.2 158.0,158.7 151.7,154.4 145.4,149.7 139.1,144.4 132.8,138.7 126.4,132.2 120.1,125.0 113.8,116.9 107.5,107.8 101.1,97.4 94.8,85.6 88.5,71.9 82.2,56.1" fill="var(--hot-soft)" stroke="none"/>
+      <polyline points="82.2,56.1 92.9,71.9 103.6,85.1 114.3,96.2 125.1,105.8 135.8,114.1 146.5,121.3 157.2,127.7 168.0,133.4 178.7,138.5 189.4,143.0 200.1,147.2 210.9,150.9" fill="none" stroke="var(--hot)" stroke-width="3"/>
+      <polyline points="210.9,150.9 224.8,158.1 238.7,164.4 252.6,169.7 266.5,174.5 280.4,178.6 294.3,182.3 308.2,185.6 322.1,188.5 336.0,191.1 350.0,193.5 363.9,195.6 377.8,197.6" fill="none" stroke="currentColor" stroke-width="2"/>
+      <polyline points="377.8,197.6 359.5,196.0 341.2,194.4 322.8,192.5 304.5,190.4 286.2,188.1 267.9,185.4 249.6,182.5 231.3,179.1 213.0,175.2 194.7,170.6 176.4,165.2 158.0,158.7" fill="none" stroke="var(--cold)" stroke-width="3"/>
+      <polyline points="158.0,158.7 151.7,154.4 145.4,149.7 139.1,144.4 132.8,138.7 126.4,132.2 120.1,125.0 113.8,116.9 107.5,107.8 101.1,97.4 94.8,85.6 88.5,71.9 82.2,56.1" fill="none" stroke="currentColor" stroke-width="2"/>
+      <line x1="50" y1="232" x2="410" y2="232" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+      <line x1="50" y1="232" x2="50" y2="20" stroke="currentColor" stroke-width="1.5" marker-end="url(#ar)"/>
+      <text x="404" y="248" fill="currentColor" font-size="14" text-anchor="end">V</text>
+      <text x="38" y="26" fill="currentColor" font-size="14" text-anchor="middle">P</text>
+      <g fill="currentColor" font-size="14" font-weight="700">
+        <text x="72" y="52">A</text><text x="214" y="146">B</text><text x="382" y="194">C</text><text x="144" y="170">D</text>
+      </g>
+      <text x="160" y="110" fill="var(--hot)" font-size="12">等温膨張 T₂（吸熱 Q₂）</text>
+      <text x="296" y="172" fill="currentColor" font-size="12">断熱膨張</text>
+      <text x="236" y="214" fill="var(--cold)" font-size="12">等温圧縮 T₁（放熱 Q₁）</text>
+      <text x="62" y="138" fill="currentColor" font-size="12">断熱圧縮</text>
+      <text x="168" y="168" fill="currentColor" font-size="12">W</text>
+    </svg>
+    <figcaption>時計回り（A→B→C→D→A）。囲まれた面積が1サイクルの仕事 \(W\)。断熱線は等温線より急に下がる。</figcaption>
+  </figure>
+
+  <p>作業物質は \(n\) mol の理想気体。\(Q\) は気体が受け取る熱、\(W\) は気体が外にする仕事。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>過程</th><th>\(\Delta U\)</th><th>\(Q\)（受け取る熱）</th><th>\(W\)（外への仕事）</th><th>理由</th></tr></thead>
+    <tbody>
+      <tr><td>A→B 等温膨張 \(T_2\)</td><td>0</td><td>\(Q_2=nRT_2\log\frac{V_B}{V_A}\)</td><td>\(=Q_2\)</td><td>理想気体の \(U\) は \(T\) だけで決まる</td></tr>
+      <tr><td>B→C 断熱膨張</td><td>\(-nC_V(T_2-T_1)\)</td><td>0</td><td>\(nC_V(T_2-T_1)\)</td><td>内部エネルギーを使って仕事をし、冷える</td></tr>
+      <tr><td>C→D 等温圧縮 \(T_1\)</td><td>0</td><td>\(-Q_1=-nRT_1\log\frac{V_C}{V_D}\)</td><td>\(=-Q_1\)</td><td>された仕事の分だけ熱を捨てる</td></tr>
+      <tr><td>D→A 断熱圧縮</td><td>\(+nC_V(T_2-T_1)\)</td><td>0</td><td>\(-nC_V(T_2-T_1)\)</td><td>された仕事で温まる</td></tr>
+      <tr class="sum"><td>1サイクル</td><td>0</td><td>\(Q_2-Q_1\)</td><td>\(Q_2-Q_1\)</td><td>断熱の2つの仕事は打ち消し合う</td></tr>
+    </tbody>
+  </table></div>
+  <div class="idea"><b>ポイント</b>：2つの断熱過程の仕事は大きさが同じで符号が逆（どちらも温度差 \(T_2-T_1\) だけで決まる）なので、合計の仕事は等温過程だけで決まる。ここを説明できると「分かっている」答案になる。</div>
+
+  <h3 id="c-def"><span class="k">Ⅰ-2</span>効率の定義</h3>
+  <div class="script">
+    <div class="lbl">答案例</div>
+    <p>熱機関の効率は、1サイクルの間に高温熱源から吸収した熱量 \(Q_2\) のうち、外部への仕事 \(W\) に変えられた割合で、\(\eta=W/Q_2\) と定義する。1サイクルで元の状態に戻るので \(\Delta U=0\) であり、第一法則より \(W=Q_2-Q_1\)（\(Q_1\) は低温熱源に捨てた熱）。よって \(\eta=1-Q_1/Q_2\)。分母は吸収した熱だけで、捨てた熱は含めない。\(Q_1=0\) にできない限り \(\eta\lt1\) で、なぜ \(Q_1=0\) にできないかを述べるのが第二法則（トムソンの原理）である。</p>
+  </div>
+
+  <h3 id="c-eff"><span class="k">Ⅰ-3</span>効率 \(\eta=1-T_1/T_2\) の導出</h3>
+  <div class="idea"><b>ひとこと</b>：等温過程で熱を、断熱過程で体積比の関係を出し、比をとると log が消える。</div>
+  <ol class="steps">
+    <li><div>\(\eta=1-\dfrac{Q_1}{Q_2}\) なので、\(Q_1/Q_2\) を求めることが目標。<span class="why">目標の宣言（Ⅰ-2 の結果）</span></div></li>
+    <li><div>\(Q_2=\displaystyle\int_{V_A}^{V_B}P\,dV=\int_{V_A}^{V_B}\frac{nRT_2}{V}dV=nRT_2\log\frac{V_B}{V_A}\)<span class="why">等温で \(\Delta U=0\)（理想気体）なので熱＝仕事。状態方程式で \(P\) を消して積分</span></div></li>
+    <li><div>\(Q_1=nRT_1\log\dfrac{V_C}{V_D}\)<span class="why">同様。放出する熱を正の量 \(Q_1\) とするため、\(V_C/V_D\ (\gt1)\) の向きで書く</span></div></li>
+    <li><div>\(T_2V_B^{\gamma-1}=T_1V_C^{\gamma-1}\)、\(T_2V_A^{\gamma-1}=T_1V_D^{\gamma-1}\)<span class="why">断熱過程 B→C、D→A では \(TV^{\gamma-1}\) が一定</span></div></li>
+    <li><div>\(\left(\dfrac{V_B}{V_A}\right)^{\gamma-1}=\left(\dfrac{V_C}{V_D}\right)^{\gamma-1}\Rightarrow\dfrac{V_B}{V_A}=\dfrac{V_C}{V_D}\)<span class="why">2式を辺々割ると \(T_2,T_1\) が消える</span></div></li>
+    <li><div>\(\dfrac{Q_1}{Q_2}=\dfrac{nRT_1\log(V_C/V_D)}{nRT_2\log(V_B/V_A)}=\dfrac{T_1}{T_2}\)<span class="why">5 により log の部分が等しいので約分できる</span></div></li>
+    <li><div>\(\eta=1-\dfrac{T_1}{T_2}\)<span class="why">1 に代入。検算：\(T_1\to T_2\) で \(\eta\to0\)（温度差がなければ仕事は出ない）、\(T_1\gt0\) なので \(\eta\lt1\)</span></div></li>
+  </ol>
+  <p><small class="note">断熱の式 \(TV^{\gamma-1}=\) 一定 を「証明しなさい」と言われたら：断熱 \(d'Q=0\) → \(0=nC_VdT+\frac{nRT}{V}dV\) → \(\frac{dT}{T}+(\gamma-1)\frac{dV}{V}=0\)（\(R/C_V=\gamma-1\)）→ 積分して \(\log(TV^{\gamma-1})=\) 一定。</small></p>
+
+  <h3 id="c-rev"><span class="k">Ⅰ-4</span>逆回し：冷凍機とヒートポンプ</h3>
+  <div class="script">
+    <div class="lbl">答案例（原理の説明）</div>
+    <p>カルノーサイクルは可逆なので、P–V 図で反時計回りに回せる。このとき、断熱膨張で気体を \(T_1\) より冷やしてから低温熱源に接して熱 \(Q_1\) を吸収し、断熱圧縮で \(T_2\) より熱くしてから高温熱源に熱 \(Q_2\) を放出する。外から仕事 \(W\) を加えることで、自然には起こらない低温から高温への熱の移動が実現する。第一法則より \(Q_2=Q_1+W\) なので、高温側には加えた仕事より多くの熱を届けられる。これがヒートポンプ（エアコンの暖房）。低温側から熱を奪う目的で使えば冷凍機（冷蔵庫・冷房）。</p>
+  </div>
+  \[\eta_c=\frac{Q_1}{W}=\frac{Q_1}{Q_2-Q_1}=\frac{T_1}{T_2-T_1}\qquad \eta_h=\frac{Q_2}{W}=\frac{Q_2}{Q_2-Q_1}=\frac{T_2}{T_2-T_1}\]
+  <p>導出は、分母分子を \(Q_2\) で割って \(Q_1/Q_2=T_1/T_2\)（Ⅰ-3 の 6）を代入するだけ。</p>
+  <div class="tbl"><table>
+    <thead><tr><th>例</th><th>\(\eta\)</th><th>\(\eta_c\)</th><th>\(\eta_h\)</th></tr></thead>
+    <tbody>
+      <tr><td>\(T_1=273,\ T_2=303\)（演習5週）</td><td class="c">30/303 ≈ 0.099</td><td class="c">273/30 = 9.1</td><td class="c">303/30 = 10.1</td></tr>
+      <tr><td>\(T_1=263,\ T_2=303\)</td><td class="c">40/303 ≈ 0.13</td><td class="c">263/40 ≈ 6.6</td><td class="c">303/40 ≈ 7.6</td></tr>
+    </tbody>
+  </table></div>
+  <p>検算に使える関係：\(\eta_h=\eta_c+1\)、\(\eta_h=1/\eta\)。温度差が小さいほど \(\eta\) は小さく、\(\eta_c,\eta_h\) は大きい。<b>温度は必ず K で代入</b>。</p>
+
+  <h3 id="c-thm"><span class="k">Ⅰ-5</span>カルノーの定理</h3>
+  <div class="script">
+    <div class="lbl">定理</div>
+    <p>同じ2つの熱源（\(T_2\gt T_1\)）の間で働く熱機関の効率は、可逆機関のとき最大である。また、可逆機関の効率はすべて等しく、作業物質によらず熱源の温度だけで決まる。</p>
+  </div>
+  <ol class="steps">
+    <li><div>任意の機関 X（効率 \(\eta_X\)）と可逆機関 C（効率 \(\eta_C\)）を同じ2熱源の間に置き、\(\eta_X\gt\eta_C\) と仮定する。<span class="why">背理法の仮定</span></div></li>
+    <li><div>X は高温から \(Q_2\) を受け取り、仕事 \(W_X=\eta_XQ_2\) をする。C は可逆なので逆回しでき、仕事 \(W_C=\eta_CQ_2\) を与えると高温へ \(Q_2\) を戻す。X の仕事の一部で C を回す。<span class="why">組み合わせ。「可逆だから逆回しできる」が鍵</span></div></li>
+    <li><div>
+      <div class="tbl"><table>
+        <thead><tr><th>受け取る量</th><th>高温熱源</th><th>低温熱源</th><th>外部への仕事</th></tr></thead>
+        <tbody>
+          <tr><td>機関 X</td><td class="c">−Q₂</td><td class="c">+(Q₂−W_X)</td><td class="c">+W_X</td></tr>
+          <tr><td>逆回しの C</td><td class="c">+Q₂</td><td class="c">−(Q₂−W_C)</td><td class="c">−W_C</td></tr>
+          <tr class="sum"><td>合計</td><td class="c">0</td><td class="c">−(W_X−W_C)</td><td class="c">+(W_X−W_C)</td></tr>
+        </tbody>
+      </table></div>
+      <span class="why">収支表で差し引きを見せる</span></div></li>
+    <li><div>仮定より \(W_X-W_C=(\eta_X-\eta_C)Q_2\gt0\)。低温熱源1つから受け取った熱を全部仕事に変え、他に変化がない。トムソンの原理に反する。よって \(\eta_X\le\eta_C\)。<span class="why">矛盾 → 結論</span></div></li>
+    <li><div>X も可逆なら、X と C の役割を入れ替えて \(\eta_C\le\eta_X\)。よって \(\eta_X=\eta_C\)。理想気体のカルノー機関で計算すれば \(1-T_1/T_2\) なので、すべての可逆機関の効率は \(1-T_1/T_2\)。<span class="why">後半（等号）も忘れずに</span></div></li>
+  </ol>
+
+  <h3 id="c-temp"><span class="k">Ⅰ-6</span>熱力学的温度（講義で出やすい発展）</h3>
+  <p>カルノーの定理から、可逆機関の \(Q_1/Q_2\) は作業物質によらず、2つの熱源の温度だけで決まる普遍的な量になる。そこで、可逆機関がやり取りする熱の比で温度を定義する：</p>
+  \[\frac{Q_1}{Q_2}=\frac{T_1}{T_2}\]
+  <p>これが <b>熱力学的温度（絶対温度）</b>。温度計の物質（水銀・気体など）に頼らない温度の定義で、理想気体の状態方程式の \(T\) と一致する（Ⅰ-3 の 6 で示した）。</p>
+
+  <h3 id="c-ts"><span class="k">Ⅰ-7</span>T–S 図とエントロピー</h3>
+  <p>等温過程は \(T\) 一定の水平線、可逆断熱過程は \(\Delta S=0\) の垂直線なので、T–S 図では長方形。面積 \(\oint T\,dS=Q_2-Q_1=W\)。1サイクルのエントロピー変化は \(\frac{Q_2}{T_2}-\frac{Q_1}{T_1}=0\)（\(Q_1/Q_2=T_1/T_2\) より）。</p>
+
+  <h3 id="c-var"><span class="k">Ⅰ-8</span>類題：カルノー以外のサイクル</h3>
+  <p>「効率を求めよ」型は、どのサイクルでも同じ手順で解けます。</p>
+  <ol>
+    <li>各過程で \(Q\) を求める（等温：\(Q=W\)、等積：\(Q=nC_V\Delta T\)、等圧：\(Q=nC_P\Delta T\)、断熱：0）。</li>
+    <li>\(Q\gt0\) の過程の和が \(Q_{\text{吸}}\)、\(Q\lt0\) の過程の大きさの和が \(Q_{\text{放}}\)。</li>
+    <li>\(\eta=1-Q_{\text{放}}/Q_{\text{吸}}\)。断熱の式で温度を体積比に直す。</li>
+  </ol>
+  <p>例：オットーサイクル（断熱2本＋等積2本、圧縮比 \(V_2/V_1\)）は \(\eta=1-(V_1/V_2)^{\gamma-1}\)。どんなサイクルも、そのサイクルの最高温度と最低温度の間のカルノー機関の効率を超えない（カルノーの定理）。</p>
+</section>
+
+<!-- ================================================= -->
+<!-- ===== Ⅱ 第二法則 ===== -->
+<!-- ================================================= -->
+<section id="law2">
+  <div class="part-head"><div class="pno">PART Ⅱ</div><h2>熱力学第二法則</h2></div>
+
+  <div class="core">
+    <h4>核心</h4>
+    <ol>
+      <li>第一法則は「エネルギーの量」、第二法則は「変化の向き」の法則。</li>
+      <li>表現はいくつもある（クラウジウス、トムソン、プランク、カラテオドリー、オストヴァルト）が、すべて同値。</li>
+      <li>証明はほぼ全部「破れる機関があると仮定し、カルノー機関と組み合わせて矛盾を出す」という背理法。</li>
+    </ol>
+  </div>
+
+  <h3 id="l-stmt"><span class="k">Ⅱ-1</span>原理の正確な文言</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>名前</th><th>内容</th><th>落としやすい言葉</th></tr></thead>
+    <tbody>
+      <tr><td>クラウジウスの原理</td><td>他に何の変化も残さずに、熱を低温物体から高温物体へ移すことはできない。</td><td>「他に何の変化も残さずに」（冷蔵庫は仕事を使えば移せる）</td></tr>
+      <tr><td>トムソン（ケルビン）の原理</td><td>1つの熱源から熱を受け取り、それを全部仕事に変えるだけで、他に何の変化も残さないサイクルは存在しない。</td><td>「1つの熱源」「サイクル」（等温膨張1回なら熱を全部仕事にできる）</td></tr>
+      <tr><td>オストヴァルトの原理</td><td>第二種永久機関は実現できない。</td><td>トムソンの言い換え</td></tr>
+      <tr><td>プランクの原理</td><td>摩擦などで仕事が熱に変わる現象は不可逆である。</td><td>「不可逆」</td></tr>
+      <tr><td>カラテオドリーの原理</td><td>任意の熱平衡状態の任意の近傍に、その状態から断熱変化では到達できない状態が存在する。</td><td>「任意の近傍」「断熱変化では」</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 id="l-irr"><span class="k">Ⅱ-2</span>可逆変化と不可逆変化</h3>
+  <div class="script">
+    <div class="lbl">答案例</div>
+    <p>ある変化のあと、系と外界の両方を、外界に何の変化も残さずに元の状態に戻せるとき、その変化を可逆変化という。戻せないとき不可逆変化という。逆向きの変化を起こすこと自体はできても、その際に外界に仕事の消費や熱の移動といった痕跡が必ず残るのが不可逆変化である。準静的（常に熱平衡を保ちながら無限にゆっくり進む）で摩擦のない変化は可逆。現実の変化はすべて不可逆で、例として摩擦による発熱、高温から低温への熱伝導、気体の真空への自由膨張、2種類の気体の混合・拡散がある。</p>
+  </div>
+
+  <h3 id="l-pm"><span class="k">Ⅱ-3</span>永久機関（第一種と第二種）</h3>
+  <div class="grid2">
+    <div class="box">
+      <h4>第一種永久機関</h4>
+      <p>外からエネルギーを受け取らずに仕事をし続ける機関。1サイクルで \(\Delta U=0\) なので第一法則から \(W=Q\)。\(Q=0\) なら \(W=0\) で、<b>第一法則（エネルギー保存）に反する</b>。</p>
+    </div>
+    <div class="box">
+      <h4>第二種永久機関</h4>
+      <p>1つの熱源（海水・大気）から熱を受け取り、全部を仕事に変え続ける機関。エネルギーは保存しているので第一法則には反しないが、<b>トムソンの原理そのものに反する</b>（オストヴァルトの原理）。</p>
+    </div>
+  </div>
+
+  <h3 id="l-eq"><span class="k">Ⅱ-4</span>クラウジウス ⇔ トムソン（最重要の証明）</h3>
+  <div class="idea"><b>論理の確認</b>：「A ならば B」を示すかわりに、対偶「B でないならば A でない」を示してよい。同値を示すには、「トムソンが破れる ⇒ クラウジウスが破れる」と「クラウジウスが破れる ⇒ トムソンが破れる」の両方を示す。</div>
+
+  <div class="figs">
+    <figure>
+      <svg viewBox="0 0 360 230" role="img" aria-label="(i)トムソンを破る機関Xの仕事で逆カルノー機関を動かす図">
+        <defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <rect x="20" y="10" width="320" height="34" rx="4" fill="var(--hot-soft)" stroke="var(--hot)"/>
+        <text x="180" y="32" fill="var(--hot)" font-size="13" text-anchor="middle">高温熱源 T₂</text>
+        <rect x="20" y="184" width="320" height="34" rx="4" fill="var(--cold-soft)" stroke="var(--cold)"/>
+        <text x="180" y="206" fill="var(--cold)" font-size="13" text-anchor="middle">低温熱源 T₁</text>
+        <circle cx="100" cy="114" r="26" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+        <text x="100" y="119" fill="currentColor" font-size="14" text-anchor="middle" font-weight="700">X</text>
+        <circle cx="260" cy="114" r="26" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+        <text x="260" y="119" fill="currentColor" font-size="13" text-anchor="middle" font-weight="700">逆C</text>
+        <g stroke="currentColor" stroke-width="1.5">
+          <line x1="100" y1="44" x2="100" y2="86" marker-end="url(#a1)"/>
+          <line x1="126" y1="114" x2="232" y2="114" marker-end="url(#a1)"/>
+          <line x1="260" y1="184" x2="260" y2="142" marker-end="url(#a1)"/>
+          <line x1="260" y1="88" x2="260" y2="46" marker-end="url(#a1)"/>
+        </g>
+        <g fill="currentColor" font-size="12">
+          <text x="108" y="70">Q</text>
+          <text x="179" y="106" text-anchor="middle">W = Q</text>
+          <text x="268" y="168">Q₁</text>
+          <text x="268" y="70">Q₁ + W</text>
+        </g>
+      </svg>
+      <figcaption>(i) X はトムソンを破る機関。差し引きで低温→高温に \(Q_1\) だけ移る。</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 360 230" role="img" aria-label="(ii)カルノー機関Cとクラウジウスを破る装置Yを組み合わせる図">
+        <defs><marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker></defs>
+        <rect x="20" y="10" width="320" height="34" rx="4" fill="var(--hot-soft)" stroke="var(--hot)"/>
+        <text x="180" y="32" fill="var(--hot)" font-size="13" text-anchor="middle">高温熱源 T₂</text>
+        <rect x="20" y="184" width="320" height="34" rx="4" fill="var(--cold-soft)" stroke="var(--cold)"/>
+        <text x="180" y="206" fill="var(--cold)" font-size="13" text-anchor="middle">低温熱源 T₁</text>
+        <circle cx="100" cy="114" r="26" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+        <text x="100" y="119" fill="currentColor" font-size="14" text-anchor="middle" font-weight="700">C</text>
+        <rect x="236" y="92" width="48" height="44" rx="4" fill="var(--paper)" stroke="currentColor" stroke-width="1.5"/>
+        <text x="260" y="119" fill="currentColor" font-size="14" text-anchor="middle" font-weight="700">Y</text>
+        <g stroke="currentColor" stroke-width="1.5">
+          <line x1="100" y1="44" x2="100" y2="86" marker-end="url(#a2)"/>
+          <line x1="100" y1="140" x2="100" y2="182" marker-end="url(#a2)"/>
+          <line x1="126" y1="114" x2="200" y2="114" marker-end="url(#a2)"/>
+          <line x1="260" y1="184" x2="260" y2="138" marker-end="url(#a2)"/>
+          <line x1="260" y1="92" x2="260" y2="46" marker-end="url(#a2)"/>
+        </g>
+        <g fill="currentColor" font-size="12">
+          <text x="108" y="70">Q₂</text>
+          <text x="108" y="168">Q₁</text>
+          <text x="134" y="106">W = Q₂ − Q₁</text>
+          <text x="268" y="168">Q₁</text>
+          <text x="268" y="70">Q₁</text>
+        </g>
+      </svg>
+      <figcaption>(ii) Y はクラウジウスを破る装置。低温熱源は差し引き0、高温熱源だけから \(Q_2-Q_1\) を全部仕事に。</figcaption>
+    </figure>
+  </div>
+
+  <p><b>(i) トムソンが破れる ⇒ クラウジウスが破れる</b></p>
+  <ol class="steps">
+    <li><div>高温熱源から熱 \(Q\) を受け取り、全部を仕事 \(W=Q\) に変えるだけのサイクル X があると仮定する。<span class="why">トムソンの否定</span></div></li>
+    <li><div>X の仕事 \(W\) で逆回しのカルノー機関を動かす。低温から \(Q_1\) を汲み上げ、高温へ \(Q_1+W\) を放出する。<span class="why">逆カルノーも1サイクルで \(\Delta U=0\) なので放出は \(Q_1+W\)</span></div></li>
+    <li><div>
+      <div class="tbl"><table>
+        <thead><tr><th>受け取る量</th><th>高温熱源</th><th>低温熱源</th><th>外部への仕事</th></tr></thead>
+        <tbody>
+          <tr><td>X</td><td class="c">−Q</td><td class="c">0</td><td class="c">+W</td></tr>
+          <tr><td>逆カルノー</td><td class="c">+(Q₁+W)</td><td class="c">−Q₁</td><td class="c">−W</td></tr>
+          <tr class="sum"><td>合計（W=Q）</td><td class="c">+Q₁</td><td class="c">−Q₁</td><td class="c">0</td></tr>
+        </tbody>
+      </table></div><span class="why">収支表</span></div></li>
+    <li><div>全体として、低温熱源から高温熱源へ \(Q_1\) が移っただけで他に何の変化もない。クラウジウスの原理に反する。<span class="why">矛盾</span></div></li>
+  </ol>
+
+  <p><b>(ii) クラウジウスが破れる ⇒ トムソンが破れる</b></p>
+  <ol class="steps">
+    <li><div>他に変化を残さず、低温熱源から高温熱源へ熱 \(Q_1\) を移す装置 Y があると仮定する。<span class="why">クラウジウスの否定</span></div></li>
+    <li><div>カルノー機関を順方向に回す。高温から \(Q_2\) を受け取り、仕事 \(W=Q_2-Q_1\) をして、低温へ \(Q_1\) を捨てる。捨てた \(Q_1\) を Y で高温へ戻す。<span class="why">組み合わせ</span></div></li>
+    <li><div>
+      <div class="tbl"><table>
+        <thead><tr><th>受け取る量</th><th>高温熱源</th><th>低温熱源</th><th>外部への仕事</th></tr></thead>
+        <tbody>
+          <tr><td>カルノー</td><td class="c">−Q₂</td><td class="c">+Q₁</td><td class="c">+(Q₂−Q₁)</td></tr>
+          <tr><td>Y</td><td class="c">+Q₁</td><td class="c">−Q₁</td><td class="c">0</td></tr>
+          <tr class="sum"><td>合計</td><td class="c">−(Q₂−Q₁)</td><td class="c">0</td><td class="c">+(Q₂−Q₁)</td></tr>
+        </tbody>
+      </table></div><span class="why">収支表</span></div></li>
+    <li><div>低温熱源は変化なし。高温熱源1つから受け取った \(Q_2-Q_1\) を全部仕事に変えたサイクルになり、トムソンの原理に反する。<span class="why">矛盾</span></div></li>
+    <li><div>(i)(ii) より、片方が破れればもう片方も破れる。対偶をとれば、片方が成り立てばもう片方も成り立つ。よって2つの原理は同値である。<span class="why">結論を必ず書く</span></div></li>
+  </ol>
+
+  <h3 id="l-planck"><span class="k">Ⅱ-5</span>プランクの原理（摩擦熱の不可逆性）</h3>
+  <ol class="steps">
+    <li><div>摩擦で仕事 \(W\) が熱 \(Q=W\) に変わる現象が可逆だと仮定する。つまり、その逆である「熱 \(Q\) を他に変化を残さず全部仕事に戻す」ことができるとする。<span class="why">仮定</span></div></li>
+    <li><div>低温物体から熱 \(Q\) を取り出して全部仕事 \(W=Q\) に戻し、その仕事で高温物体を摩擦で温める（高温物体が \(Q\) を得る）。<span class="why">組み合わせ</span></div></li>
+    <li><div>結果は「低温物体から高温物体へ \(Q\) が移り、他に何の変化もない」。クラウジウスの原理に反するので、摩擦熱の発生は不可逆。<span class="why">矛盾 → 結論（トムソンに直接反すると言ってもよい）</span></div></li>
+  </ol>
+
+  <h3 id="l-cond"><span class="k">Ⅱ-6</span>熱伝導が不可逆であること</h3>
+  <p>高温物体から低温物体へ熱 \(Q\) が伝わったとする。これを可逆とすると、外界に何の変化も残さずに元に戻せる。つまり低温物体から高温物体へ \(Q\) を、他に変化を残さずに移せることになる。これはクラウジウスの原理に反する。よって熱伝導は不可逆である。</p>
+
+  <h3 id="l-cara"><span class="k">Ⅱ-7</span>トムソンからカラテオドリー</h3>
+  <ol class="steps">
+    <li><div>対偶を示す。「ある状態 A の近傍のすべての状態に、A から断熱変化で到達できる」と仮定する。<span class="why">カラテオドリーの否定</span></div></li>
+    <li><div>A から、温度 \(T\) の1つの熱源に接して等温で熱 \(Q\gt0\) を吸収させ、A の近傍の状態 B に移す。<span class="why">近傍の状態を1つ作る</span></div></li>
+    <li><div>仮定より、B から A へ断熱変化で戻れる（B も A の近傍の状態なので。逆向きでも同じ議論）。<span class="why">サイクルを閉じる</span></div></li>
+    <li><div>1サイクルで \(\Delta U=0\)。熱の出入りは1つの熱源からの \(Q\) だけなので、第一法則より外部への仕事 \(W=Q\gt0\)。<span class="why">収支</span></div></li>
+    <li><div>1つの熱源から受け取った熱を全部仕事に変えたことになり、トムソンの原理に反する。よってトムソンの原理が成り立てば、任意の状態の任意の近傍に、断熱変化では到達できない状態が存在する。<span class="why">結論</span></div></li>
+  </ol>
+
+  <h3 id="l-adi"><span class="k">Ⅱ-8</span>断熱線どうしは交わらない（演習6週 問2）</h3>
+  <p><b>傾き</b>：等温線 \(PV=\) 一定 を微分して \((\partial P/\partial V)_T=-P/V\)。断熱線 \(PV^\gamma=\) 一定 を微分して \(V^\gamma dP+\gamma PV^{\gamma-1}dV=0\)、\((\partial P/\partial V)_{ad}=-\gamma P/V=\gamma(\partial P/\partial V)_T\)。\(\gamma\gt1\) なので断熱線のほうが急。</p>
+  <p><b>考察</b>：2本の断熱線が交わるなら、1本の等温線と合わせて閉じたサイクルが作れる。このサイクルで熱を受け取るのは等温過程（1つの熱源）だけで、囲む面積の分だけ仕事 \(W=Q\gt0\) をする。トムソンの原理に反するので、等温1本と断熱2本のサイクルは作れない（断熱線は交わらない）。</p>
+
+  <h3 id="l-ineq"><span class="k">Ⅱ-9</span>おまけ：クラウジウスの不等式からエントロピーへ</h3>
+  <p>カルノーの定理より、任意の機関の効率は \(1-\frac{Q_1}{Q_2}\le1-\frac{T_1}{T_2}\)。整理すると</p>
+  \[\frac{Q_2}{T_2}-\frac{Q_1}{T_1}\le0\quad\longrightarrow\quad \oint\frac{d'Q}{T}\le0\ \ (\text{等号は可逆})\]
+  <p>可逆なら1周の積分が0なので、\(d'Q/T\) は経路によらない量の変化になる。これを \(dS=d'Q_{\text{rev}}/T\) と定義したのがエントロピー。不可逆変化を含めると、断熱系ではエントロピーは減らない（エントロピー増大の法則）。第二法則を式で表したもの。</p>
+</section>
+
+<!-- ================================================= -->
+<!-- ===== Ⅲ エンタルピー ===== -->
+<!-- ================================================= -->
+<section id="enthalpy">
+  <div class="part-head"><div class="pno">PART Ⅲ</div><h2>エンタルピー</h2></div>
+
+  <div class="core">
+    <h4>核心</h4>
+    <ol>
+      <li>\(H=U+PV\)。\(U,P,V\) が状態量なので \(H\) も状態量。</li>
+      <li>圧力一定なら、受け取った熱がそのまま \(H\) の増加：\(Q=\Delta H\)。定積の \(Q=\Delta U\) と対になる。</li>
+      <li>流れの中で押し込む・押し出す仕事 \(PV\) をはじめから含むので、定圧過程や流れのある過程（ジュール・トムソン）に便利。</li>
+    </ol>
+  </div>
+  <p><small class="note">昨年と同じテーマが出る場合、同じ問題ではなく角度を変えてくる可能性があります。下のⅢ-1〜9 で、出せそうな角度はすべてカバーしています。</small></p>
+
+  <h3 id="e-merit"><span class="k">Ⅲ-1</span>エンタルピーを定義するメリット</h3>
+  <div class="script">
+    <div class="lbl">答案例</div>
+    <p>第一法則 \(d'Q=dU+PdV\) は、体積一定なら \(d'Q=dU\) と簡単になるが、圧力一定では \(PdV\) の項が残る。しかし実験や化学反応の多くは大気圧のもと、つまり圧力一定で行われる。そこで \(H=U+PV\) を定義すると、圧力一定では \(d'Q=dH\) となり、受け取った熱が1つの状態量の変化で表せる。状態量なので経路によらず始状態と終状態だけで決まり、反応熱の計算（ヘスの法則）などに使える。また \(PV\) の項は、気体を押し込んだり押し出したりする「流れの仕事」を表すので、ジュール・トムソン実験のように物質が流れる過程のエネルギー収支も \(H\) で簡単に書ける。</p>
+  </div>
+
+  <h3 id="e-qh"><span class="k">Ⅲ-2</span>定圧で \(Q=H_2-H_1\)（演習3週 問3）</h3>
+  <ol class="steps">
+    <li><div>\(Q=(U_2-U_1)+W\)<span class="why">第一法則（有限の変化）</span></div></li>
+    <li><div>\(W=\displaystyle\int_{V_1}^{V_2}P\,dV=P(V_2-V_1)\)<span class="why">圧力一定なので \(P\) を積分の外に出せる</span></div></li>
+    <li><div>\(Q=(U_2+PV_2)-(U_1+PV_1)\)<span class="why">代入して状態ごとにまとめる</span></div></li>
+    <li><div>\(Q=H_2-H_1\)<span class="why">\(P_1=P_2=P\) なので各括弧が \(H\) の定義そのもの</span></div></li>
+  </ol>
+
+  <h3 id="e-cp"><span class="k">Ⅲ-3</span>比熱の意味と \(C_P=(\partial H/\partial T)_P\)（昨年(2)(3)）</h3>
+  <div class="script">
+    <div class="lbl">比熱の意味</div>
+    <p>モル比熱 \(C=d'Q/dT\) は、1 mol の物質の温度を 1 K 上げるのに必要な熱量。\(d'\) と書くのは \(Q\) が状態量ではなく、\(d'Q\) が全微分でないから。同じ温度変化でも、体積一定か圧力一定かで必要な熱が違うので、条件を指定して \(C_V=(d'Q/dT)_V\)、\(C_P=(d'Q/dT)_P\) と区別する。定圧では膨張して外に仕事をする分だけ余計に熱が必要なので \(C_P\gt C_V\)。</p>
+  </div>
+  <ol class="steps">
+    <li><div>\(d'Q=dU+PdV\cdots(a)\)<span class="why">第一法則</span></div></li>
+    <li><div>\(dH=dU+PdV+VdP\cdots(b)\)<span class="why">\(H=U+PV\) を微分（積の微分）</span></div></li>
+    <li><div>\(d'Q=dH-VdP\)<span class="why">(b) の \(dU+PdV\) を (a) に入れる</span></div></li>
+    <li><div>\(d'Q=dH\)<span class="why">圧力一定なので \(dP=0\)</span></div></li>
+    <li><div>\(C_P=\left(\dfrac{d'Q}{dT}\right)_P=\left(\dfrac{\partial H}{\partial T}\right)_P\)<span class="why">圧力一定のもとで両辺を \(dT\) で割る</span></div></li>
+    <li><div>同様に体積一定なら (a) で \(dV=0\)、\(d'Q=dU\)、\(C_V=(\partial U/\partial T)_V\)。<span class="why">「定積なら \(U\)、定圧なら \(H\)」の対応</span></div></li>
+  </ol>
+
+  <h3 id="e-mayer"><span class="k">Ⅲ-4</span>\(C_P-C_V\) の一般式とマイヤーの関係（昨年(4)）</h3>
+  <ol class="steps">
+    <li><div>\(dU=C_VdT+\left(\dfrac{\partial U}{\partial V}\right)_TdV\)<span class="why">\(U\) を \(T,V\) の関数とみて全微分（理想気体とは限らない）</span></div></li>
+    <li><div>\(d'Q=C_VdT+\left\{P+\left(\dfrac{\partial U}{\partial V}\right)_T\right\}dV\)<span class="why">第一法則に代入</span></div></li>
+    <li><div>\(C_P=C_V+\left\{P+\left(\dfrac{\partial U}{\partial V}\right)_T\right\}\left(\dfrac{\partial V}{\partial T}\right)_P\)<span class="why">圧力一定で \(dT\) で割る</span></div></li>
+    <li><div>理想気体：\((\partial U/\partial V)_T=0\)、\((\partial V/\partial T)_P=R/P\) より \(C_P-C_V=R\)<span class="why">マイヤーの関係</span></div></li>
+  </ol>
+  <p><b>意味</b>：\(P(\partial V/\partial T)_P\) は膨張で外部にする仕事、\((\partial U/\partial V)_T(\partial V/\partial T)_P\) は分子間力に逆らう内部の仕事。理想気体は分子間力がないので後者が0。</p>
+
+  <h3 id="e-ideal"><span class="k">Ⅲ-5</span>理想気体のエンタルピー</h3>
+  <p>1 mol で \(H=U+PV=U(T)+RT\)。\(U\) も \(RT\) も \(T\) だけの関数なので、<b>理想気体の \(H\) は温度だけの関数</b>。微分すると \(dH=C_VdT+RdT=C_PdT\)（マイヤーの関係を使った）。\(C_P\) が定数なら \(\Delta H=C_P\Delta T\)。</p>
+
+  <h3 id="e-jt"><span class="k">Ⅲ-6</span>ジュール・トムソン実験と自由膨張</h3>
+  <div class="script">
+    <div class="lbl">答案例（昨年(1)）</div>
+    <p>断熱した管の途中に細孔栓（綿や多孔質の栓）を置き、左側を高圧 \(P_1\)、右側を低圧 \(P_2\) に保って、気体をゆっくり押し通す。左で体積 \(V_1\) だった気体が栓を通って右で体積 \(V_2\) になるとき、左のピストンが気体にする仕事は \(P_1V_1\)、気体が右のピストンにする仕事は \(P_2V_2\)。断熱なので第一法則より \(U_2-U_1=P_1V_1-P_2V_2\)、すなわち \(U_1+P_1V_1=U_2+P_2V_2\)、\(H_1=H_2\)。この過程はエンタルピーが一定の過程である。理想気体では \(H\) が温度だけの関数なので温度は変わらないが、実在気体では分子間力のために温度が変化し、多くの気体は常温で冷える。これは気体の液化（冷却）に利用される。</p>
+  </div>
+  <div class="tbl"><table>
+    <thead><tr><th></th><th>自由膨張（ジュールの実験）</th><th>ジュール・トムソン実験</th></tr></thead>
+    <tbody>
+      <tr><td>やり方</td><td>断熱容器で気体を真空中へ一気に膨張</td><td>細孔栓を通して高圧→低圧へ定常的に流す</td></tr>
+      <tr><td>仕事・熱</td><td>\(W=0,\ Q=0\)</td><td>\(Q=0\)、仕事は \(P_1V_1-P_2V_2\)</td></tr>
+      <tr><td>一定に保たれる量</td><td>\(U\)</td><td>\(H\)</td></tr>
+      <tr><td>理想気体</td><td>温度変化なし → \(U\) は \(T\) だけの関数</td><td>温度変化なし → \(H\) は \(T\) だけの関数</td></tr>
+      <tr><td>実在気体</td><td>わずかに冷える</td><td>冷える（逆転温度以下）。液化に利用</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 id="e-mu"><span class="k">Ⅲ-7</span>おまけ：ジュール・トムソン係数</h3>
+  <p>\(\mu=(\partial T/\partial P)_H\)。演習4週 問3 の循環関係を \((x,y,z)=(T,P,H)\) に使うと</p>
+  \[\left(\frac{\partial T}{\partial P}\right)_H\left(\frac{\partial P}{\partial H}\right)_T\left(\frac{\partial H}{\partial T}\right)_P=-1\ \Rightarrow\ \mu=-\frac{(\partial H/\partial P)_T}{C_P}\]
+  <p>理想気体では \(H\) が \(T\) だけの関数なので \((\partial H/\partial P)_T=0\)、よって \(\mu=0\)（温度が変わらない）と確認できる。</p>
+
+  <h3 id="e-room"><span class="k">Ⅲ-8</span>類題：部屋の空気を温める（演習3週 問5）</h3>
+  <p>0 ℃・27.00 m³ の空気（\(m=34.91\) kg）を 20 ℃ に。</p>
+  <ul>
+    <li><b>体積一定</b>：\(Q=\Delta U=mc_V\Delta T\approx7.02\times10^5\) J</li>
+    <li><b>圧力一定</b>：\(Q=\Delta H=mc_P\Delta T=\gamma\times\)（上）\(\approx9.85\times10^5\) J。<b>定圧なのでエンタルピーの増加</b>と言えるのがポイント。</li>
+    <li><b>すき間から漏れる</b>（\(P,V\) 一定）：室内の質量 \(m(T)=m_0T_0/T\) を定圧で温め続けるので \(Q=\int c_Pm(T)dT=c_Pm_0T_0\log(T/T_0)\approx9.51\times10^5\) J。</li>
+  </ul>
+
+  <h3 id="e-hess"><span class="k">Ⅲ-9</span>反応熱とヘスの法則（講義で触れていれば）</h3>
+  <p>大気圧下の化学反応で出入りする熱は定圧の熱なので、反応熱 \(=\Delta H\)（発熱反応は \(\Delta H\lt0\)）。\(H\) は状態量なので、反応を途中で何段階に分けても、全体の \(\Delta H\) は始めと終わりの状態だけで決まる。これがヘスの法則（総熱量保存の法則）。</p>
+</section>
+
+<!-- ===== 予想大問 ===== -->
+<section id="mock">
+  <h2><span class="wk">02 · MOCK</span>予想大問（昨年の形式で）</h2>
+  <p>どれが出ても、各小問の答えはこのノートの中にあります。60分を計って、答えを見ずに解いてください。</p>
+
+  <div class="sheet">
+    <div class="stem">予想1　カルノーサイクルに関して、講義を参考に以下の問いに対する解説をしよう。計算についても、何を目標にしており、どういう計算をするかを言葉で説明すること。</div>
+    <ol>
+      <li><span class="no">(1)</span>カルノーサイクルの4つの過程を P–V 図とともに解説しよう。→ <a href="#c-proc">Ⅰ-1</a></li>
+      <li><span class="no">(2)</span>熱効率の定義を解説し、\(\eta=1-T_1/T_2\) を示そう。→ <a href="#c-def">Ⅰ-2</a>, <a href="#c-eff">Ⅰ-3</a></li>
+      <li><span class="no">(3)</span>逆回しにしたときの原理と、冷却係数・熱ポンプ係数を求めよう。→ <a href="#c-rev">Ⅰ-4</a></li>
+      <li><span class="no">(4)</span>（おまけ）カルノーの定理を示そう。→ <a href="#c-thm">Ⅰ-5</a></li>
+    </ol>
+  </div>
+
+  <div class="sheet">
+    <div class="stem">予想2　熱力学第二法則に関して、講義を参考に以下の問いに対する解説をしよう。</div>
+    <ol>
+      <li><span class="no">(1)</span>不可逆変化とは何か、例を挙げて解説しよう。→ <a href="#l-irr">Ⅱ-2</a></li>
+      <li><span class="no">(2)</span>クラウジウスの原理とトムソンの原理を述べ、第一種・第二種永久機関の違いを解説しよう。→ <a href="#l-stmt">Ⅱ-1</a>, <a href="#l-pm">Ⅱ-3</a></li>
+      <li><span class="no">(3)</span>2つの原理が同値であることを示そう。→ <a href="#l-eq">Ⅱ-4</a></li>
+      <li><span class="no">(4)</span>（おまけ）熱伝導・摩擦熱の不可逆性、またはカラテオドリーの原理を導こう。→ <a href="#l-planck">Ⅱ-5</a>〜<a href="#l-cara">Ⅱ-7</a></li>
+    </ol>
+  </div>
+
+  <div class="sheet">
+    <div class="stem">予想3　エンタルピーに関して（昨年と角度を変えた場合）</div>
+    <ol>
+      <li><span class="no">(1)</span>エンタルピーを定義するメリットを解説しよう。→ <a href="#e-merit">Ⅲ-1</a></li>
+      <li><span class="no">(2)</span>圧力一定のもとで受け取る熱が \(H_2-H_1\) になることを示そう。→ <a href="#e-qh">Ⅲ-2</a></li>
+      <li><span class="no">(3)</span>理想気体のエンタルピーが温度だけの関数であることを示し、\(C_P-C_V=R\) を導こう。→ <a href="#e-ideal">Ⅲ-5</a>, <a href="#e-mayer">Ⅲ-4</a></li>
+      <li><span class="no">(4)</span>（おまけ）ジュール・トムソン実験で \(H\) が一定であることを示し、自由膨張と比較しよう。→ <a href="#e-jt">Ⅲ-6</a></li>
+    </ol>
+  </div>
+  <p><small class="note">組み合わせ型（例：カルノーの (1)(2) と第二法則の (3)(4)）も十分ありえます。3テーマはつながっているので、<a href="#map">01 の流れ</a>で覚えておけば対応できます。</small></p>
+</section>
+
+<!-- ===== 暗唱カード ===== -->
+<section id="cards">
+  <h2><span class="wk">03 · CARDS</span>暗唱カード</h2>
+  <p>説明問題の書き出しにそのまま使える一文です。声に出して覚えてください。</p>
+  <div class="grid2">
+    <div class="box hot"><h4>カルノーサイクル</h4>等温2本と断熱2本を準静的に行うサイクル。熱の出入りは等温過程だけで、効率は \(1-T_1/T_2\)。</div>
+    <div class="box hot"><h4>効率</h4>高温熱源から吸収した熱のうち、仕事に変えられた割合 \(W/Q_2\)。</div>
+    <div class="box hot"><h4>カルノーの定理</h4>同じ2熱源の間では可逆機関の効率が最大で、可逆機関どうしは作業物質によらず等しい。</div>
+    <div class="box cold"><h4>クラウジウスの原理</h4>他に何の変化も残さずに、熱を低温物体から高温物体へ移すことはできない。</div>
+    <div class="box cold"><h4>トムソンの原理</h4>1つの熱源から熱を受け取り、全部を仕事に変えるだけで他に変化を残さないサイクルは存在しない。</div>
+    <div class="box cold"><h4>不可逆変化</h4>外界に何の変化も残さずに元の状態に戻すことができない変化。</div>
+    <div class="box cold"><h4>第二種永久機関</h4>1つの熱源の熱を全部仕事に変え続ける機関。第一法則には反しないが、トムソンの原理に反する。</div>
+    <div class="box"><h4>エンタルピー</h4>\(H=U+PV\)。圧力一定で受け取る熱が \(\Delta H\) になる状態量。</div>
+    <div class="box"><h4>比熱</h4>1 mol を 1 K 上げるのに要る熱。\(Q\) は状態量でないので条件（定積・定圧）を指定する。</div>
+    <div class="box"><h4>ジュール・トムソン</h4>細孔栓を通す断熱膨張で \(H\) が一定。理想気体は温度不変、実在気体は冷える。</div>
+  </div>
+</section>
+
+<!-- ===== 最終チェック ===== -->
+<section id="final">
+  <h2><span class="wk">04 · FINAL</span>最終チェック</h2>
+  <ul class="check">
+    <li>カルノーの P–V 図を描き、4過程の \(Q,W,\Delta U\) の表を埋められる</li>
+    <li>\(V_B/V_A=V_C/V_D\) を断熱の式2本から「辺々割る」で出せる</li>
+    <li>\(\eta,\eta_c,\eta_h\) を \(Q_1/Q_2=T_1/T_2\) から出し、数値を K で計算できる</li>
+    <li>カルノーの定理を収支表つきで証明できる（等号の後半も）</li>
+    <li>原理の文言を「他に何の変化も残さずに」「1つの熱源」込みで書ける</li>
+    <li>クラウジウス⇔トムソンの2つの図と収支表を白紙から書ける</li>
+    <li>第一種・第二種永久機関の違いを一文で言える</li>
+    <li>\(d'Q=dH-VdP\) から \(Q=\Delta H\)、\(C_P=(\partial H/\partial T)_P\) を出せる</li>
+    <li>\(C_P-C_V\) の一般式を全微分から出し、理想気体で \(R\) になると確認できる</li>
+    <li>ジュール・トムソンで \(H_1=H_2\) を示し、自由膨張と比べられる</li>
+    <li>どの導出でも、最初に「目標」、式の間に「何をしたか」を書いている</li>
+  </ul>
+  <footer>演習5〜7週・3週と令和7年度 後期中間試験をもとに、出題範囲（カルノーサイクル・熱力学第二法則・エンタルピー）に絞って作成。予想問題と答案例は筆者によるもので、実際の出題を保証するものではありません。</footer>
+</section>
+</div>

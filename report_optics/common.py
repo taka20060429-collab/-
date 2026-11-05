@@ -426,13 +426,16 @@ def chart_figure(nat, caption, num, width=125):
     cp._blob = xml.replace(b'r:id="rId1"', f'r:id="{rid_x}"'.encode())
     rid_c = doc.part.relate_to(cp, RT.CHART)
     cx, cy = int(width * 36000), int(width * hcm / wcm * 36000)
+    # 図形の ID（wp:docPr/@id）は文書内で重複してはいけない（重複すると Word が開けない）
+    ids = [int(v) for v in doc.element.body.xpath("//wp:docPr/@id") if str(v).isdigit()]
+    did = max(ids + [0]) + 1
     p = para(align=CENTER, sb=6, sa=2, keep=True)
     p.add_run()._r.append(parse_xml(
         '<w:drawing xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" '
         'xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" '
         f'xmlns:a="{A_NS}" xmlns:c="{C_NS}" xmlns:r="{R_NS}">'
         f'<wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="{cx}" cy="{cy}"/>'
-        f'<wp:effectExtent l="0" t="0" r="0" b="0"/><wp:docPr id="{5000 + n}" name="グラフ {n}"/>'
+        f'<wp:effectExtent l="0" t="0" r="0" b="0"/><wp:docPr id="{did}" name="グラフ {n}"/>'
         '<wp:cNvGraphicFramePr/><a:graphic><a:graphicData '
         f'uri="{C_NS}"><c:chart r:id="{rid_c}"/></a:graphicData></a:graphic></wp:inline></w:drawing>'))
     c = para(align=CENTER, sa=10)

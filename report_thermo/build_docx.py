@@ -169,6 +169,8 @@ def chart_figure(native, caption, num, width=125):
     rid_c = doc.part.relate_to(chart_part, RT.CHART)
     cx = int(width * 36000)
     cy = int(width * hcm / wcm * 36000)
+    ids = [int(v) for v in doc.element.body.xpath("//wp:docPr/@id") if str(v).isdigit()]
+    did = max(ids + [0]) + 1
     p = para(align=WD_ALIGN_PARAGRAPH.CENTER, sb=6, sa=2, keep=True)
     drawing = parse_xml(
         '<w:drawing xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" '
@@ -178,7 +180,7 @@ def chart_figure(native, caption, num, width=125):
         'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">'
         f'<wp:inline distT="0" distB="0" distL="0" distR="0"><wp:extent cx="{cx}" cy="{cy}"/>'
         '<wp:effectExtent l="0" t="0" r="0" b="0"/>'
-        f'<wp:docPr id="{5000 + n}" name="グラフ {n}"/><wp:cNvGraphicFramePr/>'
+        f'<wp:docPr id="{did}" name="グラフ {n}"/><wp:cNvGraphicFramePr/>'
         '<a:graphic><a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/chart">'
         f'<c:chart r:id="{rid_c}"/></a:graphicData></a:graphic></wp:inline></w:drawing>')
     p.add_run()._r.append(drawing)

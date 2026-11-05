@@ -63,21 +63,22 @@ R2_i = np.corrcoef(xa, yi)[0, 1] ** 2
 RATIO = [(e / i) for e, i in zip(LE, LID) if i > 0 and e > 0]
 
 # ================================================================ ホール素子のデータ
-IX0, VH0 = s1["B4"].value, s1["B5"].value    # [mA], [mV]
+# ホール素子は自分たちの班の測定値（hall.xlsx）
+wh = openpyxl.load_workbook(os.path.join(HERE, "data", "hall.xlsx"), data_only=True).active
+IX0, VH0 = wh["B2"].value, wh["B3"].value    # [mA], [mV]
 H0 = 1.67e4
 KH = H0 / VH0                                 # [A/m per mV]
-CI = col(s1, "D", 5, 13)                      # コイル電流 [A]
-CV = col(s1, "E", 5, 13)                      # Vh [mV]
+CI = col(wh, "B", 12, 20)                     # コイル電流 [A]
+CV = col(wh, "C", 12, 20)                     # Vh [mV]
 CH = [KH * v for v in CV]
 AH = sum(i * h for i, h in zip(CI, CH)) / sum(i * i for i in CI)
-PX = col(s1, "L", 5, 23)                      # x [cm]
-PV1 = col(s1, "M", 5, 23)
-PV4 = col(s1, "P", 5, 23)
+PX = col(wh, "B", 29, 47)                     # x [cm]
+PV1 = col(wh, "H", 29, 47)
+PV4 = col(wh, "C", 29, 47)
 PH1 = [KH * v for v in PV1]
 PH4 = [KH * v for v in PV4]
-CENTER = s1["B12"].value
-SIX = col(s1, "T", 4, 11)
-SVH = col(s1, "U", 4, 11)
+SIX = col(wh, "A", 65, 72)
+SVH = col(wh, "B", 65, 72)
 SK = sum(i * v for i, v in zip(SIX, SVH)) / sum(i * i for i in SIX)
 H2A = AH * 2.0
 
@@ -356,6 +357,8 @@ body(f"図{f_c3}のようにフォトダイオードに直流電源・電流計�
 C.figure(fig("ps_c3.png"), "ダイオード電流－ダイオード電圧特性の測定回路（指導書[1]より）", f_c3, 105)
 
 heading("5．実験結果")
+body("本実験は2つの班に分かれて行い，光センサの実験はもう一方の班が担当した．そのため，光センサの結果には"
+     "その班の測定値を用いた．")
 heading("(1)　光源電力 W に対する照度 E", 2)
 t1 = nxt("tab")
 fW = nxt("fig")
@@ -508,11 +511,11 @@ e_k = eq(rf"H=kV_h={KH:.0f}\,V_h")
 heading("(2)　コイル中心でのコイル電流とホール電圧・磁場", 2)
 t6 = nxt("tab")
 fIVh, fIH = nxt("fig"), nxt("fig")
-body(f"コイル中心の目盛は{CENTER} cm であった．結果を表{t6}に，コイル電流とホール電圧の関係を図{fIVh}に，"
+body(f"結果を表{t6}に，コイル電流とホール電圧の関係を図{fIVh}に，"
      f"磁場の関係を図{fIH}に示す．")
 table("コイル電流 I，ホール電圧 Vh と磁場 H（コイル中心）", t6, ["コイル電流 I [A]", "ホール電圧 V_{h} [mV]",
                                                        "磁場 H [A/m]"],
-      [[f"{i:.1f}", f"{v:.3f}", f"{h:.0f}"] for i, v, h in zip(CI, CV, CH)], [40, 40, 40], size=9)
+      [[f"{i:.1f}", f"{v:.2f}", f"{h:.0f}"] for i, v, h in zip(CI, CV, CH)], [40, 40, 40], size=9)
 C.chart_figure(ch_IVh(), "コイル電流 I とホール電圧 Vh の関係", fIVh, 115)
 C.chart_figure(ch_IH(), "コイル電流 I と磁場 H の関係（直線は最小二乗法による実験式）", fIH, 115)
 body("最小二乗法で H＝aI の比例定数を求めると")
@@ -527,7 +530,7 @@ fxH = nxt("fig")
 body(f"結果を表{t7}と図{fxH}に示す．")
 table("コイル中心からの距離 x，ホール電圧 Vh と磁場 H", t7,
       ["距離 x [cm]", "1 A：V_{h} [mV]", "1 A：H [A/m]", "4 A：V_{h} [mV]", "4 A：H [A/m]"],
-      [[f"{x}", f"{a:.3f}", f"{h1:.0f}", f"{b:.3f}", f"{h4:.0f}"] for x, a, h1, b, h4 in zip(PX, PV1, PH1, PV4, PH4)],
+      [[f"{x}", f"{a:.2f}", f"{h1:.0f}", f"{b:.2f}", f"{h4:.0f}"] for x, a, h1, b, h4 in zip(PX, PV1, PH1, PV4, PH4)],
       [26, 28, 28, 28, 28], size=9)
 C.chart_figure(ch_xH(), "コイル中心からの距離 x と磁場 H の関係", fxH, 125)
 p1, p2 = plateau(PX, PH4)
@@ -538,13 +541,15 @@ body(f"どちらの電流でも，磁場は中心付近（x＝{p1}〜{p2} cm）�
      f"{PH4[-1] / max(PH4) * 100:.0f} %であった．コイルの中央部では一様な磁場が得られるが，コイルの長さが有限で"
      f"あるため，端では磁力線が外に広がって磁場が弱くなることがわかる．また，各位置で 4 A のときの磁場は"
      f" 1 A のときの{min(ratio):.2f}〜{max(ratio):.2f}倍で，ほぼ4倍になっており，コイルのどの位置でも磁場は"
-     f"電流に比例している．分布は x＝0 に対してほぼ左右対称であった．")
+     f"電流に比例している．なお，分布は左右でわずかに非対称で，同じ距離では x の正の側の磁場がやや小さかった"
+     f"（例えば 4 A，x＝±16 cm で{PH4[1]:.0f} A/m と{PH4[-2]:.0f} A/m）．スケールで決めたコイル中心の位置が，"
+     f"実際の磁場の中心から少し正の側にずれていたためと考えられる．")
 heading("(4)　一定磁場における試料電流 ix とホール電圧 Vh", 2)
 t8 = nxt("tab")
 fix = nxt("fig")
 body(f"コイル電流 2 A（(2) の実験式より H＝{AH:.0f}×2＝{H2A:.0f} A/m）での結果を表{t8}と図{fix}に示す．")
 table("試料電流 ix とホール電圧 Vh（コイル電流 2 A）", t8, ["試料電流 i_{x} [mA]", "ホール電圧 V_{h} [mV]"],
-      [[f"{i}", f"{v:.3f}"] for i, v in zip(SIX, SVH)], [45, 45], size=9)
+      [[f"{i:.3f}", f"{v:.2f}"] for i, v in zip(SIX, SVH)], [45, 45], size=9)
 C.chart_figure(ch_ixVh(), "試料電流 ix とホール電圧 Vh の関係（磁場 H 一定）", fix, 115)
 body(f"図{fix}より，磁場が一定でも試料電流を大きくするとホール電圧はそれに比例して大きくなった．原点を通る直線で"
      f"近似すると Vh＝{SK:.3f}i_{{x}}［mV］（i_{{x}} は mA）となり，式({e_vh})のとおりホール電圧は試料電流と"

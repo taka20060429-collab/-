@@ -17,7 +17,6 @@ from docx.shared import Mm
 from openpyxl.chart import Reference, Series
 from openpyxl.chart.axis import ChartLines  # noqa: F401
 from openpyxl.chart.marker import Marker  # noqa: F401
-from openpyxl.chart.trendline import Trendline
 from openpyxl.chart.shapes import GraphicalProperties
 from openpyxl.drawing.line import LineProperties
 
@@ -100,9 +99,6 @@ def ch_logR():
                title="測定値")
     s.marker = C.marker("circle", 5, C.BLUE)
     C.line(s, none=True)
-    # ln R = A + B/T なので，R は 1/T の指数関数：指数近似の近似曲線は片対数グラフ上で直線になる
-    s.trendline = Trendline(trendlineType="exp", dispEq=False, dispRSqr=False,
-                            spPr=GraphicalProperties(ln=LineProperties(solidFill=C.BLUE, w=19050, prstDash="sysDot")))
     ch.series.append(s)
     ch.y_axis.scaling.logBase = 10
     ch.y_axis.scaling.min, ch.y_axis.scaling.max = 10, 100
@@ -244,7 +240,7 @@ body(f"図{f3}より，温度が上がると抵抗は小さくなり，{TC[0]:.1
      f"20 ℃の上昇で約{(1 - R[-1] / R[0]) * 100:.0f} %も減少した．グラフはわずかに下に凸の曲線で，温度が高いほど"
      f"1 ℃あたりの抵抗の減り方は小さくなっている．これは式({e1})のように抵抗が温度に対して指数関数的に変化する"
      f"ためである．温度が上がると抵抗が下がるという，白金などの金属とは逆の性質（負の温度係数）がはっきり確かめられた．")
-C.chart_figure(ch_logR(), "温度の逆数 1/T と抵抗 R の関係（片対数グラフ，直線は指数近似による近似直線）", f4, 120)
+C.chart_figure(ch_logR(), "温度の逆数 1/T と抵抗 R の関係（片対数グラフ）", f4, 120)
 body(f"図{f4}より，片対数グラフでは測定点がほぼ1本の直線上に並んだ（ln R と 1/T の決定係数 R²＝{R2:.4f}）．"
      f"したがって，サーミスタの抵抗は式({e1})に従い，ln R は 1/T に比例して変化することが確かめられた．"
      f"直線の傾きが正であるのは，温度が高い（1/T が小さい）ほど抵抗が小さいことに対応している．")
@@ -261,7 +257,7 @@ eq(r"B=\dfrac{\ln R_1-\ln R_2}{1/T_1-1/T_2}", numbered=False)
 body("を得る．常用対数との関係 ln x＝(ln 10)·log x≒2.303 log x を用いると")
 e_2p = eq(r"B=\dfrac{2.3\,(\log R_1-\log R_2)}{1/T_1-1/T_2}")
 body(f"となり，指導書の近似式が導かれた．係数 2.3 は ln 10＝2.3026… を丸めた値である．")
-body(f"次に，図{f4}の直線上から2点を読み取った．なるべく離れた2点を選ぶと読み取りの誤差の影響が小さくなるので，"
+body(f"次に，図{f4}の測定点の並びに沿う直線を考え，その直線上から2点を読み取った．なるべく離れた2点を選ぶと読み取りの誤差の影響が小さくなるので，"
      f"1/T＝{P1X * 1e3:.2f}×10⁻³ K⁻¹ と{P2X * 1e3:.2f}×10⁻³ K⁻¹ の点をとると，抵抗はそれぞれ R_{{1}}＝{P1R} Ω，"
      f"R_{{2}}＝{P2R} Ω であった．これを式({e_2p})に代入すると")
 eq(rf"B=\dfrac{{2.3\,(\log {P1R}-\log {P2R})}}{{{P1X * 1e3:.2f}\times10^{{-3}}-{P2X * 1e3:.2f}\times10^{{-3}}}}"
@@ -277,7 +273,7 @@ eq(rf"\overline{{X}}={Xm * 1e3:.5f}\times10^{{-3}}\ \mathrm{{K^{{-1}}}},\quad \o
    numbered=False, size=11)
 body("であり，これを代入すると")
 eq(rf"B={B_LS:.0f}\ \mathrm{{K}},\qquad A=\overline{{Y}}-B\overline{{X}}={A_LS:.3f}", numbered=False)
-body(f"となった．図{f4}の直線はこの値から描いたものである．")
+body("となった．")
 heading("6.3　2つの求め方の比較検討（考察課題③）", 2)
 t2 = nxt("tab")
 body(f"6.1と6.2で求めた B を表{t2}にまとめる．")

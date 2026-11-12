@@ -27,7 +27,7 @@ from common import body, eq, heading, item, nxt  # noqa: E402
 
 C.MATH[0] = "omml"   # 数式は Word の数式で書く
 
-META = {"kai": None, "date": None, "submit": None, "han": "D班", "name": "森木崇允", "grade": "1",
+META = {"kai": "7", "date": "2026年11月11日", "submit": "2026年11月16日", "han": "D班", "name": "森木崇允", "grade": "1",
         "student_id": "4326091",
         "coworkers": [("石井真人", "4326007"), ("木元喜紹", "4326029"), ("陶山稜平", "4326051"),
                       ("林田知子", "4326071")]}

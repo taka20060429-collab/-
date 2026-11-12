@@ -408,6 +408,14 @@ def _fix_layout(root):
             ov.set("val", "0")
             legend.find(_q("legendPos")).addnext(ov)
     chart = root.find(_q("chart"))
+    for sc in root.iter(_q("scatterChart")):
+        if sc.find(_q("scatterStyle")) is None:
+            st = etree.Element(_q("scatterStyle"))
+            st.set("val", "lineMarker")
+            vc = etree.Element(_q("varyColors"))
+            vc.set("val", "0")
+            sc.insert(0, vc)
+            sc.insert(0, st)
     if chart.find(_q("autoTitleDeleted")) is None:
         atd = etree.Element(_q("autoTitleDeleted"))
         atd.set("val", "1")

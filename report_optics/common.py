@@ -205,7 +205,50 @@ def _render_tex(tex, size):
     return path, w / 600 * 25.4
 
 
+MATH = ["image"]   # "omml" にすると数式を Word の数式（数式エディタで編集できる形）で書く
+
+
+def _omml(tex):
+    import latex2mathml.converter
+    import mathml2omml
+    t = tex.replace(r"\dfrac", r"\frac").replace(r"\simeq", r"\approx")
+    t = t.replace(r"\qquad", r"\ \ \ \ ").replace(r"\quad", r"\ \ ")
+    t = re.sub(r"\\mathrm\{([A-Za-z/ ]+)\}", r"\\text{\1}", t)   # 単位などは立体（斜体にしない）
+    mml = latex2mathml.converter.convert(t)
+    om = mathml2omml.convert(mml)
+    el = parse_xml(f'<w:p xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" '
+                   f'xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">{om}</w:p>')[0]
+    # 余分な m:box をはずす（Word でも LibreOffice でも表示できる素直な形にする）
+    M = "{http://schemas.openxmlformats.org/officeDocument/2006/math}"
+    while True:
+        boxes = list(el.iter(M + "box"))
+        if not boxes:
+            break
+        b = boxes[-1]
+        e = b.find(M + "e")
+        parent = b.getparent()
+        i = parent.index(b)
+        for k, ch in enumerate(list(e) if e is not None else []):
+            parent.insert(i + k, ch)
+        parent.remove(b)
+    return el
+    return parse_xml(f'<w:p xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" '
+                     f'xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math">{om}</w:p>')[0]
+
+
 def eq(tex, numbered=True, size=12.5):
+    if MATH[0] == "omml":
+        p = para(sb=3, sa=5, line=1.0)
+        ts = p.paragraph_format.tab_stops
+        ts.add_tab_stop(Mm(TEXT_W / 2), WD_TAB_ALIGNMENT.CENTER)
+        ts.add_tab_stop(Mm(TEXT_W), WD_TAB_ALIGNMENT.RIGHT)
+        font(p.add_run("\t"))
+        p._p.append(_omml(tex))
+        if numbered:
+            n = nxt("eq")
+            font(p.add_run(f"\t({n})"))
+            return n
+        return None
     path, wmm = _render_tex(tex, size)
     wmm = min(wmm, TEXT_W - 22)
     p = para(sb=3, sa=5, line=1.0)
@@ -306,6 +349,7 @@ def line(series, color=None, width=28575, dash=None, none=False):
     if none:
         gp.line.noFill = True
         return
+    gp.line.noFill = None          # 「線なし」と「線の色」を同時に持たせない（Word が開けなくなる）
     gp.line.solidFill = color
     gp.line.width = width
     if dash:
@@ -352,6 +396,15 @@ def _fix_layout(root):
             ov.set("val", "0")
             legend.find(_q("legendPos")).addnext(ov)
     chart = root.find(_q("chart"))
+    # 散布図には scatterStyle（と varyColors）が必須．無いと Word がファイルを開けない
+    for sc in root.iter(_q("scatterChart")):
+        if sc.find(_q("scatterStyle")) is None:
+            st = etree.Element(_q("scatterStyle"))
+            st.set("val", "lineMarker")
+            vc = etree.Element(_q("varyColors"))
+            vc.set("val", "0")
+            sc.insert(0, vc)
+            sc.insert(0, st)
     if chart.find(_q("autoTitleDeleted")) is None:
         atd = etree.Element(_q("autoTitleDeleted"))
         atd.set("val", "1")

@@ -26,7 +26,7 @@ sys.path.insert(0, os.path.join(HERE, "..", "report_optics"))
 import common as C  # noqa: E402
 from common import body, eq, heading, item, nxt  # noqa: E402
 
-C.CHART_FONT.update({"latin": "Times New Roman", "ea": "ＭＳ 明朝", "color": "000000"})
+C.MATH[0] = "omml"   # 数式は Word の数式で書く
 
 META = {"kai": None, "date": None, "submit": None, "han": "D班", "name": "森木崇允", "grade": "1",
         "student_id": "4326091",
@@ -66,13 +66,8 @@ R25 = fitR(1 / 298.15)
 
 # ================================================================ TA 資料の書き方に合わせたグラフ
 def ta_chart(xt, yt, w=15, h=10):
+    """Excel の既定の見た目の散布図（マーカーのみ）。"""
     ch = C.base_chart(xt, yt, w=w, h=h)
-    black = LineProperties(solidFill="000000", w=9525)
-    for ax in (ch.x_axis, ch.y_axis):
-        ax.majorGridlines = None
-        ax.majorTickMark = "out"
-        ax.spPr = GraphicalProperties(ln=black)
-    ch.plot_area.graphicalProperties = GraphicalProperties(ln=LineProperties(solidFill="000000", w=9525))
     ch.legend = None
     return ch
 
@@ -85,7 +80,7 @@ def ch_TR():
     ch = ta_chart("温度 T [℃]", "抵抗 R [Ω]")
     s = Series(Reference(ws, min_col=2, min_row=2, max_row=1 + n), Reference(ws, min_col=1, min_row=2, max_row=1 + n),
                title="測定値")
-    s.marker = C.marker("circle", 6, "000000")
+    s.marker = C.marker("circle", 5, C.BLUE)
     C.line(s, none=True)
     ch.series.append(s)
     ch.x_axis.scaling.min, ch.x_axis.scaling.max, ch.x_axis.majorUnit = 20, 45, 5
@@ -100,14 +95,14 @@ def ch_logR():
         ws.append([float(x), float(r)])
     x0, x1 = 3.15e-3, 3.40e-3
     ws["D2"], ws["E2"], ws["D3"], ws["E3"] = x0, fitR(x0), x1, fitR(x1)
-    ch = ta_chart("温度の逆数 1/T [K⁻¹]", "抵抗 R [Ω]（対数目盛）")
+    ch = ta_chart("温度の逆数 1/T [K⁻¹]", "抵抗 R [Ω]")
     s = Series(Reference(ws, min_col=2, min_row=2, max_row=1 + n), Reference(ws, min_col=1, min_row=2, max_row=1 + n),
                title="測定値")
-    s.marker = C.marker("circle", 6, "000000")
+    s.marker = C.marker("circle", 5, C.BLUE)
     C.line(s, none=True)
     # ln R = A + B/T なので，R は 1/T の指数関数：指数近似の近似曲線は片対数グラフ上で直線になる
     s.trendline = Trendline(trendlineType="exp", dispEq=False, dispRSqr=False,
-                            spPr=GraphicalProperties(ln=LineProperties(solidFill="000000", w=12700)))
+                            spPr=GraphicalProperties(ln=LineProperties(solidFill=C.BLUE, w=19050, prstDash="sysDot")))
     ch.series.append(s)
     ch.y_axis.scaling.logBase = 10
     ch.y_axis.scaling.min, ch.y_axis.scaling.max = 10, 100
@@ -354,59 +349,6 @@ for t in C.doc.tables:
 
 out = os.path.join(HERE, "サーミスタの実験_報告書.docx")
 C.save(out)
-# Word で開けるように，LibreOffice で一度保存し直した互換版も作る
-tmp = os.path.join(HERE, "_rt")
-os.makedirs(tmp, exist_ok=True)
-subprocess.run(["soffice", "--headless", "--convert-to", "docx:MS Word 2007 XML", "--outdir", tmp, out],
-               check=True, capture_output=True)
-compat = out.replace(".docx", "_互換版.docx")
-os.replace(os.path.join(tmp, os.path.basename(out)), compat)
-os.rmdir(tmp)
-
-
-def add_diagonals(path):
-    """LibreOffice は表のセルの斜線を保存しないので，互換版の空欄セルに斜線を付け直す。"""
-    import zipfile
-    from lxml import etree
-    W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-    q = lambda t: f"{{{W}}}{t}"  # noqa: E731
-    zin = zipfile.ZipFile(path)
-    root = etree.fromstring(zin.read("word/document.xml"))
-    for tbl in root.iter(q("tbl")):
-        rows = tbl.findall(q("tr"))
-        head = "".join(rows[0].itertext()) if rows else ""
-        if "1/T" not in head:
-            continue
-        for tr in rows[1:]:
-            tcs = tr.findall(q("tc"))
-            for j, tc in enumerate(tcs):
-                if j == len(tcs) // 2 or "".join(tc.itertext()).strip():
-                    continue
-                tcPr = tc.find(q("tcPr"))
-                if tcPr is None:
-                    tcPr = etree.SubElement(tc, q("tcPr"))
-                    tc.insert(0, tcPr)
-                bd = tcPr.find(q("tcBorders"))
-                if bd is None:
-                    bd = etree.Element(q("tcBorders"))
-                    pos = 0
-                    for k, ch in enumerate(tcPr):
-                        if etree.QName(ch).localname in ("cnfStyle", "tcW", "gridSpan", "hMerge", "vMerge"):
-                            pos = k + 1
-                    tcPr.insert(pos, bd)
-                d = etree.SubElement(bd, q("tl2br"))
-                for k, v in (("val", "single"), ("sz", "4"), ("space", "0"), ("color", "000000")):
-                    d.set(q(k), v)
-    data = etree.tostring(root, xml_declaration=True, encoding="UTF-8", standalone=True)
-    tmpzip = path + ".tmp"
-    with zipfile.ZipFile(tmpzip, "w", zipfile.ZIP_DEFLATED) as zout:
-        for it in zin.infolist():
-            zout.writestr(it, data if it.filename == "word/document.xml" else zin.read(it.filename))
-    zin.close()
-    os.replace(tmpzip, path)
-
-
-add_diagonals(compat)
 print("saved", out)
 print("B_LS", B_LS, "A", A_LS, "R2", R2, "2pt", P1R, P2R, B_2P, B_2P_exact, "end", B_END, "excl", Bx,
       "alpha", ALPHA25, "dE", DE, "R25", R25)

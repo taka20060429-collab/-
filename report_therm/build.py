@@ -88,13 +88,12 @@ def ch_TR():
 
 
 def ch_logR():
+    """横軸は 1/T を 10⁻³ K⁻¹ 単位で表す（目盛を 3.20 のように読みやすくする）。"""
     ws = C.new_sheet("1T-R")
-    ws.append(["1/T [K^-1]", "R [Ω]", "", "1/T", "直線"])
+    ws.append(["1/T [×10^-3 K^-1]", "R [Ω]"])
     for x, r in zip(X, R):
-        ws.append([float(x), float(r)])
-    x0, x1 = 3.15e-3, 3.40e-3
-    ws["D2"], ws["E2"], ws["D3"], ws["E3"] = x0, fitR(x0), x1, fitR(x1)
-    ch = ta_chart("温度の逆数 1/T [K⁻¹]", "抵抗 R [Ω]")
+        ws.append([float(x) * 1e3, float(r)])
+    ch = ta_chart("温度の逆数 1/T [×10⁻³ K⁻¹]", "抵抗 R [Ω]")
     s = Series(Reference(ws, min_col=2, min_row=2, max_row=1 + n), Reference(ws, min_col=1, min_row=2, max_row=1 + n),
                title="測定値")
     s.marker = C.marker("circle", 5, C.BLUE)
@@ -102,8 +101,8 @@ def ch_logR():
     ch.series.append(s)
     ch.y_axis.scaling.logBase = 10
     ch.y_axis.scaling.min, ch.y_axis.scaling.max = 10, 100
-    ch.x_axis.scaling.min, ch.x_axis.scaling.max, ch.x_axis.majorUnit = 3.15e-3, 3.40e-3, 0.05e-3
-    ch.x_axis.number_format = "0.00E+00"
+    ch.x_axis.scaling.min, ch.x_axis.scaling.max, ch.x_axis.majorUnit = 3.15, 3.40, 0.05
+    ch.x_axis.number_format = "0.00"
     return C.native(ws, ch, "G2")
 
 

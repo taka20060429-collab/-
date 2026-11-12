@@ -290,6 +290,7 @@ def save(path):
 # ================================================================ Excel グラフ（Excel 既定の書式）
 BLUE, ORANGE, GRAY, YELLOW = "4472C4", "ED7D31", "A5A5A5", "FFC000"
 AXIS_GRAY, TEXT_GRAY = "D9D9D9", "595959"
+CHART_FONT = {"latin": "游ゴシック", "ea": "游ゴシック", "color": TEXT_GRAY}   # グラフの文字（変更可）
 C_NS = "http://schemas.openxmlformats.org/drawingml/2006/chart"
 A_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
 R_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -358,8 +359,8 @@ def _fix_layout(root):
     if root.find(_q("txPr")) is None:
         tx = etree.fromstring(
             f'<c:txPr xmlns:c="{C_NS}" xmlns:a="{A_NS}"><a:bodyPr/><a:lstStyle/><a:p><a:pPr>'
-            f'<a:defRPr sz="900"><a:solidFill><a:srgbClr val="{TEXT_GRAY}"/></a:solidFill>'
-            f'<a:latin typeface="游ゴシック"/><a:ea typeface="游ゴシック"/></a:defRPr></a:pPr>'
+            f'<a:defRPr sz="900"><a:solidFill><a:srgbClr val="{CHART_FONT["color"]}"/></a:solidFill>'
+            f'<a:latin typeface="{CHART_FONT["latin"]}"/><a:ea typeface="{CHART_FONT["ea"]}"/></a:defRPr></a:pPr>'
             f'<a:endParaRPr lang="ja-JP"/></a:p></c:txPr>')
         sppr = root.find(_q("spPr"))
         (sppr if sppr is not None else chart).addnext(tx)
